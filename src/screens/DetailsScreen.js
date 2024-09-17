@@ -11,7 +11,7 @@ const DetailsScreen = () => {
         <View style={styles.row}>
           <Text style={styles.restaurantName}>Paragon Restaurant, Calicut</Text>
           <TouchableOpacity style={styles.editIconContainer} onPress={() => {}}>
-            <Image source={require('../assets/images/edit_icon.png')} style={styles.editIcon} />
+            <Image source={require('../assets/icons/edit_icon.png')} style={styles.editIcon} />
           </TouchableOpacity>
         </View>
         <View style={styles.tableImageRow}>
@@ -51,7 +51,7 @@ const DetailsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#2C2C2C',
+    backgroundColor: '#151518',
     padding: 20,
   },
   header: {
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   card: {
-    backgroundColor: '#3C3C3C',
+    backgroundColor: '#3C3C41',
     padding: 20,
     borderRadius: 10,
   },
@@ -117,7 +117,6 @@ const styles = StyleSheet.create({
   },
   bottomImage: {
     width: 150,
-    height: 150,
     resizeMode: 'contain',
   },
   nextButtonWrapper: {

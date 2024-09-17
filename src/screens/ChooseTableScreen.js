@@ -46,12 +46,11 @@ const ChooseTableScreen = () => {
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.iconContainer}>
-            <Image source={require('../assets/icons/map.png')} style={styles.icon} />
-            <Image source={require('../assets/icons/bell.png')} style={styles.icon} />
+            <Image source={require('../assets/icons/location_icon.png')} style={styles.icon} />
+            <Image source={require('../assets/icons/notification_icon.png')} style={styles.icon} />
           </View>
         </View>
         <View style={styles.headerTextContainer}>
-          <Text style={styles.headerText}>Now it's time to choose your table</Text>
         </View>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <View style={styles.tableContainer}>
@@ -123,7 +122,7 @@ const styles = StyleSheet.create({
   scrollContainer: {
     alignItems: 'center',
     paddingVertical: 20,
-    paddingBottom: 150, // Add padding to ensure content is not hidden behind the button
+    paddingBottom: 150,
   },
   tableContainer: {
     width: '90%',
@@ -134,7 +133,7 @@ const styles = StyleSheet.create({
   table: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 5, // Adjusted margin for even spacing
+    marginHorizontal: 5,
     marginVertical: 10,
     position: 'relative',
     borderRadius: 10,

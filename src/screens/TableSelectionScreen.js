@@ -32,10 +32,10 @@ const TableSelectionScreen = () => {
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.header}>
         <View style={styles.iconContainer}>
-          <Image source={require('../assets/icons/map.png')} style={styles.icon} />
-          <Image source={require('../assets/icons/bell.png')} style={styles.icon} />
+          <Image source={require('../assets/icons/location_icon.png')} style={styles.icon} />
+          <Image source={require('../assets/icons/notification_icon.png')} style={styles.icon} />
         </View>
-        <Text style={styles.headerText}>Now it's time to choose your table</Text>
+
       </View>
       <View style={styles.tableContainer}>
         <View style={styles.row}>
