@@ -27,11 +27,16 @@ const tableImages = {
   14: require('../assets/tables/chair_14.png'),
 };
 
-const { width, height } = Dimensions.get('window');
-
 const TableSelectionScreen = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.iconContainer}>
+          <Image source={require('../assets/icons/map.png')} style={styles.icon} />
+          <Image source={require('../assets/icons/bell.png')} style={styles.icon} />
+        </View>
+        <Text style={styles.headerText}>Now it's time to choose your table</Text>
+      </View>
       <View style={styles.tableContainer}>
         <View style={styles.row}>
           <TouchableOpacity style={styles.table}>
@@ -95,13 +100,30 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingVertical: 20,
     alignItems: 'center',
-    backgroundColor: '#1c1c1c',
+    backgroundColor: '#151518',
     width: '100%',
     height: '100%',
   },
-  scrollContainer: {
+  header: {
     alignItems: 'center',
-    paddingVertical: 20,
+    marginBottom: 20,
+  },
+  headerText: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginTop: 10,
+  },
+  iconContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    width: '100%',
+    paddingHorizontal: 20,
+  },
+  icon: {
+    width: 24,
+    height: 24,
+    marginLeft: 15,
   },
   tableContainer: {
     width: '90%',

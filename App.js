@@ -1,18 +1,24 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import TableSelectionScreen from './src/screens/TableSelectionScreen'
-import ChooseTableScreen from './src/screens/ChooseTableScreen'
+import React from 'react';
+import { SafeAreaView, StyleSheet } from 'react-native';
+import DetailsScreen from './src/screens/DetailsScreen';
+import TableSelectionScreen from './src/screens/TableSelectionScreen';
+import ChooseTableScreen from './src/screens/ChooseTableScreen';
 
 const App = () => {
   return (
-    <View>
-      <TableSelectionScreen />
+    <SafeAreaView style={styles.container}>
+      <DetailsScreen />
+      {/* <TableSelectionScreen /> */}
       {/* <ChooseTableScreen /> */}
 
-    </View>
-  )
-}
+    </SafeAreaView>
+  );
+};
 
-export default App
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
-const styles = StyleSheet.create({})
+export default App;
