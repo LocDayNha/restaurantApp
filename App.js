@@ -12,12 +12,12 @@ import {
 const App = () => {
   return (
     <SafeAreaView style={styles.container}>
-      {/* <BookingScreen />
-      <ChooseTableScreen />
-      <DetailsScreen />
-      <SuccessScreen />
-      <SuccessScreen_Two />
-      <TableSelectionScreen /> */}
+     {/* <BookingScreen /> */}
+     {/* <ChooseTableScreen /> */}
+     {/* <DetailsScreen /> */}
+     {/* <SuccessScreen /> */}
+     {/* <SuccessScreen_Two /> */}
+      {/* <TableSelectionScreen /> */}
     </SafeAreaView>
   );
 };

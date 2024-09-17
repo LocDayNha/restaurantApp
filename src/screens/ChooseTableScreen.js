@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   nextButton: {
-    width: '90%',
+    width: '80%',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 25,
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   },
   nextButtonText: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
   },
 });

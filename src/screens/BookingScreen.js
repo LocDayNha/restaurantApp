@@ -8,12 +8,10 @@ import {
   Image,
 } from 'react-native';
 
-// Import the local background image
-import backgroundImage from '../assets/images/bg_booking.png'; // Adjust the path as necessary
+import backgroundImage from '../assets/images/bg_booking.png';
 
 const BookingScreen = () => {
   const handleNavigation = () => {
-    // Handle navigation or any other action here
     console.log('Navigate to another screen');
   };
 
@@ -28,14 +26,14 @@ const BookingScreen = () => {
             onPress={handleNavigation}
             style={styles.navigationButton}>
             <Image
-              source={require('../assets/icons/left_chevron.png')} // Adjust the path as necessary
+              source={require('../assets/icons/left_icon.png')}
               style={styles.navigationIcon}
             />
           </TouchableOpacity>
         </View>
         <View style={styles.iconContainerRight}>
           <Image
-            source={require('../assets/icons/notification_icon.png')} // Adjust the path as necessary
+            source={require('../assets/icons/notification_icon.png')}
             style={styles.icon}
           />
         </View>
@@ -97,13 +95,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   background: {
-    width:  "100%",
+    width: '100%',
     height: 200,
     justifyContent: 'center',
   },
-  backgroundImage: {    
+  backgroundImage: {
     resizeMode: 'cover',
-
   },
   iconContainerLeft: {
     position: 'absolute',

@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   restaurantName: {
     color: '#FFFFFF',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
   },
   editIconContainer: {
@@ -105,11 +105,11 @@ const styles = StyleSheet.create({
   },
   label: {
     color: '#AAAAAA',
-    fontSize: 16,
+    fontSize: 14,
   },
   value: {
     color: '#FFFFFF',
-    fontSize: 16,
+    fontSize: 14,
   },
   bottomImageContainer: {
     alignItems: 'center',
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   nextButton: {
-    width: '90%',
+    width: '80%',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 25,
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   },
   nextButtonText: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
   },
 });

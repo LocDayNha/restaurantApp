@@ -72,43 +72,43 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   closeImage: {
-    width: 24, // Adjust the width as needed
-    height: 24, // Adjust the height as needed
+    width: 24,
+    height: 24,
   },
   content: {
     alignItems: 'center',
     position: 'absolute',
-    top: '20%', // Adjust the position as needed
+    top: '20%',
     width: '80%',
   },
   iconContainer: {
     position: 'absolute',
-    bottom: 50, // Adjust the position as needed
+    bottom: 50,
     alignItems: 'center',
   },
   successImage: {
-    width: 200, // Adjust the width as needed
-    height: 200, // Adjust the height as needed
+    width: 250,
+    height: 250,
   },
   title: {
     fontSize: 24,
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 5, // Adjust the margin as needed
+    marginBottom: 5,
   },
   message: {
     fontSize: 16,
     color: 'white',
     textAlign: 'center',
-    marginBottom: 20, // Adjust the margin as needed
+    marginBottom: 20,
   },
   note: {
     fontSize: 16,
     color: 'white',
     textAlign: 'center',
     position: 'absolute',
-    top: '50%', // Adjust the position as needed
+    top: '50%',
     width: '100%',
   },
 });
