@@ -3,14 +3,15 @@ import { SafeAreaView, StyleSheet } from 'react-native';
 import DetailsScreen from './src/screens/DetailsScreen';
 import TableSelectionScreen from './src/screens/TableSelectionScreen';
 import ChooseTableScreen from './src/screens/ChooseTableScreen';
+import SuccessScreen from './src/screens/SuccessScreen';
 
 const App = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <DetailsScreen />
+      {/* <DetailsScreen /> */}
       {/* <TableSelectionScreen /> */}
       {/* <ChooseTableScreen /> */}
-
+      <SuccessScreen/>
     </SafeAreaView>
   );
 };
