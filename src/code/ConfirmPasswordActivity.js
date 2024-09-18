@@ -31,13 +31,13 @@ const CreatePasswordScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.top}>
+      {/* <View style={styles.top}> */}
             {/* Nút quay lại sử dụng ảnh thay cho icon */}
-            <TouchableOpacity style={styles.backButton}>
-                <Image source={require('../images/back.png')} style={styles.icon} /> 
-            </TouchableOpacity>
-            <Text style={styles.topdes} >Tạo mật khẩu mới</Text>
-      </View>
+            {/* <TouchableOpacity style={styles.backButton}> */}
+                {/* <Image source={require('../images/back.png')} style={styles.icon} />  */}
+            {/* </TouchableOpacity> */}
+            {/* <Text style={styles.topdes} >Tạo mật khẩu mới</Text> */}
+      {/* </View> */}
 
       <View style={styles.profileContainer}>
         <Image

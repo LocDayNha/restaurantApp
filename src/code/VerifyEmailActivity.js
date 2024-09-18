@@ -6,13 +6,13 @@ const VerifyEmailActivity = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        <View style={styles.top}>
+        {/* <View style={styles.top}> */}
             {/* Nút quay lại sử dụng ảnh thay cho icon */}
-            <TouchableOpacity style={styles.backButton}>
-                <Image source={require('../images/back.png')} style={styles.icon} /> 
-            </TouchableOpacity>
-            <Text style={styles.topdes} >Xác minh Email của bạn</Text>
-        </View>
+            {/* <TouchableOpacity style={styles.backButton}> */}
+                {/* <Image source={require('../images/back.png')} style={styles.icon} />  */}
+            {/* </TouchableOpacity> */}
+            {/* <Text style={styles.topdes} >Xác minh Email của bạn</Text> */}
+        {/* </View> */}
       
 
       {/* Ảnh hồ sơ */}
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   profileContainer:{
-    top: 40,
+    top: 80,
     left: 20,
   },
   // profileImage: {
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 20,
     marginBottom: 20,
-    top: 30,
+    top: 110,
   },
   topdes: {
     color:"black",
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   text: {
     color: "black",
     fontSize: 20,
-    top: 20,
+    top: 100,
     left: 15,
     // zIndex: 0
   },
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     alignItems: 'center',
     marginTop: 45,
-    top: 120,
+    top: 200,
   },
   buttonText: {
     color: '#fff',

@@ -11,7 +11,7 @@ const ProfileScreen = () => {
             <TouchableOpacity style={styles.backButton}>
               <Image source={require('../images/back.png')} style={styles.icon} /> 
             </TouchableOpacity>
-            <Text style={styles.topdes}>Điền thông tin của bạn</Text>
+            {/* <Text style={styles.topdes}>Điền thông tin của bạn</Text> */}
         </View>
       
 
@@ -59,10 +59,10 @@ const ProfileScreen = () => {
 
         {/* Email */}
         <View style={styles.inputContainer}>
-        <Image source={require('../images/email.png')} style={styles.icon} /> 
+        <Image source={require('../images/location.png')} style={styles.icon} /> 
           <TextInput 
             style={[styles.input, { flex: 1 }]} 
-            placeholder="Email" 
+            placeholder="Địa chỉ" 
             placeholderTextColor='#999' 
           />
           
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   icon: {
     width: 20,
     height: 20,
-    marginLeft: 10,
+    marginLeft: 1,
   },
   flagIcon: {
     width: 30,

@@ -29,17 +29,17 @@ const ForgotPasswordActivity = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.top}>
+      {/* <View style={styles.top}> */}
             {/* Nút quay lại sử dụng ảnh thay cho icon */}
-            <TouchableOpacity style={styles.backButton}>
-                <Image source={require('../images/back.png')} style={styles.icon} /> 
-            </TouchableOpacity>
-            <Text style={styles.topdes} >Xác minh OTP</Text>
-      </View>
+            {/* <TouchableOpacity style={styles.backButton}> */}
+                {/* <Image source={require('../images/back.png')} style={styles.icon} />  */}
+            {/* </TouchableOpacity> */}
+            {/* <Text style={styles.topdes} >Xác minh OTP</Text> */}
+      {/* </View> */}
 
       {/* OTP Input Section */}
       <Text style={styles.description}>
-        Mã đã được gửi về số 0*******59
+        Mã đã được gửi về mail
       </Text>
 
       <View style={styles.codeContainer}>
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   description: {
-    top: 200,
+    top: 240,
     fontSize: 16,
     textAlign: 'center',
     marginBottom: 20,
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: 40,
     marginBottom: 20,
-    top: 200,
+    top: 240,
   },
   codeInput: {
     borderBottomWidth: 2,
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     fontSize: 14,
     color: '#888',
-    top: 205,
+    top: 245,
   },
   verifyButton: {
     backgroundColor: '#000',
