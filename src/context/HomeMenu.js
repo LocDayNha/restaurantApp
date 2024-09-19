@@ -1,9 +1,10 @@
-import { View, Text, StyleSheet, Image, TextInput, FlatList, SafeAreaView, } from 'react-native'
-import React, {useMemo, useState} from 'react'
+import { View, Text, StyleSheet, Image, TextInput, FlatList, SafeAreaView, ScrollView, } from 'react-native'
+import React, {useMemo, useState, useEffect} from 'react'
 import { SearchBar } from '@rneui/themed';
 
 import Item_List_Category from './Item_List_Category';
 import Item_List_Order from './Item_List_Order';
+import Slideshow from 'react-native-image-slider-show';
 
 const image = <Image source={require('../images/ic_search.png')}/>
 
@@ -67,11 +68,25 @@ const DATAoder = [
   
 ];
 
+//list image
+const Banner =[
+  {
+    url: "https://tse4.mm.bing.net/th?id=OIP.PrptVcgvLFXZ-dOyrIxIbwHaEK&pid=Api&P=0&h=220"
+  },
+  {
+    url: "https://tse1.mm.bing.net/th?id=OIP.AqqmJFXr7aLUs8esOYE6GwHaEK&pid=Api&P=0&h=220"
+  },
+  {
+    url: "https://staticg.sportskeeda.com/editor/2024/08/f3bbb-17250270311992-1920.jpg"
+  }
+]
 
 const HomeMenu = (props) => {
-  const [selectedId, setSelectedId] = useState()
+  const [selectedId, setSelectedId] = useState()  // sắp xếp món ăn
 
-  //test filter
+  const [position, setPosition] = useState(0) // slide ảnh quảng cáo
+
+  // danh sách loại món ăn (test)
   const [filter, setFilter] = useState([
     {
       id: '1',
@@ -117,85 +132,99 @@ const HomeMenu = (props) => {
     },
   ])
 
-  const [ctgrID, setCTGRID] = useState('gr1')
+  const [ctgrID, setCTGRID] = useState('gr1') // id loại món ăn
   
-  const filterList = useMemo(
+  const filterList = useMemo(  // sắp xếp món ăn theo loại
     () => {
-      if(ctgrID == 'gr1') return filter.filter(itemListOder => ctgrID === itemListOder.categoryID)
+      if(ctgrID == 'gr1') return filter
         return filter.filter(itemListOder => ctgrID === itemListOder.categoryID)
     },
     [ctgrID, filter]
   )
 
+  useEffect(()=>{
+    const toggle = setInterval(() => {
+      setPosition(position === Banner.length - 1 ? 0 : position + 1);
+    }, 3000);
+
+    return () => clearInterval(toggle);
+  })
+
   return (
     //container
-    <View style={{flex: 1, paddingLeft: 20,backgroundColor: '#ffffff'}}>
+    <ScrollView>
+      <View style={{flex: 1, alignItems: 'center',backgroundColor: '#ffffff'}}>
+        {/* header */}
+        <View style={styles.header_container}>
+          <Text style={styles.header}>Chào Phi đẹp trai</Text>
+          <Image style={styles.avata} source={require('../images/gura.jpg')} />
+        </View>
 
-      {/* header */}
-      <View style={styles.header_container}>
-        <Text style={styles.header}>Chào Phi đẹp trai</Text>
-        <Image style={styles.avata} source={require('../images/gura.jpg')} />
-      </View>
+        {/* Tìm kiếm */}
+        <View elevation={5} style={styles.search}>
+          <Image style={styles.ic_search} source={require('../images/ic_search.png')} />
+          <TextInput  placeholder='Tìm kiếm' placeholderTextColor={'#888'} style={styles.content_search}/>
+          <Image style={styles.ic_search} source={require('../images/ic_delete.png')} />
+        </View>
 
-      {/* Tìm kiếm */}
-      <View elevation={5} style={styles.search}>
-        <Image style={styles.ic_search} source={require('../images/ic_search.png')} />
-        <TextInput  placeholder='Tìm kiếm' placeholderTextColor={'#888'} style={styles.content_search}/>
-        <Image style={styles.ic_search} source={require('../images/ic_delete.png')} />
-      </View>
+        {/* <SearchBar
+          platform="android"
+          containerStyle={styles.search}
+          // inputContainerStyle={{}}
+          // inputStyle={{}}
+          // leftIconContainerStyle={{}}
+          // rightIconContainerStyle={{}}
+          // loadingProps={{}}
+          //onChangeText={newVal => setValue(newVal)}
+          placeholder="Type query here..."
+          placeholderTextColor="#888"
+          cancelButtonTitle="Cancel"
+          cancelButtonProps={{}}
+          searchIcon={image}
+        /> */}
 
-      {/* <SearchBar
-        platform="android"
-        containerStyle={styles.search}
-        // inputContainerStyle={{}}
-        // inputStyle={{}}
-        // leftIconContainerStyle={{}}
-        // rightIconContainerStyle={{}}
-        // loadingProps={{}}
-        //onChangeText={newVal => setValue(newVal)}
-        placeholder="Type query here..."
-        placeholderTextColor="#888"
-        cancelButtonTitle="Cancel"
-        cancelButtonProps={{}}
-        searchIcon={image}
-      /> */}
-
-      {/* Hình gì đây chưa xác định ?? */}
-      <Image style={styles.banner} source={require('../images/gura.jpg')} />
-
-      {/* Danh sách loại món ăn */}
-      <View  style={styles.list_category}>
-        <FlatList
-          data={DATA}
-          extraData={selectedId}
-          renderItem={({item}) => <Item_List_Category data={item}
-            onPress={() => [setSelectedId(item.id), setCTGRID(item.cateID)]}
-            bgcl = {item.id === selectedId ? '#95AE45' : '#ffffff'}
-            textColor = {item.id === selectedId ? 'white' : 'black'}
-           />}
-          keyExtractor={item => item.id}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          
-        />   
-      </View>
-      
-
-      {/* Danh sách món ăn */}
-      <View  style={styles.list_order}>
-        <FlatList
-          data={filterList}
-          // extraData={DATAoder}
-          //renderItem={({item}) => <Item_List_Order data={item} />}
-          renderItem={({item}) => <Item_List_Order data={item} />}
-          keyExtractor={item => item.id}
-          showsHorizontalScrollIndicator={false}
-          horizontal={false}
-          numColumns={2}
+        {/* Hình gì đây chưa xác định ?? */}
+        <Slideshow
+        containerStyle={styles.banner}
+        style={{height: 150}}
+        height={150} 
+        position={position} dataSource={Banner} 
+        scrollEnabled={false}   
         />
-      </View>
+        {/* Danh sách loại món ăn */}
+        <View  style={styles.list_category}>
+          <FlatList
+            data={DATA}
+            extraData={selectedId}
+            renderItem={({item}) => <Item_List_Category data={item}
+              onPress={() => [setSelectedId(item.id), setCTGRID(item.cateID)]}
+              bgcl = {item.id === selectedId ? '#95AE45' : '#ffffff'}
+              textColor = {item.id === selectedId ? 'white' : 'black'}
+            />}
+            keyExtractor={item => item.id}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+          />   
+        </View>
+        
 
-    </View>
+        {/* Danh sách món ăn */}
+        <View  style={styles.list_food}>
+          <FlatList 
+            data={filterList}
+            // extraData={DATAoder}
+            //renderItem={({item}) => <Item_List_Order data={item} />}
+            renderItem={({item}) => <Item_List_Order data={item} />}
+            keyExtractor={item => item.id}
+            horizontal={false}
+            numColumns={2}
+            showsVerticalScrollIndicator={false}
+            scrollEnabled={false}
+          />
+        </View>
+      </View>
+    </ScrollView>
+    
     
   )
 }
@@ -211,13 +240,13 @@ const styles = StyleSheet.create({
     avata: {
       width: 60, height: 60,
       borderRadius: 30,
-      marginRight: 20
     },
     header_container: {
+      width: 350,
       marginTop: 20,
       flexDirection: 'row',
+      alignItems: 'center',
       justifyContent: 'space-between',
-      alignItems: 'center'
     },
     search: {
       marginTop: 30,
@@ -244,7 +273,7 @@ const styles = StyleSheet.create({
       marginRight: 10,
     },
     banner:{
-      width: 350, height: 150,
+      height: 150,
       marginTop: 20,
       borderRadius: 20,
     },
@@ -252,10 +281,10 @@ const styles = StyleSheet.create({
       width: 350, 
       marginTop: 10,
     },
-    list_order: {
-      width: 350, 
+    list_food: {
       marginTop: 10,
       alignItems: 'center',
+      flex: 1
     },
 
   });

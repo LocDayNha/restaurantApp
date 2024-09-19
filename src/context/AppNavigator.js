@@ -1,89 +1,100 @@
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, StyleSheet } from 'react-native'
 import React, {useContext} from 'react'
-import { NavigationContainer } from '@react-navigation/native'
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 // import AppContext from './AppContext';
 import HomeMenu from './HomeMenu';
+import History from './History';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-// const Loginscreen = () => {
-//   return(
-//     <Stack.Navigator initialRouteName='Login' screenOptions={{headerShown: false}}>
-//       <Stack.Screen name='Login' component={Login}/>
-//       <Stack.Screen name='Signup' component={Signup}/>
-//       <Stack.Screen name='ForgotPass' component={Fogot_password}/>
-//     </Stack.Navigator>
-//   )
-// }
-
 const Home = () => {
   return(
-    
       <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name='Homepage' component={HomeMenu}/>
+        <Stack.Screen name='Home' component={HomeMenu}/>
       </Stack.Navigator>
   )
 }
 
-// const Tabbar = () => {
+// const History = () => {
 //   return(
-//       <Tab.Navigator
-//         screenOptions={{
-//           headerShown: false,
-//           tabBarStyle: {
-//             height: 70,
-//             position: 'absolute',
-//             bottom: 30,
-//             left: 10,
-//             right: 10,
-//             borderRadius: 10
-//           }
-          
-//         }}
-//       >
-//         <Tab.Screen name='Trang chu' component={Trangchu} options={{
-//           tabBarIcon: ({focus}) => (
-//             <View style={{alignItems: 'center'}}>
-//               <Image source={require('../asset/Shop.png')} />
-//             </View>
-//           )
-//         }}/>
-//         <Tab.Screen name='Reward' component={Reward} options={{
-//           tabBarIcon: ({focus}) => (
-//             <View style={{alignItems: 'center'}}>
-//               <Image source={require('../asset/Buy.png')} />
-//             </View>
-//           )
-//         }}/>
-//         <Tab.Screen name='History' component={History} options={{
-//           tabBarIcon: ({focus}) => (
-//             <View style={{alignItems: 'center'}}>
-//               <Image source={require('../asset/Menu.png')} />
-//             </View>
-//           )
-//         }}/>
-//       </Tab.Navigator> 
+//       <Stack.Navigator screenOptions={{headerShown: false}}>
+//         <Stack.Screen name='History' component={History}/>
+//       </Stack.Navigator>
 //   )
 // }
 
-// function Main() {
-//   return(
-//     <Stack.Navigator 
-//         screenOptions={{headerShown: false,}}
-//       >
-//       <Stack.Screen name='Tabbar' component={Tabbar} />
-//       <Stack.Screen name='Mycart' component={Mycart}/>
-//       <Stack.Screen name='Detail_order' component={Detail_order}/>
-//       <Stack.Screen name='Checkout' component={Checkout}/>
-//       <Stack.Screen name='Profile' component={Profile}/>
-//     </Stack.Navigator>
-//   )
-// }
+const Tabbar = () => {
+  return(
+      <Tab.Navigator
+        screenOptions={{
+          tabBarShowLabel: false,
+          headerShown: false,
+          tabBarStyle: {
+            height: 80,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            //position: 'absolute' // cho tab đè lên màn hình
+          },
+        }}>
+
+        <Tab.Screen name='Trang chu' component={Home} options={{
+          tabBarIcon: ({focused}) => (
+            <View style={{alignItems: 'center'}}>
+              <Image style={{width:20, height: 20, tintColor: focused ? '#95AE45' : "black"}} source={require('../images/ic_tab_home.png')} />
+              <Text style={{color: focused ? '#95AE45' : "black", fontSize: 13}}>Trang chủ</Text>
+            </View>
+          )
+        }}/>
+        <Tab.Screen name='Khuyen mai' component={History} options={{
+          tabBarIcon: ({focused}) => (
+            <View style={{alignItems: 'center'}}>
+              <Image style={{width:20, height: 20, tintColor: focused ? '#95AE45' : "black"}} source={require('../images/ic_tab_home.png')} />
+              <Text style={{color: focused ? '#95AE45' : "black", fontSize: 13}}>Trang chủ</Text>
+            </View>
+          )
+        }}/>
+        <Tab.Screen name='Thanh toan' component={Home} options={{
+          tabBarIcon: ({focused}) => (
+            <View style={styles.checkout}>
+              <Image style={{width:40, height: 40}} source={require('../images/ic_tab_checkout.png')} />
+            </View>
+          )
+        }}/>
+        <Tab.Screen name='aaaa' component={Home} options={{
+          tabBarIcon: ({focused}) => (
+            <View style={{alignItems: 'center'}}>
+              <Image style={{width:20, height: 20, tintColor: focused ? '#95AE45' : "black"}} source={require('../images/ic_tab_home.png')} />
+              <Text style={{color: focused ? '#95AE45' : "black", fontSize: 13}}>Trang chủ</Text>
+            </View>
+          )
+        }}/>
+        <Tab.Screen name='Dat ban' component={Home} options={{
+          tabBarIcon: ({focused}) => (
+            <View style={{alignItems: 'center'}}>
+              <Image style={{width:20, height: 20, tintColor: focused ? '#95AE45' : "black"}} source={require('../images/ic_tab_home.png')} />
+              <Text style={{color: focused ? '#95AE45' : "black", fontSize: 13}}>Trang chủ</Text>
+            </View>
+          )
+        }}/>
+        
+      </Tab.Navigator> 
+  )
+}
+
+function Main() {
+  return(
+    <Stack.Navigator 
+        screenOptions={{headerShown: false,}}
+      >
+      <Stack.Screen name='Tabbar' component={Tabbar} />
+
+    </Stack.Navigator>
+  )
+}
 const Appnavigator = () => {
 //   const { isLogin} = useContext(AppContext);
   
@@ -93,7 +104,17 @@ const Appnavigator = () => {
 //   else {
 //     return <Main/>
 //   }
-    return <Home/>
+    return <Main/>
 }
 
+const styles = StyleSheet.create({
+  checkout: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#95AE45',
+    width: 70, height: 70, 
+    borderRadius: 35,
+    top: -25
+  }
+})
 export default Appnavigator

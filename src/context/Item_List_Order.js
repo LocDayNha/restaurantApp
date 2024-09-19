@@ -13,11 +13,14 @@ const Item_List_Order = (props) => {
     
 
   return (
-    <TouchableOpacity elevation={5} style={styles.item}>
-      <Image style={styles.avata} source={{uri: data.image}}/>
-      <Text style={styles.title}>{data.title}</Text>
-      <Text style={styles.price}>{data.price}</Text>
-    </TouchableOpacity>
+    <View elevation={5} style={styles.item}>
+      <TouchableOpacity >
+        <Image style={styles.avata} source={{uri: data.image}}/>
+        <Text style={styles.title}>{data.title}</Text>
+        <Text style={styles.price}>{data.price}</Text>
+      </TouchableOpacity>
+    </View>
+    
   )
 }
 const styles = StyleSheet.create({

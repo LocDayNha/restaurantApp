@@ -1,20 +1,15 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import React, {useState} from 'react'
 
-import HomeMenu from './HomeMenu'
-
 
 const Item_List_Category = ({data,onPress, bgcl, textColor}) => {
-
- 
   return (
-    <TouchableOpacity onPress={onPress} style={[styles.item,{backgroundColor: bgcl}]}>
-      <View elevation = {5}>
+    <View elevation={5} style={[styles.item,{backgroundColor: bgcl}]}>
+      <TouchableOpacity onPress={onPress} > 
         <Image style={styles.avata} source={{uri: data.image}}/>
         <Text style={[styles.title,{color: textColor}]}>{data.title}</Text>
-      </View>
-    </TouchableOpacity>
-    
+      </TouchableOpacity>
+    </View>
   )
 }
 const styles = StyleSheet.create({
