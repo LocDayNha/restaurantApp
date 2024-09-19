@@ -18,7 +18,7 @@ const ProfileScreen = () => {
       {/* Ảnh hồ sơ */}
       <View style={styles.profileContainer}>
         <Image
-          source={require('../../images/food.jpg')}
+          source={require('../../image/food.jpg')}
           style={styles.profileImage}
         />
         <TouchableOpacity style={styles.icon1}>
@@ -40,7 +40,7 @@ const ProfileScreen = () => {
         
         {/* Nickname
         <View style={styles.inputContainer}>
-        <Image source={require('../images/user.png')} style={styles.icon} /> 
+        <Image source={require('../image/user.png')} style={styles.icon} /> 
           <TextInput 
           style={styles.input} 
           placeholder="Name"/>

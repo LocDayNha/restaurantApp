@@ -7,7 +7,7 @@ const WelcomeActivity2 = () => {
       {/* Top part - Image and text */}
       <View style={styles.imageContainer}>
       <Image
-        source={require('../../images/bg2.jpg')}
+        source={require('../../image/bg2.jpg')}
         style={styles.image}
         />
       </View>
