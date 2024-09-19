@@ -1,32 +1,32 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
-const WelcomeActivity1 = () => {
+const WelcomeActivity3 = () => {
   return (
     <View style={styles.container}>
       {/* Top part - Image and text */}
       <View style={styles.imageContainer}>
       <Image
-        source={require('../images/food3.png')}
+        source={require('../../images/bg3.jpg')}
         style={styles.image}
         />
       </View>
 
       {/* Text description */}
       <View style={styles.textContainer}>
-        <Text style={styles.title}>Cung cấp bữa ăn theo nhu cầu ăn uống của bạn</Text>
+        <Text style={styles.title}>Có thể đặt bàn trước tại nhà. Thử ngay</Text>
       </View>
 
       {/* Dots (page indicator or progress) */}
       <View style={styles.dotsContainer}>
+        <View style={styles.dot} />
+        <View style={styles.dot} />
         <View style={[styles.dot, styles.activeDot]} />
-        <View style={styles.dot} />
-        <View style={styles.dot} />
       </View>
 
       {/* Button */}
       <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Next</Text>
+        <Text style={styles.buttonText}>Bắt đầu nào</Text>
       </TouchableOpacity>
     </View>
   );
@@ -92,4 +92,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WelcomeActivity1;
+export default WelcomeActivity3;

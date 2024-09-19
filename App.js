@@ -1,17 +1,17 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-import WelcomeActivity1 from './src/code/WelcomeActivity1'
-import WelcomeActivity2 from './src/code/WelcomeActivity2'
-import WelcomeActivity3 from './src/code/WelcomeActivity3'
-import ProfileActivity from './src/code/ProfileActivity'
-import VerifyEmailActivity from './src/code/VerifyEmailActivity'
-import ConfirmPasswordActivity from './src/code/ConfirmPasswordActivity'
-import ForgotPasswordActivity from './src/code/ForgotPasswordActivity'
-import WelcomeActivity from './src/code/WelcomeActivity'
+import Welcome1 from './src/main/intro/Welcome1'
+import Welcome2 from './src/main/intro/Welcome2'
+import Welcome3 from './src/main/intro/Welcome3'
+import Profile from './src/main/home/Profile'
+import VerifyEmail from './src/main/home/VerifyEmail'
+import ConfirmPassword from './src/main/home/ConfirmPassword'
+import ForgotPassword from './src/main/home/ForgotPassword'
+import Welcome from './src/main/intro/Welcome'
 
 const App = () => {
   return (
-      <ForgotPasswordActivity/>
+      <ForgotPassword/>
   )
 }
 

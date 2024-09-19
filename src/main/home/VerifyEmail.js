@@ -18,7 +18,7 @@ const VerifyEmailActivity = () => {
       {/* Ảnh hồ sơ */}
       <View style={styles.profileContainer}>
         <Image
-          source={require('../images/background_verify.png')}
+          source={require('../../images/background_verify.png')}
           style={styles.profileImage}
         />
       </View>
@@ -29,7 +29,7 @@ const VerifyEmailActivity = () => {
         <Text style={styles.text} >Nhập Email của bạn</Text>  
         {/* Email */}
         <View style={styles.inputContainer}>
-        <Image source={require('../images/email.png')} style={styles.icon} /> 
+        <Image source={require('../../icon/email.png')} style={styles.icon} /> 
           <TextInput 
             style={[styles.input, { flex: 1 }]} 
             placeholder="Email"

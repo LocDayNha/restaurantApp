@@ -41,7 +41,7 @@ const CreatePasswordScreen = () => {
 
       <View style={styles.profileContainer}>
         <Image
-          source={require('../images/background_verify.png')}
+          source={require('../../images/background_verify.png')}
           style={styles.profileImage}
         />
       </View>
@@ -61,7 +61,7 @@ const CreatePasswordScreen = () => {
         />
         <TouchableOpacity onPress={handlePasswordVisibility} style={styles.icon1}>
           <Image 
-            source={showPassword ? require('../images/view.png') : require('../images/hide.png')}
+            source={showPassword ? require('../../icon/view.png') : require('../../icon/hide.png')}
             style={styles.icon} 
           />
         </TouchableOpacity>
@@ -80,7 +80,7 @@ const CreatePasswordScreen = () => {
         />
          <TouchableOpacity onPress={handleConfirmPasswordVisibility} style={styles.icon1}>
           <Image 
-            source={showPassword ? require('../images/view.png') : require('../images/hide.png')}
+            source={showPassword ? require('../../icon/view.png') : require('../../icon/hide.png')}
             style={styles.icon} 
           />
         </TouchableOpacity>

@@ -5,7 +5,7 @@ const WelcomeActivity = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Image 
-        source={require('../images/bgtheme.jpg')} 
+        source={require('../../images/bgtheme.jpg')} 
         style={styles.backgroundImage} 
       />
 
