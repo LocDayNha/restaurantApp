@@ -2,11 +2,11 @@ import { View, Text, StyleSheet, Image, TextInput, FlatList, SafeAreaView, Scrol
 import React, {useMemo, useState, useEffect} from 'react'
 import { SearchBar } from '@rneui/themed';
 
-import Item_List_Category from './Item_List_Category';
-import Item_List_Order from './Item_List_Order';
+import Item_List_Category from '../../item/Item_List_Category';
+import Item_List_Order from '../../item/Item_List_Order';
 import Slideshow from 'react-native-image-slider-show';
 
-const image = <Image source={require('../images/ic_search.png')}/>
+const image = <Image source={require('../../icon/ic_search.png')}/>
 
 //test list
 const DATA = [
@@ -157,14 +157,14 @@ const HomeMenu = (props) => {
         {/* header */}
         <View style={styles.header_container}>
           <Text style={styles.header}>Chào Phi đẹp trai</Text>
-          <Image style={styles.avata} source={require('../images/gura.jpg')} />
+          <Image style={styles.avata} source={require('../../icon/gura.jpg')} />
         </View>
 
         {/* Tìm kiếm */}
         <View elevation={5} style={styles.search}>
-          <Image style={styles.ic_search} source={require('../images/ic_search.png')} />
+          <Image style={styles.ic_search} source={require('../../icon/ic_search.png')} />
           <TextInput  placeholder='Tìm kiếm' placeholderTextColor={'#888'} style={styles.content_search}/>
-          <Image style={styles.ic_search} source={require('../images/ic_delete.png')} />
+          <Image style={styles.ic_search} source={require('../../icon/ic_delete.png')} />
         </View>
 
         {/* <SearchBar

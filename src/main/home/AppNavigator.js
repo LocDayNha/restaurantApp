@@ -44,7 +44,7 @@ const Tabbar = () => {
         <Tab.Screen name='Trang chu' component={Home} options={{
           tabBarIcon: ({focused}) => (
             <View style={{alignItems: 'center'}}>
-              <Image style={{width:20, height: 20, tintColor: focused ? '#95AE45' : "black"}} source={require('../images/ic_tab_home.png')} />
+              <Image style={{width:20, height: 20, tintColor: focused ? '#95AE45' : "black"}} source={require('../../icon/ic_tab_home.png')} />
               <Text style={{color: focused ? '#95AE45' : "black", fontSize: 13}}>Trang chủ</Text>
             </View>
           )
@@ -52,7 +52,7 @@ const Tabbar = () => {
         <Tab.Screen name='Khuyen mai' component={History} options={{
           tabBarIcon: ({focused}) => (
             <View style={{alignItems: 'center'}}>
-              <Image style={{width:20, height: 20, tintColor: focused ? '#95AE45' : "black"}} source={require('../images/ic_tab_home.png')} />
+              <Image style={{width:20, height: 20, tintColor: focused ? '#95AE45' : "black"}} source={require('../../icon/ic_tab_home.png')} />
               <Text style={{color: focused ? '#95AE45' : "black", fontSize: 13}}>Trang chủ</Text>
             </View>
           )
@@ -60,14 +60,14 @@ const Tabbar = () => {
         <Tab.Screen name='Thanh toan' component={Home} options={{
           tabBarIcon: ({focused}) => (
             <View style={styles.checkout}>
-              <Image style={{width:40, height: 40}} source={require('../images/ic_tab_checkout.png')} />
+              <Image style={{width:40, height: 40}} source={require('../../icon/ic_tab_checkout.png')} />
             </View>
           )
         }}/>
         <Tab.Screen name='aaaa' component={Home} options={{
           tabBarIcon: ({focused}) => (
             <View style={{alignItems: 'center'}}>
-              <Image style={{width:20, height: 20, tintColor: focused ? '#95AE45' : "black"}} source={require('../images/ic_tab_home.png')} />
+              <Image style={{width:20, height: 20, tintColor: focused ? '#95AE45' : "black"}} source={require('../../icon/ic_tab_home.png')} />
               <Text style={{color: focused ? '#95AE45' : "black", fontSize: 13}}>Trang chủ</Text>
             </View>
           )
@@ -75,7 +75,7 @@ const Tabbar = () => {
         <Tab.Screen name='Dat ban' component={Home} options={{
           tabBarIcon: ({focused}) => (
             <View style={{alignItems: 'center'}}>
-              <Image style={{width:20, height: 20, tintColor: focused ? '#95AE45' : "black"}} source={require('../images/ic_tab_home.png')} />
+              <Image style={{width:20, height: 20, tintColor: focused ? '#95AE45' : "black"}} source={require('../../icon/ic_tab_home.png')} />
               <Text style={{color: focused ? '#95AE45' : "black", fontSize: 13}}>Trang chủ</Text>
             </View>
           )

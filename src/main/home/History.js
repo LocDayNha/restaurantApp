@@ -1,6 +1,6 @@
 import { View, Text, FlatList, StyleSheet } from 'react-native'
 import React from 'react'
-import Item_List_History from './Item_List_History';
+import Item_List_History from '../../item/Item_List_History';
 
 const DATAhistory = [
   {
