@@ -3,8 +3,7 @@ import {SafeAreaView, StyleSheet} from 'react-native';
 
 import {Login, Login2, Register} from './src/main/Login';
 import {Welcome, Welcome1, Welcome2, Welcome3} from './src/main/intro';
-import {ForgotPassword, Profile, VerifyEmail} from './src/main/home';
-import ConfirmPassword from './src/main/home/ConfirmPassword';
+import {ConfrimPassword,ForgotPassword, Profile, VerifyEmail} from './src/main/home';
 
 import {
   BookingScreen,
@@ -14,6 +13,8 @@ import {
   SuccessScreen_Two,
   TableSelectionScreen,
 } from './src/main';
+
+
 
 
 const App = () => {
@@ -27,7 +28,7 @@ const App = () => {
       <Welcome3 />
       <Profile />
       <VerifyEmail />
-      <ConfirmPassword />
+      <ConfrimPassword />
       <ForgotPassword />
       <Welcome />
       <TableSelectionScreen />
