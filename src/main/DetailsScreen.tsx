@@ -11,11 +11,11 @@ const DetailsScreen = () => {
         <View style={styles.row}>
           <Text style={styles.restaurantName}>Paragon Restaurant, Calicut</Text>
           <TouchableOpacity style={styles.editIconContainer} onPress={() => {}}>
-            <Image source={require('../assets/icons/edit_icon.png')} style={styles.editIcon} />
+            <Image source={require('../icon/edit_icon.png')} style={styles.editIcon} />
           </TouchableOpacity>
         </View>
         <View style={styles.tableImageRow}>
-          <Image source={require('../assets/images/image_booking.png')} style={styles.tableImage} />
+          <Image source={require('../image/image_booking.png')} style={styles.tableImage} />
           <View style={styles.detailsContainer}>
             <View style={styles.row}>
               <Text style={styles.label}>Date</Text>
@@ -37,7 +37,7 @@ const DetailsScreen = () => {
         </View>
       </View>
       <View style={styles.bottomImageContainer}>
-        <Image source={require('../assets/images/image_booking.png')} style={styles.bottomImage} />
+        <Image source={require('../image/image_booking.png')} style={styles.bottomImage} />
       </View>
       <View style={styles.nextButtonWrapper}>
         <TouchableOpacity style={styles.nextButton} onPress={() => {}}>

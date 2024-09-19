@@ -7,7 +7,7 @@ import {
   SuccessScreen,
   SuccessScreen_Two,
   TableSelectionScreen,
-} from './src/screens';
+} from './src/main';
 
 const App = () => {
   return (
