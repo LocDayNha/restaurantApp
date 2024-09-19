@@ -12,12 +12,16 @@ import {
 const App = () => {
   return (
     <SafeAreaView style={styles.container}>
-     {/* <BookingScreen /> */}
-     {/* <ChooseTableScreen /> */}
-     {/* <DetailsScreen /> */}
-     {/* <SuccessScreen /> */}
-     {/* <SuccessScreen_Two /> */}
       {/* <TableSelectionScreen /> */}
+      {/* <ChooseTableScreen /> */}
+      {/* <DetailsScreen /> */}
+      {/* <SuccessScreen visible={true} onClose={() => {
+        console.log('close success screen');
+      }} /> */}
+      <SuccessScreen_Two visible={true} onClose={() => {
+        console.log('close success screen two');
+      }} />
+      {/* <BookingScreen /> */}
     </SafeAreaView>
   );
 };

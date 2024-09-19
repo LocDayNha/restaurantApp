@@ -9,7 +9,12 @@ import {
   ImageBackground,
 } from 'react-native';
 
-const ReservationSuccessScreen = ({ visible, onClose }) => {
+interface SuccessScreenProps {
+  visible: boolean;
+  onClose: () => void;
+}
+
+const SuccessScreen: React.FC<SuccessScreenProps> = ({ visible, onClose }) => {
   return (
     <Modal
       animationType="fade"
@@ -32,15 +37,15 @@ const ReservationSuccessScreen = ({ visible, onClose }) => {
           <View style={styles.content}>
             <Text style={styles.title}>Success</Text>
             <Text style={styles.message}>Your table is reserved</Text>
+            <View style={styles.iconContainer}>
+              <Image
+                source={require('../assets/images/success_icon.png')}
+                style={styles.successImage}
+                resizeMode="contain"
+              />
+            </View>
           </View>
           <Text style={styles.note}>NOTE: Reservation is only for 1 hour</Text>
-          <View style={styles.iconContainer}>
-            <Image
-              source={require('../assets/images/success_icon.png')}
-              style={styles.successImage}
-              resizeMode="contain"
-            />
-          </View>
         </ImageBackground>
       </View>
     </Modal>
@@ -76,41 +81,43 @@ const styles = StyleSheet.create({
     height: 24,
   },
   content: {
-    alignItems: 'center',
-    position: 'absolute',
-    top: '20%',
     width: '80%',
+    alignItems: 'center',
+    position: 'relative',
   },
   iconContainer: {
-    position: 'absolute',
-    bottom: 50,
+    marginTop: 60,
     alignItems: 'center',
   },
   successImage: {
     width: 250,
-    height: 250,
+    height:250,
   },
   title: {
     fontSize: 24,
     color: 'white',
     fontWeight: 'bold',
+    position: 'absolute',
+    top: -50,
     textAlign: 'center',
-    marginBottom: 5,
+    width: '100%',
   },
   message: {
     fontSize: 16,
     color: 'white',
+    position: 'absolute',
+    top: -20,
     textAlign: 'center',
-    marginBottom: 20,
+    width: '100%',
   },
   note: {
     fontSize: 16,
     color: 'white',
     textAlign: 'center',
-    position: 'absolute',
-    top: '50%',
     width: '100%',
+    position: 'absolute',
+    bottom: 20,
   },
 });
 
-export default ReservationSuccessScreen;
+export default SuccessScreen;

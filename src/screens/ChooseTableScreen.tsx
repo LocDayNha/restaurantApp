@@ -8,9 +8,10 @@ import {
   Image,
   Dimensions,
   TouchableWithoutFeedback,
+  Pressable,
 } from 'react-native';
 
-const tableImages = {
+const tableImages: { [key: number]: any } = {
   1: require('../assets/tables/chair_1.png'),
   2: require('../assets/tables/chair_2.png'),
   3: require('../assets/tables/chair_3.png'),
@@ -30,10 +31,10 @@ const tableImages = {
 const { width } = Dimensions.get('window');
 
 const ChooseTableScreen = () => {
-  const [selectedTable, setSelectedTable] = useState(null);
-  const [hoveredTable, setHoveredTable] = useState(null);
+  const [selectedTable, setSelectedTable] = useState<number | null>(null);
+  const [hoveredTable, setHoveredTable] = useState<number | null>(null);
 
-  const handleTablePress = (id) => {
+  const handleTablePress = (id: number) => {
     setSelectedTable(id);
   };
 
@@ -55,23 +56,23 @@ const ChooseTableScreen = () => {
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <View style={styles.tableContainer}>
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((id) => (
-              <TouchableOpacity
+              <Pressable
                 key={id}
                 style={[
                   styles.table,
                   selectedTable === id && styles.selectedTable,
                   hoveredTable === id && styles.hoveredTable,
                 ]}
+                onHoverIn={() => setHoveredTable(id)}
+                onHoverOut={() => setHoveredTable(null)}
                 onPress={() => handleTablePress(id)}
-                onMouseEnter={() => setHoveredTable(id)}
-                onMouseLeave={() => setHoveredTable(null)}
                 accessibilityLabel={`Table ${id}`}
               >
                 <Image
                   source={tableImages[id]}
                   style={styles.tableImage}
                 />
-              </TouchableOpacity>
+              </Pressable>
             ))}
           </View>
         </ScrollView>
