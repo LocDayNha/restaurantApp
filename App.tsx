@@ -18,9 +18,9 @@ const App = () => {
       {/* <SuccessScreen visible={true} onClose={() => {
         console.log('close success screen');
       }} /> */}
-      <SuccessScreen_Two visible={true} onClose={() => {
+      {/* <SuccessScreen_Two visible={true} onClose={() => {
         console.log('close success screen two');
-      }} />
+      }} /> */}
       {/* <BookingScreen /> */}
     </SafeAreaView>
   );
