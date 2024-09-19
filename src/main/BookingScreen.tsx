@@ -8,7 +8,7 @@ import {
   Image,
 } from 'react-native';
 
-import backgroundImage from '../assets/images/bg_booking.png';
+import backgroundImage from '../image/bg_booking.png';
 
 const BookingScreen = () => {
   const handleNavigation = () => {
@@ -26,14 +26,14 @@ const BookingScreen = () => {
             onPress={handleNavigation}
             style={styles.navigationButton}>
             <Image
-              source={require('../assets/icons/left_icon.png')}
+              source={require('../icon/left_icon.png')}
               style={styles.navigationIcon}
             />
           </TouchableOpacity>
         </View>
         <View style={styles.iconContainerRight}>
           <Image
-            source={require('../assets/icons/notification_icon.png')}
+            source={require('../icon/notification_icon.png')}
             style={styles.icon}
           />
         </View>
@@ -50,14 +50,14 @@ const BookingScreen = () => {
               style={styles.editIconContainer}
               onPress={() => {}}>
               <Image
-                source={require('../assets/icons/edit_icon.png')}
+                source={require('../icon/edit_icon.png')}
                 style={styles.editIcon}
               />
             </TouchableOpacity>
           </View>
           <View style={styles.tableImageRow}>
             <Image
-              source={require('../assets/images/image_booking.png')}
+              source={require('../image/image_booking.png')}
               style={styles.tableImage}
             />
             <View style={styles.detailsContainer}>

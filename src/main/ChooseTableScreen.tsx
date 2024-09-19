@@ -12,20 +12,20 @@ import {
 } from 'react-native';
 
 const tableImages: { [key: number]: any } = {
-  1: require('../assets/tables/chair_1.png'),
-  2: require('../assets/tables/chair_2.png'),
-  3: require('../assets/tables/chair_3.png'),
-  4: require('../assets/tables/chair_4.png'),
-  5: require('../assets/tables/chair_5.png'),
-  6: require('../assets/tables/chair_6.png'),
-  7: require('../assets/tables/chair_7.png'),
-  8: require('../assets/tables/chair_8.png'),
-  9: require('../assets/tables/chair_9.png'),
-  10: require('../assets/tables/chair_10.png'),
-  11: require('../assets/tables/chair_11.png'),
-  12: require('../assets/tables/chair_12.png'),
-  13: require('../assets/tables/chair_13.png'),
-  14: require('../assets/tables/chair_14.png'),
+  1: require('../tables/chair_1.png'),
+  2: require('../tables/chair_2.png'),
+  3: require('../tables/chair_3.png'),
+  4: require('../tables/chair_4.png'),
+  5: require('../tables/chair_5.png'),
+  6: require('../tables/chair_6.png'),
+  7: require('../tables/chair_7.png'),
+  8: require('../tables/chair_8.png'),
+  9: require('../tables/chair_9.png'),
+  10: require('../tables/chair_10.png'),
+  11: require('../tables/chair_11.png'),
+  12: require('../tables/chair_12.png'),
+  13: require('../tables/chair_13.png'),
+  14: require('../tables/chair_14.png'),
 };
 
 const { width } = Dimensions.get('window');
@@ -47,8 +47,8 @@ const ChooseTableScreen = () => {
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.iconContainer}>
-            <Image source={require('../assets/icons/location_icon.png')} style={styles.icon} />
-            <Image source={require('../assets/icons/notification_icon.png')} style={styles.icon} />
+            <Image source={require('../icon/location_icon.png')} style={styles.icon} />
+            <Image source={require('../icon/notification_icon.png')} style={styles.icon} />
           </View>
         </View>
         <View style={styles.headerTextContainer}>

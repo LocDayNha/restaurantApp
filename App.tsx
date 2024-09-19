@@ -7,7 +7,7 @@ import {
   SuccessScreen,
   SuccessScreen_Two,
   TableSelectionScreen,
-} from './src/screens';
+} from './src/main';
 
 const App = () => {
   return (
@@ -18,9 +18,9 @@ const App = () => {
       {/* <SuccessScreen visible={true} onClose={() => {
         console.log('close success screen');
       }} /> */}
-      <SuccessScreen_Two visible={true} onClose={() => {
+      {/* <SuccessScreen_Two visible={true} onClose={() => {
         console.log('close success screen two');
-      }} />
+      }} /> */}
       {/* <BookingScreen /> */}
     </SafeAreaView>
   );
