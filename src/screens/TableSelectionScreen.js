@@ -9,7 +9,6 @@ import {
   Dimensions,
 } from 'react-native';
 
-// Import images
 const tableImages = {
   1: require('../assets/tables/chair_1.png'),
   2: require('../assets/tables/chair_2.png'),

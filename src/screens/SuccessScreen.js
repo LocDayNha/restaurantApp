@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     width: '100%',
     position: 'absolute',
-    bottom: 20, // Adjust the position as needed
+    bottom: 20,
   },
 });
 

@@ -19,12 +19,12 @@ const ReservationSuccessScreen = ({ visible, onClose }) => {
     >
       <View style={styles.container}>
         <ImageBackground
-          source={require('../assets/images/bg_success.png')} // Replace with your background image path
+          source={require('../assets/images/bg_success.png')}
           style={styles.background}
         >
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
             <Image
-              source={require('../assets/icons/close_icon.png')} // Replace with your close icon image path
+              source={require('../assets/icons/close_icon.png')}
               style={styles.closeImage}
               resizeMode="contain"
             />

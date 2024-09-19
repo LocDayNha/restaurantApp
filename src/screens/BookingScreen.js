@@ -171,8 +171,8 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   tableImage: {
-    width: 100, // Adjust the width as necessary
-    height: 100, // Adjust the height as necessary
+    width: 100,
+    height: 100,
     marginRight: 20,
     borderRadius: 10,
   },
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginBottom: 100, // Adjusted to move the button up
+    marginBottom: 100,
   },
   addButton: {
     backgroundColor: '#2c2c2e',
