@@ -9,7 +9,7 @@ const ProfileScreen = () => {
         <View style={styles.top}>
           {/* Nút quay lại sử dụng ảnh thay cho icon */}
             <TouchableOpacity style={styles.backButton}>
-              <Image source={require('../icon/back.png')} style={styles.icon} /> 
+              <Image source={require('../../icon/back.png')} style={styles.icon} /> 
             </TouchableOpacity>
             {/* <Text style={styles.topdes}>Điền thông tin của bạn</Text> */}
         </View>
@@ -18,11 +18,11 @@ const ProfileScreen = () => {
       {/* Ảnh hồ sơ */}
       <View style={styles.profileContainer}>
         <Image
-          source={require('../image/food.jpg')}
+          source={require('../../image/food.jpg')}
           style={styles.profileImage}
         />
         <TouchableOpacity style={styles.icon1}>
-          <Image source={require('../icon/pencil.png')} style={styles.icon} /> 
+          <Image source={require('../../icon/pencil.png')} style={styles.icon} /> 
         </TouchableOpacity>
       </View>
 
@@ -31,7 +31,7 @@ const ProfileScreen = () => {
         {/* Tên đầy đủ */}
         
         <View style={styles.inputContainer}>
-        <Image source={require('../icon/user.png')} style={styles.icon} /> 
+        <Image source={require('../../icon/user.png')} style={styles.icon} /> 
           <TextInput 
           style={styles.input} 
           placeholder="Họ và tên"
@@ -40,7 +40,7 @@ const ProfileScreen = () => {
         
         {/* Nickname
         <View style={styles.inputContainer}>
-        <Image source={require('../image/user.png')} style={styles.icon} /> 
+        <Image source={require('../../image/user.png')} style={styles.icon} /> 
           <TextInput 
           style={styles.input} 
           placeholder="Name"/>
@@ -48,7 +48,7 @@ const ProfileScreen = () => {
          */}
         {/* Ngày sinh */}
         <View style={styles.inputContainer}>
-        <Image source={require('../icon/calendar.png')} style={styles.icon} /> 
+        <Image source={require('../../icon/calendar.png')} style={styles.icon} /> 
           <TextInput 
             style={[styles.input, { flex: 1 }]} 
             placeholder="Ngày, tháng, năm sinh" 
@@ -59,7 +59,7 @@ const ProfileScreen = () => {
 
         {/* Email */}
         <View style={styles.inputContainer}>
-        <Image source={require('../icon/location.png')} style={styles.icon} /> 
+        <Image source={require('../../icon/location.png')} style={styles.icon} /> 
           <TextInput 
             style={[styles.input, { flex: 1 }]} 
             placeholder="Địa chỉ" 
@@ -70,7 +70,7 @@ const ProfileScreen = () => {
 
         {/* Số điện thoại */}
         <View style={styles.inputContainer}>
-          <Image source={require('../icon/phone-call.png')} style={styles.icon} />
+          <Image source={require('../../icon/phone-call.png')} style={styles.icon} />
           <TextInput 
             style={[styles.input, { flex: 1 }]} 
             placeholder="Số điện thoại" 
@@ -80,7 +80,7 @@ const ProfileScreen = () => {
 
         {/* Giới tính */}
         <View style={styles.inputContainer}>
-          <Image source={require('../icon/gender.png')} style={styles.icon} /> 
+          <Image source={require('../../icon/gender.png')} style={styles.icon} /> 
           <TextInput 
             style={[styles.input, { flex: 1 }]} 
             placeholder="Giới tính" 

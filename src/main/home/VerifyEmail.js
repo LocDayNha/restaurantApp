@@ -9,7 +9,7 @@ const VerifyEmailActivity = () => {
         {/* <View style={styles.top}> */}
             {/* Nút quay lại sử dụng ảnh thay cho icon */}
             {/* <TouchableOpacity style={styles.backButton}> */}
-                {/* <Image source={require('../image/back.png')} style={styles.icon} />  */}
+                {/* <Image source={require('../../image/back.png')} style={styles.icon} />  */}
             {/* </TouchableOpacity> */}
             {/* <Text style={styles.topdes} >Xác minh Email của bạn</Text> */}
         {/* </View> */}
@@ -18,7 +18,7 @@ const VerifyEmailActivity = () => {
       {/* Ảnh hồ sơ */}
       <View style={styles.profileContainer}>
         <Image
-          source={require('../image/background_verify.png')}
+          source={require('../../image/background_verify.png')}
           style={styles.profileImage}
         />
       </View>
@@ -29,7 +29,7 @@ const VerifyEmailActivity = () => {
         <Text style={styles.text} >Nhập Email của bạn</Text>  
         {/* Email */}
         <View style={styles.inputContainer}>
-        <Image source={require('../icon/email.png')} style={styles.icon} /> 
+        <Image source={require('../../icon/email.png')} style={styles.icon} /> 
           <TextInput 
             style={[styles.input, { flex: 1 }]} 
             placeholder="Email"

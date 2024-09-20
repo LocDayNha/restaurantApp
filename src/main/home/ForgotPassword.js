@@ -32,7 +32,7 @@ const ForgotPasswordActivity = () => {
       {/* <View style={styles.top}> */}
             {/* Nút quay lại sử dụng ảnh thay cho icon */}
             {/* <TouchableOpacity style={styles.backButton}> */}
-                {/* <Image source={require('../image/back.png')} style={styles.icon} />  */}
+                {/* <Image source={require('../../image/back.png')} style={styles.icon} />  */}
             {/* </TouchableOpacity> */}
             {/* <Text style={styles.topdes} >Xác minh OTP</Text> */}
       {/* </View> */}

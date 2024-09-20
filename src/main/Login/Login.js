@@ -10,15 +10,15 @@ const Login = () => {
             <Text style={styles.text}>Phoenix Restaurant</Text>
 
             <Pressable style={styles.btnLoginfb}>
-                <Image style={styles.imageicon} source={require('../image/facebook.png')}></Image>
+                <Image style={styles.imageicon} source={require('../../image/facebook.png')}></Image>
                 <Text style={[styles.textLogin, { marginTop: 10 }]}>Continue with Facebook</Text>
             </Pressable>
             <Pressable style={styles.btnLogingg}>
-                <Image style={[styles.imageicon, { marginLeft: '18%' }]} source={require('../image/google.png')}></Image>
+                <Image style={[styles.imageicon, { marginLeft: '18%' }]} source={require('../../image/google.png')}></Image>
                 <Text style={[styles.textLogin, { marginTop: 10 }]}>Continue with Google</Text>
             </Pressable>
             <Pressable style={styles.btnLoginapple}>
-                <Image style={[styles.imageicon, { marginLeft: '20%' }]} source={require('../image/apple.png')}></Image>
+                <Image style={[styles.imageicon, { marginLeft: '20%' }]} source={require('../../image/apple.png')}></Image>
                 <Text style={[styles.textLogin, { marginTop: 10 }]}>Continue with Apple</Text>
             </Pressable>
 

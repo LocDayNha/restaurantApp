@@ -7,7 +7,7 @@ const Register = () => {
         <View style={{ marginBottom: '5%', marginTop: '5%' }}>
 
             <View style={styles.view2}>
-                <Image style={styles.image} source={require('../image/a.png')}></Image>
+                <Image style={styles.image} source={require('../../image/a.png')}></Image>
 
                 <Text style={styles.text}>Create Your Account</Text>
             </View>
@@ -30,13 +30,13 @@ const Register = () => {
 
             <View style={[styles.view3, { marginTop: '5%' }]}>
                 <TouchableOpacity style={styles.touc}>
-                    <Image style={styles.imageTouc} source={require('../image/facebook.png')}></Image>
+                    <Image style={styles.imageTouc} source={require('../../image/facebook.png')}></Image>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.touc}>
-                    <Image style={styles.imageTouc} source={require('../image/google.png')}></Image>
+                    <Image style={styles.imageTouc} source={require('../../image/google.png')}></Image>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.touc}>
-                    <Image style={styles.imageTouc} source={require('../image/apple.png')}></Image>
+                    <Image style={styles.imageTouc} source={require('../../image/apple.png')}></Image>
                 </TouchableOpacity>
             </View>
 

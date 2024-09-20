@@ -34,14 +34,14 @@ const CreatePasswordScreen = () => {
       {/* <View style={styles.top}> */}
             {/* Nút quay lại sử dụng ảnh thay cho icon */}
             {/* <TouchableOpacity style={styles.backButton}> */}
-                {/* <Image source={require('../image/back.png')} style={styles.icon} />  */}
+                {/* <Image source={require('../../image/back.png')} style={styles.icon} />  */}
             {/* </TouchableOpacity> */}
             {/* <Text style={styles.topdes} >Tạo mật khẩu mới</Text> */}
       {/* </View> */}
 
       <View style={styles.profileContainer}>
         <Image
-          source={require('..//image/background_verify.png')}
+          source={require('../../image/background_verify.png')}
           style={styles.profileImage}
         />
       </View>
@@ -61,7 +61,7 @@ const CreatePasswordScreen = () => {
         />
         <TouchableOpacity onPress={handlePasswordVisibility} style={styles.icon1}>
           <Image 
-            source={showPassword ? require('../icon/view.png') : require('..//icon/hide.png')}
+            source={showPassword ? require('../../icon/view.png') : require('../../icon/hide.png')}
             style={styles.icon} 
           />
         </TouchableOpacity>
@@ -80,7 +80,7 @@ const CreatePasswordScreen = () => {
         />
          <TouchableOpacity onPress={handleConfirmPasswordVisibility} style={styles.icon1}>
           <Image 
-            source={showPassword ? require('../icon/view.png') : require('..//icon/hide.png')}
+            source={showPassword ? require('../../icon/view.png') : require('../../icon/hide.png')}
             style={styles.icon} 
           />
         </TouchableOpacity>
