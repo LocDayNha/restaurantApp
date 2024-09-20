@@ -3,12 +3,8 @@ import {SafeAreaView, StyleSheet} from 'react-native';
 
 import {Login, Login2, Register} from './src/main/Login';
 import {Welcome, Welcome1, Welcome2, Welcome3} from './src/main/intro';
-import {ConfrimPassword, ForgotPassword, Profile, VerifyEmail} from './src/main/home';
+import {AppNavigator, ConfrimPassword, ForgotPassword, Profile, VerifyEmail} from './src/main/home';
 
-// import HomeMenu from './src/context/HomeMenu';
-import Appnavigator from './src/context/AppNavigator';
-import { NavigationContainer } from '@react-navigation/native';
-// import History from './src/context/History';
 
 import {
   BookingScreen,
@@ -18,18 +14,20 @@ import {
   SuccessScreen_Two,
   TableSelectionScreen,
 } from './src/main';
+import { NavigationContainer } from '@react-navigation/native';
+import HomeMenu from './src/main/home/HomeMenu';
 
 
 
 
 const App = () => {
   return (
-    <SafeAreaView style={styles.container}>
-          <NavigationContainer>
-      <Appnavigator/>
-    </NavigationContainer>
+ 
+     <NavigationContainer>
+      <AppNavigator/>
+     </NavigationContainer>
     
-      {/* <Login />
+      /* <Login />
       <Login2 />
       <Register />
       <Welcome1 />
@@ -49,15 +47,9 @@ const App = () => {
       <SuccessScreen_Two visible={true} onClose={() => {
         console.log('close success screen two');
       }} />
-      <BookingScreen /> */}
-    </SafeAreaView>
+      <BookingScreen /> */
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default App;
