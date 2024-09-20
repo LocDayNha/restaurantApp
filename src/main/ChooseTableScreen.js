@@ -11,7 +11,7 @@ import {
   Pressable,
 } from 'react-native';
 
-const tableImages: { [key: number]: any } = {
+const tableImages = {
   1: require('../tables/chair_1.png'),
   2: require('../tables/chair_2.png'),
   3: require('../tables/chair_3.png'),
@@ -34,7 +34,7 @@ const ChooseTableScreen = () => {
   const [selectedTable, setSelectedTable] = useState<number | null>(null);
   const [hoveredTable, setHoveredTable] = useState<number | null>(null);
 
-  const handleTablePress = (id: number) => {
+  const handleTablePress = (id) => {
     setSelectedTable(id);
   };
 
