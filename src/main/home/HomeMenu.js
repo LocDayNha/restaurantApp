@@ -157,7 +157,7 @@ const HomeMenu = (props) => {
         {/* header */}
         <View style={styles.header_container}>
           <Text style={styles.header}>Chào Phi đẹp trai</Text>
-          <Image style={styles.avata} source={require('../../icon/gura.jpg')} />
+          <Image style={styles.avata} source={require('../../image/gura.jpg')} />
         </View>
 
         {/* Tìm kiếm */}
