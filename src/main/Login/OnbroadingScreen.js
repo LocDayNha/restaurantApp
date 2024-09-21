@@ -1,8 +1,8 @@
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
-import React, { useState, useRef } from 'react';
+import React, {useState, useRef} from 'react';
 import {globalStyles} from '../../styles/globalStyles';
 import Swiper from 'react-native-swiper';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const OnboardingScreen = () => {
   const [index, setIndex] = useState(0);
@@ -38,6 +38,11 @@ const OnboardingScreen = () => {
               Cung cấp bữa ăn theo nhu cầu ăn uống của bạn
             </Text>
           </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
+              <Text style={styles.buttonText}>Tiếp tục</Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
         <View style={styles.container}>
@@ -51,6 +56,11 @@ const OnboardingScreen = () => {
             <Text style={styles.title}>
               Menu đa dạng, nhiều món ngon tùy bạn chọn
             </Text>
+          </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
+              <Text style={styles.buttonText}>Tiếp tục</Text>
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -66,13 +76,13 @@ const OnboardingScreen = () => {
               Có thể đặt bàn trước tại nhà. Thử ngay
             </Text>
           </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
+              <Text style={styles.buttonText}>Bắt đầu nào</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </Swiper>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
-          <Text style={styles.buttonText}>Bắt đầu nào</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };
@@ -124,7 +134,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   pagination: {
-    bottom: 10,
+    bottom: 110,
   },
 });
 
