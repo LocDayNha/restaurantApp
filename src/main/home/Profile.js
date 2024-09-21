@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, SafeAreaView } from 'react-native';
 
-const ProfileScreen = () => {
-
+const ProfileScreen = (props) => {
+  const {navigation} = props
   return (
     <SafeAreaView style={styles.container}>
       <View>
         <View style={styles.top}>
           {/* Nút quay lại sử dụng ảnh thay cho icon */}
-            <TouchableOpacity style={styles.backButton}>
+            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
               <Image source={require('../../icon/back.png')} style={styles.icon} /> 
             </TouchableOpacity>
             {/* <Text style={styles.topdes}>Điền thông tin của bạn</Text> */}
@@ -28,8 +28,8 @@ const ProfileScreen = () => {
 
       {/* Form thông tin người dùng */}
       <View style={styles.form}>
+
         {/* Tên đầy đủ */}
-        
         <View style={styles.inputContainer}>
         <Image source={require('../../icon/user.png')} style={styles.icon} /> 
           <TextInput 

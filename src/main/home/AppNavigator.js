@@ -6,6 +6,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeMenu from './HomeMenu';
 import History from './History';
 import Login from '../Login/Login';
+import Profile from './Profile'
 import OnboardingScreen from '../Login/OnbroadingScreen';
 import { Login2, Register } from '../Login';
 
@@ -17,6 +18,7 @@ const Home = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="Home" component={HomeMenu} />
+      <Stack.Screen name="Profile" component={Profile} />
     </Stack.Navigator>
   );
 };
@@ -150,9 +152,9 @@ const Main = () => {
 const Appnavigator = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="OnboardingScreen" component={OnboardingScreen} />
+      {/* <Stack.Screen name="OnboardingScreen" component={OnboardingScreen} />
       <Stack.Screen name="Login2" component={Login2} />
-      <Stack.Screen name="Register" component={Register}/>
+      <Stack.Screen name="Register" component={Register}/> */}
       <Stack.Screen name="Main" component={Main} />
     </Stack.Navigator>
   );

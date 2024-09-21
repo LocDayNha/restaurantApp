@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, TextInput, FlatList } from 'react-native';
+import { View, Text, StyleSheet, Image, TextInput, FlatList, TouchableOpacity } from 'react-native';
 import React, { useMemo, useState, useEffect } from 'react';
 import Item_List_Category from '../../item/Item_List_Category';
 import Item_List_Order from '../../item/Item_List_Order';
@@ -52,8 +52,13 @@ const Banner = [
 ];
 
 const HomeMenu = (props) => {
+  const {navigation} = props // chuyển màn hình qua profile
   const [selectedId, setSelectedId] = useState(); // sắp xếp món ăn
   const [position, setPosition] = useState(0); // slide ảnh quảng cáo
+
+  const toProfile = () => {
+    navigation.navigate("Profile")
+  }
 
   // Danh sách loại món ăn (test)
   const [filter, setFilter] = useState([
@@ -124,7 +129,9 @@ const HomeMenu = (props) => {
       {/* Header */}
       <View style={styles.header_container}>
         <Text style={styles.header}>Chào Phi đẹp trai</Text>
-        <Image style={styles.avata} source={require('../../image/gura.jpg')} />
+        <TouchableOpacity onPress={toProfile}>
+          <Image style={styles.avata} source={require('../../image/gura.jpg')} />
+        </TouchableOpacity>
       </View>
 
       {/* Tìm kiếm */}
