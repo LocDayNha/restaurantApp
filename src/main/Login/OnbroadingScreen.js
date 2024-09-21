@@ -13,7 +13,7 @@ const OnboardingScreen = () => {
     if (index < 2) {
       swiperRef.current.scrollBy(1);
     } else {
-      navigation.navigate('Login');
+      navigation.navigate('Login2');
     }
   };
 
