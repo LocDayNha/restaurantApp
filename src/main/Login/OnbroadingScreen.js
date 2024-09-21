@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   pagination: {
-    bottom: 10, // Adjust this value to position the dots above the button
+    bottom: 10,
   },
 });
 
