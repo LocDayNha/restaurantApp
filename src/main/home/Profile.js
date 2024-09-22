@@ -3,6 +3,79 @@ import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, SafeAreaVie
 
 const ProfileScreen = (props) => {
   const {navigation} = props
+  const [name, setName] = useState('');
+  const [birthDate, setBirthDate] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [gender, setGender] = useState('');
+  const [error, setError] = useState('');
+
+  // Validate Name
+  const validateName = (name) => {
+    if (name.length < 2 || name.length > 50) {
+      return 'Tên phải có độ dài từ 2 đến 50 ký tự.';
+    }
+    const nameRegex = /^[a-zA-ZÀ-ỹ\s'-]+$/;
+    if (!nameRegex.test(name)) {
+      return 'Tên chỉ được chứa chữ cái, dấu cách, dấu nháy đơn hoặc dấu gạch nối.';
+    }
+    if (name.trim().length !== name.length || /\s{2,}/.test(name)) {
+      return 'Tên không được chứa nhiều khoảng trắng liên tiếp.';
+    }
+    return '';
+  };
+
+  // Validate Date of Birth (yyyy-mm-dd)
+  const validateBirthDate = (birthDate) => {
+    const birthDateRegex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
+    if (!birthDateRegex.test(birthDate)) {
+      return 'Ngày sinh không hợp lệ. Định dạng hợp lệ: yyyy-mm-dd';
+    }
+    return '';
+  };
+
+  // Validate Email
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return 'Email không hợp lệ.';
+    }
+    return '';
+  };
+
+  // Validate Phone Number
+  const validatePhone = (phone) => {
+    const phoneRegex = /^(0|\+84)\d{9,10}$/;
+    if (!phoneRegex.test(phone)) {
+      return 'Số điện thoại phải có 10-11 số và bắt đầu bằng 0 hoặc +84.';
+    }
+    return '';
+  };
+
+  // Validate Gender
+  const validateGender = (gender) => {
+    const validGenders = ['Nam', 'Nữ', 'Khác'];
+    if (!validGenders.includes(gender)) {
+      return 'Giới tính phải là Nam, Nữ hoặc Khác.';
+    }
+    return '';
+  };
+
+  // Xử lý khi submit
+  const handleSubmit = () => {
+    const nameError = validateName(name);
+    const birthDateError = validateBirthDate(birthDate);
+    const emailError = validateEmail(email);
+    const phoneError = validatePhone(phone);
+    const genderError = validateGender(gender);
+
+    if (nameError || birthDateError || emailError || phoneError || genderError) {
+      setError(`${nameError}\n${birthDateError}\n${emailError}\n${phoneError}\n${genderError}`);
+    } else {
+      setError('');
+      alert('Tất cả thông tin đều hợp lệ!');
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -35,7 +108,10 @@ const ProfileScreen = (props) => {
           <TextInput 
           style={styles.input} 
           placeholder="Họ và tên"
-          placeholderTextColor='#999'/>
+          placeholderTextColor='#999'
+          value={name}
+          onChangeText={(text) => setName(text)}
+          />
           </View>
         
         {/* Nickname
@@ -52,7 +128,9 @@ const ProfileScreen = (props) => {
           <TextInput 
             style={[styles.input, { flex: 1 }]} 
             placeholder="Ngày, tháng, năm sinh" 
-            placeholderTextColor='#999' 
+            placeholderTextColor='#999'
+            value={birthDate}
+            onChangeText={(text) => setBirthDate(text)} 
           />
           
         </View>
@@ -63,7 +141,9 @@ const ProfileScreen = (props) => {
           <TextInput 
             style={[styles.input, { flex: 1 }]} 
             placeholder="Địa chỉ" 
-            placeholderTextColor='#999' 
+            placeholderTextColor='#999'
+            value={email}
+            onChangeText={(text) => setEmail(text)} 
           />
           
         </View>
@@ -74,7 +154,9 @@ const ProfileScreen = (props) => {
           <TextInput 
             style={[styles.input, { flex: 1 }]} 
             placeholder="Số điện thoại" 
-            placeholderTextColor='#999' 
+            placeholderTextColor='#999'
+            value={phone}
+            onChangeText={(text) => setPhone(text)} 
           />
         </View>
 
@@ -84,12 +166,16 @@ const ProfileScreen = (props) => {
           <TextInput 
             style={[styles.input, { flex: 1 }]} 
             placeholder="Giới tính" 
-            placeholderTextColor='#999' />
+            placeholderTextColor='#999'
+            value={gender}
+            onChangeText={(text) => setGender(text)}
+             />
         </View>
-
         </View>
+        {/* Hiển thị lỗi */}
+        {error ? <Text style={styles.error}>{error}</Text> : null}
         {/* Nút Continue */}
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Text style={styles.buttonText}>Tiếp tục</Text>
         </TouchableOpacity>
         </View>
