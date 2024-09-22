@@ -8,7 +8,7 @@ import History from './History';
 import Login from '../Login/Login';
 import Profile from './Profile'
 import OnboardingScreen from '../Login/OnbroadingScreen';
-import { Login2, Register } from '../Login';
+import { ConfirmPassword, ForgotPassword, Login2, Register } from '../Login';
 
 
 const Tab = createBottomTabNavigator();
@@ -154,7 +154,9 @@ const Appnavigator = () => {
     <Stack.Navigator screenOptions={{headerShown: false}}>
       {/* <Stack.Screen name="OnboardingScreen" component={OnboardingScreen} />
       <Stack.Screen name="Login2" component={Login2} />
-      <Stack.Screen name="Register" component={Register}/> */}
+      <Stack.Screen name = "ForgotPassword" component={ForgotPassword}/>
+      <Stack.Screen name="Register" component={Register}/>
+      <Stack.Screen name="ConfirmPassword" component={ConfirmPassword}/> */}
       <Stack.Screen name="Main" component={Main} />
     </Stack.Navigator>
   );

@@ -25,6 +25,9 @@ import {NavigationContainer} from '@react-navigation/native';
 import HomeMenu from './src/main/home/HomeMenu';
 
 const App = () => {
+
+  console.warn = () => {};
+  
   const [isShowSplash, setIsShowSplash] = useState(true);
 
   useEffect(() => {
@@ -37,14 +40,14 @@ const App = () => {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" />
+      {/* <StatusBar barStyle="dark-content" />
       {isShowSplash ? (
         <Welcome />
-      ) : (
+      ) : ( */}
         <NavigationContainer>
-        <AppNavigator />
-      </NavigationContainer>
-      )}
+          <AppNavigator />
+        </NavigationContainer>
+      {/* )} */}
     </>
   );
 };
