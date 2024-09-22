@@ -1,7 +1,8 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { SafeAreaView, View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
-const CreatePasswordScreen = () => {
+const ConfirmPassword = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -9,6 +10,8 @@ const CreatePasswordScreen = () => {
   const [message, setMessage] = useState(''); // Trạng thái để lưu trữ thông báo
   const [isSuccess, setIsSuccess] = useState(false); // Trạng thái để lưu trữ kết quả thành công hoặc thất bại
 
+  const navigation = useNavigation();
+  
   const handlePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -18,27 +21,28 @@ const CreatePasswordScreen = () => {
   };
 
   const handleContinue = () => {
-    if (password === confirmPassword && password.length > 0) {
-      console.log('Thành công')
-      setMessage('Password match! Success!'); // Mật khẩu khớp
-      setIsSuccess(true); // Thành công
+    if (password.length < 8) {
+      setMessage('Mật khẩu phải có ít nhất 8 ký tự');
+      setIsSuccess(false);
+    } else if (!/[A-Z]/.test(password)) {
+      setMessage('Mật khẩu phải chứa ít nhất một chữ hoa');
+      setIsSuccess(false);
+    } else if (!/[a-z]/.test(password)) {
+      setMessage('Mật khẩu phải chứa ít nhất một chữ thường');
+      setIsSuccess(false);
+    } else if (password !== confirmPassword) {
+      setMessage('Mật khẩu không khớp');
+      setIsSuccess(false);
     } else {
-      console.log('Thất bại')
-      setMessage('Passwords do not match. Failure.'); // Mật khẩu không khớp
-      setIsSuccess(false); // Thất bại
+      setMessage('Mật khẩu khớp! Thành công!');
+      setIsSuccess(true);
+      // Điều hướng đến màn hình khác nếu cần
+      // navigation.navigate('SomeScreen');
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <View style={styles.top}> */}
-            {/* Nút quay lại sử dụng ảnh thay cho icon */}
-            {/* <TouchableOpacity style={styles.backButton}> */}
-                {/* <Image source={require('../../image/back.png')} style={styles.icon} />  */}
-            {/* </TouchableOpacity> */}
-            {/* <Text style={styles.topdes} >Tạo mật khẩu mới</Text> */}
-      {/* </View> */}
-
       <View style={styles.profileContainer}>
         <Image
           source={require('../../image/background_verify.png')}
@@ -46,7 +50,7 @@ const CreatePasswordScreen = () => {
         />
       </View>
 
-      <Text style={styles.text} >Tạo mật khẩu mới cho riêng bạn</Text>
+      <Text style={styles.text}>Tạo mật khẩu mới cho riêng bạn</Text>
 
       <View style={styles.inputContainer}>
         <TextInput
@@ -56,8 +60,6 @@ const CreatePasswordScreen = () => {
           value={password}
           onChangeText={setPassword}
           secureTextEntry={!showPassword}
-          // autoCapitalize="none"
-          // autoCorrect={false}
         />
         <TouchableOpacity onPress={handlePasswordVisibility} style={styles.icon1}>
           <Image 
@@ -75,12 +77,10 @@ const CreatePasswordScreen = () => {
           value={confirmPassword}
           onChangeText={setConfirmPassword}
           secureTextEntry={!showConfirmPassword}
-          // autoCapitalize="none"
-          // autoCorrect={false}
         />
          <TouchableOpacity onPress={handleConfirmPasswordVisibility} style={styles.icon1}>
           <Image 
-            source={showPassword ? require('../../icon/view.png') : require('../../icon/hide.png')}
+            source={showConfirmPassword ? require('../../icon/view.png') : require('../../icon/hide.png')}
             style={styles.icon} 
           />
         </TouchableOpacity>
@@ -144,7 +144,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     top: 90,
     left: -5,
-    // zIndex: 0
   },
   input: {
     flex: 1,
@@ -188,4 +187,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreatePasswordScreen;
+export default ConfirmPassword;

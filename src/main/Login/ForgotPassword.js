@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
@@ -12,6 +13,8 @@ import {
 const ForgotPasswordActivity = () => {
   const [code, setCode] = useState(['', '', '', '']);
   const [timer, setTimer] = useState(60);
+
+  const navigation = useNavigation();
 
   // Handle the countdown timer
   useEffect(() => {
