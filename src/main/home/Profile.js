@@ -3,101 +3,38 @@ import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, SafeAreaVie
 
 const ProfileScreen = (props) => {
   const {navigation} = props
-  const [name, setName] = useState('');
-  const [birthDate, setBirthDate] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [gender, setGender] = useState('');
-  const [error, setError] = useState('');
-
-  // Validate Name
-  const validateName = (name) => {
-    if (name.length < 2 || name.length > 50) {
-      return 'Tên phải có độ dài từ 2 đến 50 ký tự.';
-    }
-    const nameRegex = /^[a-zA-ZÀ-ỹ\s'-]+$/;
-    if (!nameRegex.test(name)) {
-      return 'Tên chỉ được chứa chữ cái, dấu cách, dấu nháy đơn hoặc dấu gạch nối.';
-    }
-    if (name.trim().length !== name.length || /\s{2,}/.test(name)) {
-      return 'Tên không được chứa nhiều khoảng trắng liên tiếp.';
-    }
-    return '';
-  };
-
-  // Validate Date of Birth (yyyy-mm-dd)
-  const validateBirthDate = (birthDate) => {
-    const birthDateRegex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
-    if (!birthDateRegex.test(birthDate)) {
-      return 'Ngày sinh không hợp lệ. Định dạng hợp lệ: yyyy-mm-dd';
-    }
-    return '';
-  };
-
-  // Validate Email
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return 'Email không hợp lệ.';
-    }
-    return '';
-  };
-
-  // Validate Phone Number
-  const validatePhone = (phone) => {
-    const phoneRegex = /^(0|\+84)\d{9,10}$/;
-    if (!phoneRegex.test(phone)) {
-      return 'Số điện thoại phải có 10-11 số và bắt đầu bằng 0 hoặc +84.';
-    }
-    return '';
-  };
-
-  // Validate Gender
-  const validateGender = (gender) => {
-    const validGenders = ['Nam', 'Nữ', 'Khác'];
-    if (!validGenders.includes(gender)) {
-      return 'Giới tính phải là Nam, Nữ hoặc Khác.';
-    }
-    return '';
-  };
-
-  // Xử lý khi submit
-  const handleSubmit = () => {
-    const nameError = validateName(name);
-    const birthDateError = validateBirthDate(birthDate);
-    const emailError = validateEmail(email);
-    const phoneError = validatePhone(phone);
-    const genderError = validateGender(gender);
-
-    if (nameError || birthDateError || emailError || phoneError || genderError) {
-      setError(`${nameError}\n${birthDateError}\n${emailError}\n${phoneError}\n${genderError}`);
-    } else {
-      setError('');
-      alert('Tất cả thông tin đều hợp lệ!');
-    }
-  };
   return (
     <SafeAreaView style={styles.container}>
       <View>
         <View style={styles.top}>
-          {/* Nút quay lại sử dụng ảnh thay cho icon */}
-            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-              <Image source={require('../../icon/back.png')} style={styles.icon} /> 
-            </TouchableOpacity>
-            {/* <Text style={styles.topdes}>Điền thông tin của bạn</Text> */}
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}>
+            <Image
+              source={require('../../icon/back.png')}
+              style={styles.icon}
+            />
+          </TouchableOpacity>
         </View>
       
 
       {/* Ảnh hồ sơ */}
-      <View style={styles.profileContainer}>
-        <Image
-          source={require('../../image/food.jpg')}
-          style={styles.profileImage}
-        />
-        <TouchableOpacity style={styles.icon1}>
-          <Image source={require('../../icon/pencil.png')} style={styles.icon} /> 
-        </TouchableOpacity>
-      </View>
+        <View style={styles.profileContainer}>
+          {profileImage ? (
+            <Image source={profileImage} style={styles.profileImage} />
+          ) : (
+            <Image
+              source={require('../../image/food.jpg')}
+              style={styles.profileImage}
+            />
+          )}
+          <TouchableOpacity style={styles.icon1} onPress={handleChoosePhoto}>
+            <Image
+              source={require('../../icon/pencil.png')}
+              style={styles.icon}
+            />
+          </TouchableOpacity>
+        </View>
 
       {/* Form thông tin người dùng */}
       <View style={styles.form}>
@@ -108,10 +45,7 @@ const ProfileScreen = (props) => {
           <TextInput 
           style={styles.input} 
           placeholder="Họ và tên"
-          placeholderTextColor='#999'
-          value={name}
-          onChangeText={(text) => setName(text)}
-          />
+          placeholderTextColor='#999'/>
           </View>
         
         {/* Nickname
@@ -128,9 +62,7 @@ const ProfileScreen = (props) => {
           <TextInput 
             style={[styles.input, { flex: 1 }]} 
             placeholder="Ngày, tháng, năm sinh" 
-            placeholderTextColor='#999'
-            value={birthDate}
-            onChangeText={(text) => setBirthDate(text)} 
+            placeholderTextColor='#999' 
           />
           
         </View>
@@ -154,9 +86,7 @@ const ProfileScreen = (props) => {
           <TextInput 
             style={[styles.input, { flex: 1 }]} 
             placeholder="Số điện thoại" 
-            placeholderTextColor='#999'
-            value={phone}
-            onChangeText={(text) => setPhone(text)} 
+            placeholderTextColor='#999' 
           />
         </View>
 
@@ -166,19 +96,15 @@ const ProfileScreen = (props) => {
           <TextInput 
             style={[styles.input, { flex: 1 }]} 
             placeholder="Giới tính" 
-            placeholderTextColor='#999'
-            value={gender}
-            onChangeText={(text) => setGender(text)}
-             />
+            placeholderTextColor='#999' />
         </View>
+
         </View>
-        {/* Hiển thị lỗi */}
-        {error ? <Text style={styles.error}>{error}</Text> : null}
         {/* Nút Continue */}
-        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+        <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Tiếp tục</Text>
         </TouchableOpacity>
-        </View>
+      </View>
     </SafeAreaView>
   );
 };
@@ -214,36 +140,27 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
     borderRadius: 10,
     paddingTop: 5,
-    paddingLeft: 0,
-    borderColor:"black",
-  },
-  topdes: {
-    color:"black",
-    fontSize: 21,
-    top: 35,
-    left: 50,
+    paddingLeft: 6,
+    borderColor: 'black',
   },
   icon: {
     width: 20,
     height: 20,
     marginLeft: 1,
   },
-  flagIcon: {
-    width: 30,
-    height: 20,
-    marginRight: 10,
-  },
   form: {
     marginTop: 40,
   },
   input: {
-    // color:"red",
     backgroundColor: '#F5F5F5',
-    // paddingVertical: 15,
     paddingHorizontal: 20,
     borderRadius: 10,
     fontSize: 16,
-    // marginBottom: 20,
+    flex: 1,
+  },
+  inputContainerError: {
+    borderColor: 'red',
+    borderWidth: 1,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -264,6 +181,28 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginTop: -15,
+    marginBottom: 10,
+  },
+  datePickerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F5F5F5',
+    borderRadius: 10,
+    paddingHorizontal: 20,
+    marginBottom: 20,
+    width: '100%',
+    height: 50,
+  },
+  dateText: {
+    flex: 1,
+    fontSize: 16,
+    color: '#333',
+    marginLeft: 20,
   },
 });
 
