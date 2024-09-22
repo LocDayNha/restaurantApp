@@ -74,29 +74,33 @@ const Login2 = () => {
             value={email}
             onChangeText={setEmail}
           />
-          {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+          {emailError ? (
+            <Text style={styles.errorText}>{emailError}</Text>
+          ) : null}
         </View>
         <View style={styles.inputContainer}>
-          <View style={[
-            styles.inputEmailAndPass,
-            styles.passwordContainer,
-            passwordError ? styles.errorInput : null,
-          ]}>
+          <View
+            style={[
+              styles.inputEmailAndPass,
+              styles.passwordContainer,
+              passwordError ? styles.errorInput : null,
+            ]}>
             <TextInput
               placeholder="Mật khẩu"
-              style={[
-                styles.passwordInput,
-              ]}
+              style={[styles.passwordInput]}
               secureTextEntry={!showPassword}
               value={password}
               onChangeText={setPassword}
             />
             <TouchableOpacity
               onPress={() => setShowPassword(!showPassword)}
-              style={styles.iconContainer}
-            >
+              style={styles.iconContainer}>
               <Image
-                source={showPassword ? require('../../icon/view.png') : require('../../icon/hide.png')}
+                source={
+                  showPassword
+                    ? require('../../icon/view.png')
+                    : require('../../icon/hide.png')
+                }
                 style={styles.icon}
               />
             </TouchableOpacity>
@@ -107,7 +111,9 @@ const Login2 = () => {
         </View>
       </View>
 
-      <TouchableOpacity style={[styles.view2, {marginTop: '5%'}]} onPress={() => navigation.navigate('ForgotPassword')}>
+      <TouchableOpacity
+        style={[styles.view2, {marginTop: '5%'}]}
+        onPress={() => navigation.navigate('ForgotPassword')}>
         <Text style={[styles.textLogin, {color: '#000'}]}>Quên mật khẩu?</Text>
       </TouchableOpacity>
 

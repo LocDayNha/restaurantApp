@@ -77,10 +77,7 @@ const Register = () => {
   return (
     <View style={{marginBottom: '5%', marginTop: '5%'}}>
       <View style={styles.view2}>
-        <Image
-          style={styles.image}
-          source={require('../../image/a.png')}
-        />
+        <Image style={styles.image} source={require('../../image/a.png')} />
         <Text style={styles.text}>Tạo tài khoản</Text>
       </View>
 
@@ -95,14 +92,17 @@ const Register = () => {
             value={email}
             onChangeText={setEmail}
           />
-          {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+          {emailError ? (
+            <Text style={styles.errorText}>{emailError}</Text>
+          ) : null}
         </View>
         <View style={styles.inputContainer}>
-          <View style={[
-            styles.inputEmailAndPass,
-            styles.passwordContainer,
-            passwordError ? styles.errorInput : null,
-          ]}>
+          <View
+            style={[
+              styles.inputEmailAndPass,
+              styles.passwordContainer,
+              passwordError ? styles.errorInput : null,
+            ]}>
             <TextInput
               placeholder="Mật khẩu"
               style={styles.passwordInput}
@@ -112,22 +112,28 @@ const Register = () => {
             />
             <TouchableOpacity
               onPress={() => setShowPassword(!showPassword)}
-              style={styles.iconContainer}
-            >
+              style={styles.iconContainer}>
               <Image
-                source={showPassword ? require('../../icon/view.png') : require('../../icon/hide.png')}
+                source={
+                  showPassword
+                    ? require('../../icon/view.png')
+                    : require('../../icon/hide.png')
+                }
                 style={styles.icon}
               />
             </TouchableOpacity>
           </View>
-          {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
+          {passwordError ? (
+            <Text style={styles.errorText}>{passwordError}</Text>
+          ) : null}
         </View>
         <View style={styles.inputContainer}>
-          <View style={[
-            styles.inputEmailAndPass,
-            styles.passwordContainer,
-            confirmPasswordError ? styles.errorInput : null,
-          ]}>
+          <View
+            style={[
+              styles.inputEmailAndPass,
+              styles.passwordContainer,
+              confirmPasswordError ? styles.errorInput : null,
+            ]}>
             <TextInput
               placeholder="Nhập lại mật khẩu"
               style={styles.passwordInput}
@@ -137,15 +143,20 @@ const Register = () => {
             />
             <TouchableOpacity
               onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-              style={styles.iconContainer}
-            >
+              style={styles.iconContainer}>
               <Image
-                source={showConfirmPassword ? require('../../icon/view.png') : require('../../icon/hide.png')}
+                source={
+                  showConfirmPassword
+                    ? require('../../icon/view.png')
+                    : require('../../icon/hide.png')
+                }
                 style={styles.icon}
               />
             </TouchableOpacity>
           </View>
-          {confirmPasswordError ? <Text style={styles.errorText}>{confirmPasswordError}</Text> : null}
+          {confirmPasswordError ? (
+            <Text style={styles.errorText}>{confirmPasswordError}</Text>
+          ) : null}
         </View>
       </View>
 
