@@ -33,6 +33,7 @@ const Tabbar = () => {
           height: 80,
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
+          
         },
       }}>
       <Tab.Screen
@@ -47,7 +48,7 @@ const Tabbar = () => {
                   height: 20,
                   tintColor: focused ? '#95AE45' : 'black',
                 }}
-                source={require('../../icon/ic_tab_home.png')}
+                source={require('../../icon/home.png')}
               />
               <Text
                 style={{color: focused ? '#95AE45' : 'black', fontSize: 13}}>
@@ -69,11 +70,11 @@ const Tabbar = () => {
                   height: 20,
                   tintColor: focused ? '#95AE45' : 'black',
                 }}
-                source={require('../../icon/ic_tab_home.png')}
+                source={require('../../icon/promo-code.png')}
               />
               <Text
                 style={{color: focused ? '#95AE45' : 'black', fontSize: 13}}>
-                Trang chủ
+                Khuyến mãi
               </Text>
             </View>
           ),
@@ -94,7 +95,7 @@ const Tabbar = () => {
         }}
       />
       <Tab.Screen
-        name="aaaa"
+        name="Đặt bàn"
         component={Home}
         options={{
           tabBarIcon: ({focused}) => (
@@ -105,18 +106,18 @@ const Tabbar = () => {
                   height: 20,
                   tintColor: focused ? '#95AE45' : 'black',
                 }}
-                source={require('../../icon/ic_tab_home.png')}
+                source={require('../../icon/clipboard.png')}
               />
               <Text
                 style={{color: focused ? '#95AE45' : 'black', fontSize: 13}}>
-                Trang chủ
+                Đặt bàn
               </Text>
             </View>
           ),
         }}
       />
       <Tab.Screen
-        name="Dat ban"
+        name="Trang cá nhân"
         component={Home}
         options={{
           tabBarIcon: ({focused}) => (
@@ -127,11 +128,11 @@ const Tabbar = () => {
                   height: 20,
                   tintColor: focused ? '#95AE45' : 'black',
                 }}
-                source={require('../../icon/ic_tab_home.png')}
+                source={require('../../icon/user.png')}
               />
               <Text
                 style={{color: focused ? '#95AE45' : 'black', fontSize: 13}}>
-                Trang chủ
+                Cá nhân
               </Text>
             </View>
           ),

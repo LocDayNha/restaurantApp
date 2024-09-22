@@ -7,24 +7,34 @@ const ProfileScreen = (props) => {
     <SafeAreaView style={styles.container}>
       <View>
         <View style={styles.top}>
-          {/* Nút quay lại sử dụng ảnh thay cho icon */}
-            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-              <Image source={require('../../icon/back.png')} style={styles.icon} /> 
-            </TouchableOpacity>
-            {/* <Text style={styles.topdes}>Điền thông tin của bạn</Text> */}
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}>
+            <Image
+              source={require('../../icon/back.png')}
+              style={styles.icon}
+            />
+          </TouchableOpacity>
         </View>
       
 
       {/* Ảnh hồ sơ */}
-      <View style={styles.profileContainer}>
-        <Image
-          source={require('../../image/food.jpg')}
-          style={styles.profileImage}
-        />
-        <TouchableOpacity style={styles.icon1}>
-          <Image source={require('../../icon/pencil.png')} style={styles.icon} /> 
-        </TouchableOpacity>
-      </View>
+        <View style={styles.profileContainer}>
+          {profileImage ? (
+            <Image source={profileImage} style={styles.profileImage} />
+          ) : (
+            <Image
+              source={require('../../image/food.jpg')}
+              style={styles.profileImage}
+            />
+          )}
+          <TouchableOpacity style={styles.icon1} onPress={handleChoosePhoto}>
+            <Image
+              source={require('../../icon/pencil.png')}
+              style={styles.icon}
+            />
+          </TouchableOpacity>
+        </View>
 
       {/* Form thông tin người dùng */}
       <View style={styles.form}>
@@ -63,7 +73,9 @@ const ProfileScreen = (props) => {
           <TextInput 
             style={[styles.input, { flex: 1 }]} 
             placeholder="Địa chỉ" 
-            placeholderTextColor='#999' 
+            placeholderTextColor='#999'
+            value={email}
+            onChangeText={(text) => setEmail(text)} 
           />
           
         </View>
@@ -92,7 +104,7 @@ const ProfileScreen = (props) => {
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Tiếp tục</Text>
         </TouchableOpacity>
-        </View>
+      </View>
     </SafeAreaView>
   );
 };
@@ -128,36 +140,27 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
     borderRadius: 10,
     paddingTop: 5,
-    paddingLeft: 0,
-    borderColor:"black",
-  },
-  topdes: {
-    color:"black",
-    fontSize: 21,
-    top: 35,
-    left: 50,
+    paddingLeft: 6,
+    borderColor: 'black',
   },
   icon: {
     width: 20,
     height: 20,
     marginLeft: 1,
   },
-  flagIcon: {
-    width: 30,
-    height: 20,
-    marginRight: 10,
-  },
   form: {
     marginTop: 40,
   },
   input: {
-    // color:"red",
     backgroundColor: '#F5F5F5',
-    // paddingVertical: 15,
     paddingHorizontal: 20,
     borderRadius: 10,
     fontSize: 16,
-    // marginBottom: 20,
+    flex: 1,
+  },
+  inputContainerError: {
+    borderColor: 'red',
+    borderWidth: 1,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -178,6 +181,28 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginTop: -15,
+    marginBottom: 10,
+  },
+  datePickerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F5F5F5',
+    borderRadius: 10,
+    paddingHorizontal: 20,
+    marginBottom: 20,
+    width: '100%',
+    height: 50,
+  },
+  dateText: {
+    flex: 1,
+    fontSize: 16,
+    color: '#333',
+    marginLeft: 20,
   },
 });
 
