@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, TextInput, FlatList } from 'react-native';
+import { View, Text, StyleSheet, Image, TextInput, FlatList, TouchableOpacity, } from 'react-native';
 import React, { useMemo, useState, useEffect } from 'react';
 import Item_List_Category from '../../item/Item_List_Category';
 import Item_List_Order from '../../item/Item_List_Order';
@@ -59,6 +59,8 @@ const Banner = [
 const HomeMenu = (props) => {
   const [selectedId, setSelectedId] = useState(); // sắp xếp món ăn
   const [position, setPosition] = useState(0); // slide ảnh quảng cáo
+
+  const {navigation} = props;
 
   const toProfile = () => {
     navigation.navigate("Profile")

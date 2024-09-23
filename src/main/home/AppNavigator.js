@@ -18,7 +18,7 @@ const Home = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="Home" component={HomeMenu} />
-      <Stack.Screen name="Profile" component={Profile} />
+      
     </Stack.Navigator>
   );
 };
@@ -159,6 +159,7 @@ const Appnavigator = () => {
       <Stack.Screen name="Register" component={Register}/>
       <Stack.Screen name="ConfirmPassword" component={ConfirmPassword}/> */}
       <Stack.Screen name="Main" component={Main} />
+      <Stack.Screen name="Profile" component={Profile} />
     </Stack.Navigator>
   );
 };

@@ -28,15 +28,15 @@ const App = () => {
 
   console.warn = () => {};
   
-  const [isShowSplash, setIsShowSplash] = useState(true);
+  // const [isShowSplash, setIsShowSplash] = useState(true);
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setIsShowSplash(false);
-    }, 3500);
+  // useEffect(() => {
+  //   const timeout = setTimeout(() => {
+  //     setIsShowSplash(false);
+  //   }, 3500);
 
-    return () => clearTimeout(timeout);
-  }, []);
+  //   return () => clearTimeout(timeout);
+  // }, []);
 
   return (
     <>
