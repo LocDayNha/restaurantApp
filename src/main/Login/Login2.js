@@ -20,6 +20,29 @@ const Login2 = () => {
 
   const navigation = useNavigation();
 
+  const handleEmailChange = (text) => {
+    setEmail(text);
+    if (!text) {
+      setEmailError('Vui lòng nhập email');
+    } else {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(text)) {
+        setEmailError('Vui lòng nhập email hợp lệ');
+      } else {
+        setEmailError('');
+      }
+    }
+  };
+
+  const handlePasswordChange = (text) => {
+    setPassword(text);
+    if (!text) {
+      setPasswordError('Vui lòng nhập mật khẩu');
+    } else {
+      setPasswordError('');
+    }
+  };
+
   const handleLogin = () => {
     let valid = true;
 
@@ -72,7 +95,7 @@ const Login2 = () => {
               emailError ? styles.errorInput : null,
             ]}
             value={email}
-            onChangeText={setEmail}
+            onChangeText={handleEmailChange}
           />
           {emailError ? (
             <Text style={styles.errorText}>{emailError}</Text>
@@ -90,7 +113,7 @@ const Login2 = () => {
               style={[styles.passwordInput]}
               secureTextEntry={!showPassword}
               value={password}
-              onChangeText={setPassword}
+              onChangeText={handlePasswordChange}
             />
             <TouchableOpacity
               onPress={() => setShowPassword(!showPassword)}

@@ -23,6 +23,46 @@ const Register = () => {
 
   const navigation = useNavigation();
 
+  const handleEmailChange = (text) => {
+    setEmail(text);
+    if (!text) {
+      setEmailError('Vui lòng nhập email của bạn');
+    } else {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(text)) {
+        setEmailError('Vui lòng nhập email hợp lệ');
+      } else {
+        setEmailError('');
+      }
+    }
+  };
+
+  const handlePasswordChange = (text) => {
+    setPassword(text);
+    if (!text) {
+      setPasswordError('Vui lòng nhập mật khẩu của bạn');
+    } else if (text.length < 8) {
+      setPasswordError('Mật khẩu phải có ít nhất 8 ký tự');
+    } else if (!/[A-Z]/.test(text)) {
+      setPasswordError('Mật khẩu phải chứa ít nhất một chữ hoa');
+    } else if (!/[a-z]/.test(text)) {
+      setPasswordError('Mật khẩu phải chứa ít nhất một chữ thường');
+    } else {
+      setPasswordError('');
+    }
+  };
+
+  const handleConfirmPasswordChange = (text) => {
+    setConfirmPassword(text);
+    if (!text) {
+      setConfirmPasswordError('Vui lòng xác nhận mật khẩu của bạn');
+    } else if (text !== password) {
+      setConfirmPasswordError('Mật khẩu không khớp');
+    } else {
+      setConfirmPasswordError('');
+    }
+  };
+
   const handleRegister = () => {
     let valid = true;
 
@@ -90,7 +130,7 @@ const Register = () => {
               emailError ? styles.errorInput : null,
             ]}
             value={email}
-            onChangeText={setEmail}
+            onChangeText={handleEmailChange} // Updated to use handleEmailChange
           />
           {emailError ? (
             <Text style={styles.errorText}>{emailError}</Text>
@@ -108,7 +148,7 @@ const Register = () => {
               style={styles.passwordInput}
               secureTextEntry={!showPassword}
               value={password}
-              onChangeText={setPassword}
+              onChangeText={handlePasswordChange} // Updated to use handlePasswordChange
             />
             <TouchableOpacity
               onPress={() => setShowPassword(!showPassword)}
@@ -139,7 +179,7 @@ const Register = () => {
               style={styles.passwordInput}
               secureTextEntry={!showConfirmPassword}
               value={confirmPassword}
-              onChangeText={setConfirmPassword}
+              onChangeText={handleConfirmPasswordChange} // Updated to use handleConfirmPasswordChange
             />
             <TouchableOpacity
               onPress={() => setShowConfirmPassword(!showConfirmPassword)}
