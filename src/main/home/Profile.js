@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import {View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView, Alert, TextInput, } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView, Alert, TextInput, } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import DatePicker from 'react-native-date-picker';
 
 const ProfileScreen = (props) => {
   const { navigation } = props;
-  React.useLayoutEffect(()=>{navigation.setOptions({tabBarVisible: true})});
+  React.useLayoutEffect(() => { navigation.setOptions({ tabBarVisible: true }) });
 
   const [fullName, setFullName] = useState('');
   const [dob, setDob] = useState(null);

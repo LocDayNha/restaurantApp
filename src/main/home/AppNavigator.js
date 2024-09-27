@@ -9,6 +9,10 @@ import Login from '../Login/Login';
 import Profile from './Profile'
 import OnboardingScreen from '../Login/OnbroadingScreen';
 import { ConfirmPassword, ForgotPassword, Login2, Register } from '../Login';
+import ChooseTableScreen from '../ChooseTableScreen';
+import BookingScreen from '../BookingScreen';
+import DetailsScreen from '../DetailsScreen';
+import SuccessScreen from '../SuccessScreen';
 
 
 const Tab = createBottomTabNavigator();
@@ -22,6 +26,18 @@ const Home = () => {
     </Stack.Navigator>
   );
 };
+
+const Book = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="ChooseTableScreen" component={ChooseTableScreen} />
+      <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
+      <Stack.Screen name="BookingScreen" component={BookingScreen} />
+      <Stack.Screen name="SuccessScreen" component={SuccessScreen} />
+    </Stack.Navigator>
+  );
+};
+
 
 const Tabbar = () => {
   return (
@@ -96,7 +112,7 @@ const Tabbar = () => {
       />
       <Tab.Screen
         name="Đặt bàn"
-        component={Home}
+        component={Book}
         options={{
           tabBarIcon: ({focused}) => (
             <View style={{alignItems: 'center'}}>
@@ -118,7 +134,7 @@ const Tabbar = () => {
       />
       <Tab.Screen
         name="Trang cá nhân"
-        component={Home}
+        component={Profile}
         options={{
           tabBarIcon: ({focused}) => (
             <View style={{alignItems: 'center'}}>
@@ -160,6 +176,7 @@ const Appnavigator = () => {
       <Stack.Screen name="ConfirmPassword" component={ConfirmPassword}/> */}
       <Stack.Screen name="Main" component={Main} />
       <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="Book" component={Book} />
     </Stack.Navigator>
   );
 };

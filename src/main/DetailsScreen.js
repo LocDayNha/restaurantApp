@@ -3,14 +3,19 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions } from 'rea
 
 const { width } = Dimensions.get('window');
 
-const DetailsScreen = () => {
+const DetailsScreen = ({ route, navigation }) => {
+  const { table } = route.params;
+  const handleConfirm = () => {
+    navigation.navigate('SuccessScreen');
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Confirm reservation?</Text>
       <View style={styles.card}>
         <View style={styles.row}>
           <Text style={styles.restaurantName}>Paragon Restaurant, Calicut</Text>
-          <TouchableOpacity style={styles.editIconContainer} onPress={() => {}}>
+          <TouchableOpacity style={styles.editIconContainer} onPress={() => { }}>
             <Image source={require('../icon/edit_icon.png')} style={styles.editIcon} />
           </TouchableOpacity>
         </View>
@@ -19,19 +24,20 @@ const DetailsScreen = () => {
           <View style={styles.detailsContainer}>
             <View style={styles.row}>
               <Text style={styles.label}>Date</Text>
-              <Text style={styles.value}>January 2, 2023</Text>
+              <Text>{table.date}</Text>
             </View>
             <View style={styles.row}>
               <Text style={styles.label}>Time</Text>
-              <Text style={styles.value}>7:00AM</Text>
+              <Text style={styles.value}>{table.time}</Text>
+
             </View>
             <View style={styles.row}>
               <Text style={styles.label}>Seats</Text>
-              <Text style={styles.value}>4</Text>
+              <Text>{table.seat}</Text>
             </View>
             <View style={styles.row}>
               <Text style={styles.label}>Table</Text>
-              <Text style={styles.value}>6</Text>
+              <Text style={styles.value}>{table.tableNumber}</Text>
             </View>
           </View>
         </View>
@@ -40,7 +46,7 @@ const DetailsScreen = () => {
         <Image source={require('../image/image_booking.png')} style={styles.bottomImage} />
       </View>
       <View style={styles.nextButtonWrapper}>
-        <TouchableOpacity style={styles.nextButton} onPress={() => {}}>
+        <TouchableOpacity style={styles.nextButton} onPress={handleConfirm}>
           <Text style={styles.nextButtonText}>CONFIRM RESERVATION</Text>
         </TouchableOpacity>
       </View>

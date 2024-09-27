@@ -47,6 +47,9 @@ const App = () => {
         <NavigationContainer>
           <AppNavigator />
         </NavigationContainer>
+      {/* <ChooseTableScreen>
+        
+      </ChooseTableScreen> */}
       {/* )} */}
     </>
   );
