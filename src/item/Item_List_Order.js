@@ -4,21 +4,17 @@ import React,{useState} from 'react'
 
 const Item_List_Order = (props) => {
   const {data} = props
-    // const [selected, setSelected] = useState(false);
-
-    // const Select = () => {
-    //   setSelected(true)
-    //   styles.item.backgroundColor = '#000000'
-    // }
-    
 
   return (
     <View elevation={5} style={styles.item}>
-      <TouchableOpacity >
-        <Image style={styles.avata} source={{uri: data.image}}/>
-        <Text style={styles.title}>{data.title}</Text>
-        <Text style={styles.price}>{data.price}</Text>
+      <TouchableOpacity style={{marginLeft:'70%', marginTop:'5%'}}>
+        <Image style={{width:24, height:24}} source={require('../icon/add.png')}></Image>
       </TouchableOpacity>
+      <View style={{justifyContent:'center', alignItems:'center'}}>
+        <Image style={styles.avata} source={{uri: data.image}}/>
+        <Text style={styles.title}>{data.name}</Text>
+        <Text style={styles.price}>{data.price}</Text>
+      </View>
     </View>
     
   )
@@ -27,12 +23,11 @@ const styles = StyleSheet.create({
     avata: {
         width: 100, height: 100,
         borderRadius: 50,
-        marginVertical: 8,
+        marginBottom:'5%'
       },
     item: {
-      width: 150, height: 170,
+      width: 150, height: 200,
       shadowColor: 'black', shadowOffset: {width:0, height: 3},shadowRadius: 1, shadowOpacity: 0.8,
-      alignItems: 'center',
       marginVertical: 8,
       marginHorizontal: 10,
       borderRadius: 30,
