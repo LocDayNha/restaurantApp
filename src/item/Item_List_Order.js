@@ -6,7 +6,7 @@ const Item_List_Order = (props) => {
   const {data} = props
 
   return (
-    <View elevation={5} style={styles.item}>
+    <View elevation={5} style={styles.item} key={data._id}>
       <TouchableOpacity style={{marginLeft:'70%', marginTop:'5%'}}>
         <Image style={{width:24, height:24}} source={require('../icon/add.png')}></Image>
       </TouchableOpacity>

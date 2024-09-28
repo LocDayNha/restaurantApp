@@ -18,14 +18,14 @@ const Banner = [
 ];
 
 const HomeMenu = (props) => {
-
   const { navigation } = props;
+
   const toProfile = () => {
     navigation.navigate("Profile")
   }
 
   const [position, setPosition] = useState(0); // slide ảnh quảng cáo
-  const [isCategory, setIsCategory] = useState(false);
+  const [idCategory, setidCategory] = useState(null);
 
   // get all menu
   const [dataMenu, setdataMenu] = useState([]);
@@ -35,6 +35,17 @@ const HomeMenu = (props) => {
       ToastAndroid.show("Lấy dữ liệu thấy bại", ToastAndroid.SHORT);
     } else {
       setdataMenu(dataFood);
+    }
+  };
+
+  // get menu by category
+  const getMenuByCategory = async () => {
+    const dataByCategory = await AxiosInstance().get("/menu/getByCategory/" + idCategory);
+    console.log(dataByCategory);
+    if (!dataByCategory || dataByCategory.lenght === 0) {
+      ToastAndroid.show("Lấy dữ liệu thấy bại", ToastAndroid.SHORT);
+    } else {
+      setdataMenu(dataByCategory);
     }
   };
 
@@ -49,48 +60,19 @@ const HomeMenu = (props) => {
     }
   };
 
-  // get category
-  const [dataCategoryById, setdataCategoryById] = useState([]);
-  const getCategoryById = async () => {
-    const dataCateById = await AxiosInstance().get("/category/getCategoryById/" + dataCategory._id);
-    if (!dataCateById || dataCateById.lenght === 0) {
-      ToastAndroid.show("Lấy dữ liệu thấy bại", ToastAndroid.SHORT);
-    } else {
-      setdataCategoryById(dataCateById);
-    }
-  };
-
-  // get menu by category
-  const [dataMenuByCategory, setdataMenuByCategory] = useState([]);
-  const getMenuByCategory = async () => {
-    console.log(dataCategory._id);
-    const dataByCategory = await AxiosInstance().get("/menu/getByCategory/" + dataCategoryById._id);
-    if (!dataByCategory || dataByCategory.lenght === 0) {
-      ToastAndroid.show("Lấy dữ liệu thấy bại", ToastAndroid.SHORT);
-    } else {
-      setdataMenuByCategory(dataByCategory);
-      setIsCategory(true);
-    }
-  };
-
-  const [renderMenuData, setrenderMenuData] = useState([]);
-  const renderMenu = () => {
-    const render = isCategory;
-    if (render) {
-      setrenderMenuData(dataMenu);
-    } else {
-      setrenderMenuData(dataMenuByCategory);
-    }
-  };
-
   useEffect(() => {
     getData(),
-      getCategory(),
-      renderMenu();
+      getCategory();
     return () => {
 
     }
   }, [])
+
+  useEffect(() => {
+    if (idCategory && idCategory !== null) {
+      getMenuByCategory();
+    }
+  }, [idCategory])
 
   const renderHeader = () => (
     <View>
@@ -137,7 +119,8 @@ const HomeMenu = (props) => {
           renderItem={({ item }) => (
             <Item_List_Category
               data={item}
-              // onPress={}
+              onchangeIdCategory={setidCategory}
+              onPress={getMenuByCategory}
               bgcl={item._id === dataCategory._id ? '#95AE45' : '#ffffff'}
               textColor={item._id === dataCategory._id ? 'white' : 'black'}
             />
@@ -156,7 +139,7 @@ const HomeMenu = (props) => {
       ListHeaderComponent={renderHeader}
       data={dataMenu}
       renderItem={({ item }) => <Item_List_Order data={item} />}
-      keyExtractor={item => item.id}
+      keyExtractor={item => item._id}
       numColumns={2}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.foodListContainer}
