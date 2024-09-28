@@ -41,7 +41,6 @@ const HomeMenu = (props) => {
   // get menu by category
   const getMenuByCategory = async () => {
     const dataByCategory = await AxiosInstance().get("/menu/getByCategory/" + idCategory);
-    console.log(dataByCategory);
     if (!dataByCategory || dataByCategory.lenght === 0) {
       ToastAndroid.show("Lấy dữ liệu thấy bại", ToastAndroid.SHORT);
     } else {
