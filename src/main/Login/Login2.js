@@ -26,7 +26,7 @@ const Login2 = () => {
   const navigation = useNavigation();
   const {setIsLogin, setInfoUser, setIdUser} = useContext(AppContext);
 
-  const validateForm = () => {
+  const validationForm = () => {
     let valid = true;
 
     if (!email) {
@@ -53,7 +53,7 @@ const Login2 = () => {
   };
 
   const onLogin = async () => {
-    if (!validateForm()) {
+    if (!validationForm()) {
       return;
     }
 

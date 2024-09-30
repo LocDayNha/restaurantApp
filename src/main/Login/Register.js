@@ -26,7 +26,7 @@ const Register = () => {
 
   const navigation = useNavigation();
 
-  const validateForm = () => {
+  const validationForm = () => {
     let valid = true;
 
     if (!email) {
@@ -62,8 +62,8 @@ const Register = () => {
     return valid;
   };
 
-  const handleRegister = async () => {
-    if (!validateForm()) {
+  const onRegister = async () => {
+    if (!validationForm()) {
       return;
     }
 
@@ -191,7 +191,7 @@ const Register = () => {
       </View>
 
       <View style={[styles.view2, {marginTop: '7%'}]}>
-        <Pressable style={styles.btnLogin} onPress={handleRegister}>
+        <Pressable style={styles.btnLogin} onPress={onRegister}>
           {loading ? ( // Show ActivityIndicator when loading
             <ActivityIndicator size="small" color="#FFF" />
           ) : (
