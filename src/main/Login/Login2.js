@@ -60,9 +60,11 @@ const Login2 = () => {
     setLoading(true); // Set loading to true
 
     let data = {email, password};
+    console.log(data);
 
     try {
       const response = await AxiosInstance().post('/user/login', data);
+      console.log(response);
 
       if (response && response.status) {
         const {token, user} = response.returnData.data;
