@@ -7,9 +7,13 @@ import {
   Pressable,
   TouchableOpacity,
   ToastAndroid,
+  ActivityIndicator, // Import ActivityIndicator
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {AppContext} from '../../util/AppContext';
+import AxiosInstance from '../../util/AxiosInstance';
 
 const Login2 = () => {
   const [email, setEmail] = useState('');
@@ -17,33 +21,12 @@ const Login2 = () => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false); // Add loading state
 
   const navigation = useNavigation();
+  const {setIsLogin, setInfoUser, setIdUser} = useContext(AppContext);
 
-  const handleEmailChange = (text) => {
-    setEmail(text);
-    if (!text) {
-      setEmailError('Vui lòng nhập email');
-    } else {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(text)) {
-        setEmailError('Vui lòng nhập email hợp lệ');
-      } else {
-        setEmailError('');
-      }
-    }
-  };
-
-  const handlePasswordChange = (text) => {
-    setPassword(text);
-    if (!text) {
-      setPasswordError('Vui lòng nhập mật khẩu');
-    } else {
-      setPasswordError('');
-    }
-  };
-
-  const handleLogin = () => {
+  const validateForm = () => {
     let valid = true;
 
     if (!email) {
@@ -66,17 +49,44 @@ const Login2 = () => {
       setPasswordError('');
     }
 
-    if (valid) {
-      if (email === 'phudo@gmail.com' && password === '123@') {
-        ToastAndroid.show('Đăng nhập thành công!', ToastAndroid.SHORT);
-        navigation.navigate('Main');
-      } else {
-        ToastAndroid.show(
-          'Email hoặc mật khẩu không hợp lệ',
-          ToastAndroid.SHORT,
-        );
-      }
+    return valid;
+  };
+
+  const onLogin = async () => {
+    if (!validateForm()) {
+      return;
     }
+
+    setLoading(true); // Set loading to true
+
+    let data = {email, password};
+
+    try {
+      const response = await AxiosInstance().post('/user/login', data);
+
+      if (response && response.status) {
+        const {token, user} = response.returnData.data;
+        await AsyncStorage.setItem('token', token);
+        setIsLogin(true);
+        setInfoUser(user);
+        setIdUser(user._id);
+        ToastAndroid.show('Đăng nhập thành công', ToastAndroid.SHORT);
+        navigateToMain();
+      } else {
+        ToastAndroid.show('Thông tin đăng nhập sai', ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      ToastAndroid.show(
+        error.response?.data?.message || 'Có lỗi xảy ra, vui lòng thử lại',
+        ToastAndroid.SHORT,
+      );
+    } finally {
+      setLoading(false); // Set loading to false
+    }
+  };
+
+  const navigateToMain = () => {
+    navigation.navigate('Main');
   };
 
   return (
@@ -95,7 +105,10 @@ const Login2 = () => {
               emailError ? styles.errorInput : null,
             ]}
             value={email}
-            onChangeText={handleEmailChange}
+            onChangeText={text => {
+              setEmail(text);
+              if (text) setEmailError('');
+            }}
           />
           {emailError ? (
             <Text style={styles.errorText}>{emailError}</Text>
@@ -113,18 +126,21 @@ const Login2 = () => {
               style={[styles.passwordInput]}
               secureTextEntry={!showPassword}
               value={password}
-              onChangeText={handlePasswordChange}
+              onChangeText={text => {
+                setPassword(text);
+                if (text) setPasswordError('');
+              }}
             />
             <TouchableOpacity
-              onPress={() => setShowPassword(!showPassword)}
-              style={styles.iconContainer}>
+              style={styles.iconContainer}
+              onPress={() => setShowPassword(!showPassword)}>
               <Image
+                style={styles.icon}
                 source={
                   showPassword
                     ? require('../../icon/view.png')
                     : require('../../icon/hide.png')
                 }
-                style={styles.icon}
               />
             </TouchableOpacity>
           </View>
@@ -141,10 +157,14 @@ const Login2 = () => {
       </TouchableOpacity>
 
       <View style={[styles.view2, {marginTop: '5%'}]}>
-        <Pressable style={styles.btnLogin} onPress={handleLogin}>
-          <Text style={[styles.textLogin, {marginTop: 10, color: '#FFF'}]}>
-            Đăng nhập
-          </Text>
+        <Pressable style={styles.btnLogin} onPress={onLogin}>
+          {loading ? ( // Show ActivityIndicator when loading
+            <ActivityIndicator size="small" color="#FFF" />
+          ) : (
+            <Text style={[styles.textLogin, {marginTop: 10, color: '#FFF'}]}>
+              Đăng nhập
+            </Text>
+          )}
         </Pressable>
       </View>
 

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
 
-import { Login, Login2, Register } from './src/main/Login';
-import { Welcome, Welcome1, Welcome2, Welcome3 } from './src/main/intro';
+import {Login, Login2, Register} from './src/main/Login';
+import {Welcome, Welcome1, Welcome2, Welcome3} from './src/main/intro';
 import {
   AppNavigator,
   ConfrimPassword,
@@ -21,15 +21,15 @@ import {
   TableSelectionScreen,
 } from './src/main';
 
-import { NavigationContainer } from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import HomeMenu from './src/main/home/HomeMenu';
 import Setting from './src/main/home/Setting';
+import {AppContextProvider} from './src/util/AppContext';
 
 const App = () => {
+  console.warn = () => {};
 
-  console.warn = () => { };
-
-  // const [isShowSplash, setIsShowSplash] = useState(true);
+  const [isShowSplash, setIsShowSplash] = useState(true);
 
   // useEffect(() => {
   //   const timeout = setTimeout(() => {
@@ -45,9 +45,11 @@ const App = () => {
       {isShowSplash ? (
         <Welcome />
       ) : ( */}
-      <NavigationContainer>
-        <AppNavigator />
-      </NavigationContainer>
+        <AppContextProvider>
+          <NavigationContainer>
+            <AppNavigator />
+          </NavigationContainer>
+        </AppContextProvider>
       {/* )} */}
     </>
   );
