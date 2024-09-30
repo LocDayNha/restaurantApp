@@ -108,7 +108,7 @@ const HomeMenu = (props) => {
         height={180}
         position={position}
         dataSource={Banner}
-        scrollEnabled={false}
+        scrollEnabled={true}
       />
 
       {/* Danh sách loại món ăn */}
