@@ -8,6 +8,9 @@ import History from './History';
 import Login from '../Login/Login';
 import Profile from './Profile'
 import OnboardingScreen from '../Login/OnbroadingScreen';
+import Order from './Order';
+import OrderDetail from './OrderDetail';
+
 import { ConfirmPassword, ForgotPassword, Login2, Register } from '../Login';
 
 
@@ -158,8 +161,10 @@ const Appnavigator = () => {
       <Stack.Screen name = "ForgotPassword" component={ForgotPassword}/>
       <Stack.Screen name="Register" component={Register}/>
       <Stack.Screen name="ConfirmPassword" component={ConfirmPassword}/> */}
-      <Stack.Screen name="Main" component={Main} />
-      <Stack.Screen name="Profile" component={Profile} />
+      {/* <Stack.Screen name="Main" component={Main} /> */}
+      {/* <Stack.Screen name="Profile" component={Profile} /> */}
+      <Stack.Screen name="Order" component={Order} />
+      {/* <Stack.Screen name="OrderDetail" component={OrderDetail} /> */}
     </Stack.Navigator>
   );
 };

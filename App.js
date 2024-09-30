@@ -9,6 +9,7 @@ import {
   ForgotPassword,
   Profile,
   VerifyEmail,
+  Order
 } from './src/main/home';
 
 import {
@@ -22,6 +23,7 @@ import {
 } from './src/main';
 
 import {NavigationContainer} from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import HomeMenu from './src/main/home/HomeMenu';
 
 const App = () => {
