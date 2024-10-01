@@ -1,29 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
-
-import { Login, Login2, Register } from './src/main/Login';
-import { Welcome, Welcome1, Welcome2, Welcome3 } from './src/main/intro';
 import {
   AppNavigator,
+
   ConfrimPassword,
   ForgotPassword,
   Profile,
   VerifyEmail,
 } from './src/main/home';
 
-import {
-  BookingScreen,
-  ChooseTableScreen,
-  DetailsScreen,
-  SplashScreen,
-  SuccessScreen,
-  SuccessScreen_Two,
-  TableSelectionScreen,
-} from './src/main';
-
 import { NavigationContainer } from '@react-navigation/native';
 import HomeMenu from './src/main/home/HomeMenu';
 import Setting from './src/main/home/Setting';
+import { AppProvider } from './src/main/home/AppContext';
 
 const App = () => {
 
@@ -45,9 +33,12 @@ const App = () => {
       {isShowSplash ? (
         <Welcome />
       ) : ( */}
-      <NavigationContainer>
-        <AppNavigator />
-      </NavigationContainer>
+      <AppProvider>
+        <NavigationContainer>
+          <AppNavigator />
+        </NavigationContainer>
+      </AppProvider>
+
       {/* )} */}
     </>
   );

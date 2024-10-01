@@ -6380,9 +6380,9 @@ react-native-swiper@^1.6.0:
     prop-types "^15.5.10"
 
 react-native@*, "react-native@^0.0.0-0 || >=0.65 <1.0", react-native@^0.70.0, "react-native@>= 0.64.3", react-native@>=0.40.0:
-  version "0.70.0"
-  resolved "https://registry.npmjs.org/react-native/-/react-native-0.70.0.tgz"
-  integrity sha512-QjXLbrK9f+/B2eCzn6kAvglLV/8nwPuFGaFv7ggPpAzFRyx5bVN1dwQLHL3MrP7iXR/M7Jc6Nnid7tmRSic6vA==
+  version "0.70.15"
+  resolved "https://registry.npmjs.org/react-native/-/react-native-0.70.15.tgz"
+  integrity sha512-pm2ZPpA+m0Kl0THAy2fptnp7B9+QPexpfad9fSXfqjPufrXG2alwW8kYCn2EO5ZUX6bomZjFEswz6RzdRN/p9A==
   dependencies:
     "@jest/create-cache-key-function" "^27.0.1"
     "@react-native-community/cli" "9.3.5"

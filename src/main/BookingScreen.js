@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import {
   View,
   Text,
@@ -6,15 +6,23 @@ import {
   TouchableOpacity,
   ImageBackground,
   Image,
+  FlatList,
 } from 'react-native';
-
+import { useAppContext } from './home/AppContext';
+import { useNavigation } from '@react-navigation/native';
 import backgroundImage from '../image/bg_booking.png';
 
-const BookingScreen = () => {
+const BookingScreen = ({navigation}) => {
+  const { bookingData, addBooking } = useAppContext();
+  const [idBooking, setIDBooking] = useState(null);
   const handleNavigation = () => {
     console.log('Navigate to another screen');
   };
-
+  const handleAddBooking = () => {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'ChooseTableScreen' }],
+    });  };
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -41,49 +49,68 @@ const BookingScreen = () => {
       <View style={styles.content}>
         <Text style={styles.headerText}>Hello, Arti!</Text>
         <Text style={styles.title}>Your reservations</Text>
-        <View style={styles.card}>
-          <View style={styles.row}>
-            <Text style={styles.restaurantName}>
-              Paragon Restaurant, Calicut
-            </Text>
-            <TouchableOpacity
-              style={styles.editIconContainer}
-              onPress={() => {}}>
-              <Image
-                source={require('../icon/edit_icon.png')}
-                style={styles.editIcon}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.tableImageRow}>
-            <Image
-              source={require('../image/image_booking.png')}
-              style={styles.tableImage}
+        <FlatList
+          data={bookingData} // Use the bookingData from AppContext
+          renderItem={({ item }) => (
+            <ItemBooking
+              item={item}
+              date={item.date}
+              time={item.time}
+              seat={item.seat}
+              tableNumber={item.tableNumber}
             />
-            <View style={styles.detailsContainer}>
-              <View style={styles.row}>
-                <Text style={styles.label}>Date</Text>
-                <Text style={styles.value}>January 2, 2023</Text>
-              </View>
-              <View style={styles.row}>
-                <Text style={styles.label}>Time</Text>
-                <Text style={styles.value}>7:00AM</Text>
-              </View>
-              <View style={styles.row}>
-                <Text style={styles.label}>Seats</Text>
-                <Text style={styles.value}>4</Text>
-              </View>
-              <View style={styles.row}>
-                <Text style={styles.label}>Table</Text>
-                <Text style={styles.value}>6</Text>
-              </View>
-            </View>
-          </View>
-        </View>
+          )}
+          keyExtractor={(item) => item.idTable}
+          showsVerticalScrollIndicator={false}
+        />
         <View style={styles.addButtonContainer}>
-          <TouchableOpacity style={styles.addButton}>
+          <TouchableOpacity style={styles.addButton} onPress={handleAddBooking}>
             <Text style={styles.addButtonText}>+</Text>
           </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
+};
+
+const ItemBooking = ({ item, tableNumber, date, time, seat }) => {
+  return (
+    <View style={styles.card}>
+      <View style={styles.row}>
+        <Text style={styles.restaurantName}>
+          Paragon Restaurant, Calicut
+        </Text>
+        <TouchableOpacity
+          style={styles.editIconContainer}
+          onPress={() => { }}>
+          <Image
+            source={require('../icon/edit_icon.png')}
+            style={styles.editIcon}
+          />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.tableImageRow}>
+        <Image
+          source={require('../image/image_booking.png')}
+          style={styles.tableImage}
+        />
+        <View style={styles.detailsContainer}>
+          <View style={styles.row}>
+            <Text style={styles.label}>Date</Text>
+            <Text style={styles.value}>{date}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.label}>Time</Text>
+            <Text style={styles.value}> {time}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.label}>Seats</Text>
+            <Text style={styles.value}>{seat}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.label}>Table</Text>
+            <Text style={styles.value}>{tableNumber}</Text>
+          </View>
         </View>
       </View>
     </View>
@@ -197,10 +224,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginBottom: 100,
+    marginBottom: 60,
   },
   addButton: {
-    backgroundColor: '#2c2c2e',
+    backgroundColor: '#232327',
     width: 50,
     height: 50,
     borderRadius: 25,

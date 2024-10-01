@@ -8,9 +8,15 @@ import {
   Modal,
   ImageBackground,
 } from 'react-native';
+import { useAppContext } from './home/AppContext';
 
+const SuccessScreen = ({ visible, navigation, route }) => {
+  const { bookingData } = route.params;
+  // const { addBooking } = useAppContext();
+  const onClose = () => {
+    navigation.navigate('BookingScreen', { bookingData });
+  };
 
-const SuccessScreen  = ({ visible, onClose }) => {
   return (
     <Modal
       animationType="fade"
@@ -23,7 +29,7 @@ const SuccessScreen  = ({ visible, onClose }) => {
           source={require('../image/bg_success.png')}
           style={styles.background}
         >
-          <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+          <TouchableOpacity style={styles.closeButton} onPress={onClose} >
             <Image
               source={require('../icon/close_icon.png')}
               style={styles.closeImage}
@@ -87,7 +93,7 @@ const styles = StyleSheet.create({
   },
   successImage: {
     width: 250,
-    height:250,
+    height: 250,
   },
   title: {
     fontSize: 24,

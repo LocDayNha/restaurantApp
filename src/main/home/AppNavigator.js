@@ -13,6 +13,8 @@ import ChooseTableScreen from '../ChooseTableScreen';
 import BookingScreen from '../BookingScreen';
 import DetailsScreen from '../DetailsScreen';
 import SuccessScreen from '../SuccessScreen';
+import { SuccessScreen_Two } from '..';
+import { useAppContext } from './AppContext';
 
 
 const Tab = createBottomTabNavigator();
@@ -34,12 +36,14 @@ const Book = () => {
       <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
       <Stack.Screen name="BookingScreen" component={BookingScreen} />
       <Stack.Screen name="SuccessScreen" component={SuccessScreen} />
+      <Stack.Screen name="SuccessScreen_Two" component={SuccessScreen_Two} />
     </Stack.Navigator>
   );
 };
 
 
 const Tabbar = () => {
+  const { bookingData } = useAppContext();
   return (
     <Tab.Navigator
       screenOptions={{
@@ -131,6 +135,7 @@ const Tabbar = () => {
             </View>
           ),
         }}
+        initialParams={{ bookingData: bookingData }}
       />
       <Tab.Screen
         name="Đặt ghe"

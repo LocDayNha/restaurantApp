@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -9,28 +9,14 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
 } from 'react-native';
-import BookingScreen from './BookingScreen';
-// Import images
-// const tableImages = {
-//   1: require('..//tables/chair_1.png'),
-//   2: require('..//tables/chair_2.png'),
-//   3: require('..//tables/chair_3.png'),
-//   4: require('..//tables/chair_4.png'),
-//   5: require('..//tables/chair_5.png'),
-//   6: require('..//tables/chair_6.png'),
-//   7: require('..//tables/chair_7.png'),
-//   8: require('..//tables/chair_8.png'),
-//   9: require('..//tables/chair_9.png'),
-//   10: require('..//tables/chair_10.png'),
-//   11: require('..//tables/chair_11.png'),
-//   12: require('..//tables/chair_12.png'),
-//   13: require('..//tables/chair_13.png'),
-//   14: require('..//tables/chair_14.png'),
-// };
+import { useAppContext } from './home/AppContext';
+import { useNavigation } from '@react-navigation/native';
 
 const { width, height } = Dimensions.get('window');
-const ChooseTableScreen = (props) => {
-  const { navigation } = props;
+const ChooseTableScreen = ({ props, navigation }) => {  
+  // const navigation = useNavigation();
+  const { addBooking, bookingData, setBookingData } = useAppContext();
+
   const [selectedTable, setSelectedTable] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
   const handleTablePress = idTable => {
@@ -40,126 +26,140 @@ const ChooseTableScreen = (props) => {
     setSelectedTable(null);
   };
   const handleNext = () => {
-    const selectedTableData = table.find((item) => item.idTable === selectedTable.toString());
-    navigation.navigate('DetailsScreen', { table: selectedTableData });
+    const newBookingData = table.find((item) => item.idTable === selectedTable.toString());
+    addBooking(newBookingData);
+    navigation.navigate('DetailsScreen', { bookingData: newBookingData });
   };
+  // get and format time
+  const currentTime = new Date();
+  const hours = currentTime.getHours();
+  const minutes = currentTime.getMinutes();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const formattedTime = `${hours % 12 || 12}:${minutes.toString().padStart(2, '0')} ${ampm}`;
 
+  // get and format date
+  const currentDate = new Date();
+  const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(currentDate);
+  const day = currentDate.getDate();
+  const year = currentDate.getFullYear();
+
+  const formattedDate = `${month} ${day}, ${year}`;
   // Danh sách bàn tại nhà hàng (test)
   const table = [
     {
       idTable: '1',
-      date: 'April 1, 2024',
-      time: '9:54 PM',
+      date: formattedDate,
+      time: formattedTime,
       seat: '4',
       tableNumber: '1',
       tableImage: require('..//tables/chair_1.png'),
     },
     {
       idTable: '2',
-      date: 'April 1, 2024',
-      time: '9:54 PM',
+      date: formattedDate,
+      time: formattedTime,
       seat: '4',
       tableNumber: '2',
-      tableImage: require('..//tables/chair_1.png'),
+      tableImage: require('..//tables/chair_2.png'),
     },
     {
       idTable: '3',
-      date: 'April 1, 2024',
-      time: '9:54 PM',
+      date: formattedDate,
+      time: formattedTime,
       seat: '4',
       tableNumber: '3',
-      tableImage: require('..//tables/chair_1.png'),
+      tableImage: require('..//tables/chair_3.png'),
     },
     {
       idTable: '4',
-      date: 'April 1, 2024',
-      time: '9:54 PM',
+      date: formattedDate,
+      time: formattedTime,
       seat: '4',
       tableNumber: '4',
-      tableImage: require('..//tables/chair_1.png'),
+      tableImage: require('..//tables/chair_4.png'),
     },
     {
       idTable: '5',
-      date: 'April 1, 2024',
-      time: '9:54 PM',
+      date: formattedDate,
+      time: formattedTime,
       seat: '4',
       tableNumber: '5',
-      tableImage: require('..//tables/chair_1.png'),
+      tableImage: require('..//tables/chair_5.png'),
     },
     {
       idTable: '6',
-      date: 'April 1, 2024',
-      time: '9:54 PM',
+      date: formattedDate,
+      time: formattedTime,
       seat: '4',
       tableNumber: '6',
-      tableImage: require('..//tables/chair_1.png'),
+      tableImage: require('..//tables/chair_6.png'),
     },
     {
       idTable: '7',
-      date: 'April 1, 2024',
-      time: '9:54 PM',
+      date: formattedDate,
+      time: formattedTime,
       seat: '4',
       tableNumber: '7',
-      tableImage: require('..//tables/chair_1.png'),
+      tableImage: require('..//tables/chair_7.png'),
     },
     {
       idTable: '8',
-      date: 'April 1, 2024',
-      time: '9:54 PM',
+      date: formattedDate,
+      time: formattedTime,
       seat: '4',
       tableNumber: '8',
-      tableImage: require('..//tables/chair_1.png'),
+      tableImage: require('..//tables/chair_8.png'),
     },
     {
       idTable: '9',
-      date: 'April 1, 2024',
-      time: '9:54 PM',
+      date: formattedDate,
+      time: formattedTime,
       seat: '4',
       tableNumber: '9',
-      tableImage: require('..//tables/chair_1.png'),
+      tableImage: require('..//tables/chair_9.png'),
     },
     {
       idTable: '10',
-      date: 'April 1, 2024',
-      time: '9:54 PM',
+      date: formattedDate,
+      time: formattedTime,
       seat: '4',
       tableNumber: '10',
-      tableImage: require('..//tables/chair_1.png'),
+      tableImage: require('..//tables/chair_10.png'),
     },
     {
       idTable: '11',
-      date: 'April 1, 2024',
-      time: '9:54 PM',
+      date: formattedDate,
+      time: formattedTime,
       seat: '4',
       tableNumber: '11',
-      tableImage: require('..//tables/chair_1.png'),
+      tableImage: require('..//tables/chair_11.png'),
     },
     {
       idTable: '12',
-      date: 'April 1, 2024',
-      time: '9:54 PM',
+      date: formattedDate,
+      time: formattedTime,
       seat: '6',
       tableNumber: '12',
       tableImage: require('..//tables/chair_12.png'),
     },
     {
       idTable: '13',
-      date: 'April 1, 2024',
-      time: '9:54 PM',
+      date: formattedDate,
+      time: formattedTime,
       seat: '6',
       tableNumber: '13',
       tableImage: require('..//tables/chair_13.png'),
     },
     {
       idTable: '14',
-      date: 'April 1, 2024',
-      time: '9:54 PM',
+      date: formattedDate,
+      time: formattedTime,
       seat: '6',
       tableNumber: '14',
       tableImage: require('..//tables/chair_14.png'),
     },
- ]
-    
+  ]
+
 
   return (
     <TouchableWithoutFeedback onPress={handleOutsidePress}>
@@ -175,7 +175,6 @@ const ChooseTableScreen = (props) => {
                     idTable === 1 && isHovered && styles.hoveredTable,
                   ]}
                   onPress={() => {
-                    console.log(id)
                     handleTablePress(idTable)
                   }}
                   onPressIn={() => idTable === 1 && setIsHovered(true)}
@@ -232,7 +231,7 @@ const ChooseTableScreen = (props) => {
                     />
                   )}
                   <Image
-                    source={table.find((item) => item.idTable === idTable.toString()).tableImage}                    style={
+                    source={table.find((item) => item.idTable === idTable.toString()).tableImage} style={
                       idTable === 12 ? styles.tableImageLarge : styles.tableImage
                     }
                   />

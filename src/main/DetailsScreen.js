@@ -1,14 +1,17 @@
 import React from 'react';
+import { useRoute } from '@react-navigation/native';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { useAppContext } from './home/AppContext';
 
 const { width } = Dimensions.get('window');
 
-const DetailsScreen = ({ route, navigation }) => {
-  const { table } = route.params;
-  const handleConfirm = () => {
-    navigation.navigate('SuccessScreen');
-  };
+const DetailsScreen = ({ navigation, route }) => {
+  const { bookingData } = route.params;
+  const { addBooking } = useAppContext();
 
+  const handleConfirm = () => {
+    navigation.navigate('SuccessScreen', { bookingData });
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Confirm reservation?</Text>
@@ -18,26 +21,25 @@ const DetailsScreen = ({ route, navigation }) => {
           <TouchableOpacity style={styles.editIconContainer} onPress={() => { }}>
             <Image source={require('../icon/edit_icon.png')} style={styles.editIcon} />
           </TouchableOpacity>
-        </View>
+        </View> 
         <View style={styles.tableImageRow}>
           <Image source={require('../image/image_booking.png')} style={styles.tableImage} />
           <View style={styles.detailsContainer}>
             <View style={styles.row}>
               <Text style={styles.label}>Date</Text>
-              <Text>{table.date}</Text>
+              <Text style={styles.value}>{bookingData.date}</Text>
             </View>
             <View style={styles.row}>
               <Text style={styles.label}>Time</Text>
-              <Text style={styles.value}>{table.time}</Text>
-
+              <Text style={styles.value}>{bookingData.time}</Text>
             </View>
             <View style={styles.row}>
               <Text style={styles.label}>Seats</Text>
-              <Text>{table.seat}</Text>
+              <Text style={styles.value}>{bookingData.seat}</Text>
             </View>
             <View style={styles.row}>
               <Text style={styles.label}>Table</Text>
-              <Text style={styles.value}>{table.tableNumber}</Text>
+              <Text style={styles.value}>{bookingData.tableNumber}</Text>
             </View>
           </View>
         </View>
