@@ -1,137 +1,77 @@
-import { View, Text, StyleSheet, Image, TextInput, FlatList, TouchableOpacity, } from 'react-native';
+import { View, Text, StyleSheet, Image, TextInput, FlatList, TouchableOpacity, ToastAndroid } from 'react-native';
 import React, { useMemo, useState, useEffect } from 'react';
 import Item_List_Category from '../../item/Item_List_Category';
 import Item_List_Order from '../../item/Item_List_Order';
 import Slideshow from 'react-native-image-slider-show';
+import AxiosInstance from '../../util/AxiosInstance'
 
-// Test list
-const DATA = [
-  {
-    id: '7acbea-c1b1-46c2-ae5-3ad5b28ba',
-    image:
-      'https://tse3.mm.bing.net/th?id=OIP.jgSKnzfbsAaRWxczKM4OZwAAAA&pid=Api&P=0&h=220',
-    title: 'Gura 1',
-    cateID: 'gr1',
-  },
-  {
-    id: 'd7acbea-c1b1-4c2-aed5-3a53abb28ba',
-    image:
-      'https://tse3.mm.bing.net/th?id=OIP.jgSKnzfbsAaRWxczKM4OZwAAAA&pid=Api&P=0&h=220',
-    title: 'Gura 2',
-    cateID: 'gr2',
-  },
-  {
-    id: 'bacbea-c1b1-46c2-aed5-3ad53abb8a',
-    image:
-      'https://tse3.mm.bing.net/th?id=OIP.jgSKnzfbsAaRWxczKM4OZwAAAA&pid=Api&P=0&h=220',
-    title: 'Gura 4',
-    cateID: 'gr3',
-  },
-  {
-    id: 'cbea-1-46c2-aed5-3ad53abb28ba',
-    image:
-      'https://tse3.mm.bing.net/th?id=OIP.jgSKnzfbsAaRWxczKM4OZwAAAA&pid=Api&P=0&h=220',
-    title: 'Gura 3',
-    cateID: 'gr4',
-  },
-  {
-    id: '71b1-4c2-ed5-3ad53ab28ba',
-    image:
-      'https://tse3.mm.bing.net/th?id=OIP.jgSKnzfbsAaRWxczKM4OZwAAAA&pid=Api&P=0&h=220',
-    title: 'Gura 5',
-    cateID: 'gr5',
-  },
-];
-
-// List image
 const Banner = [
   {
-    url: 'https://tse4.mm.bing.net/th?id=OIP.PrptVcgvLFXZ-dOyrIxIbwHaEK&pid=Api&P=0&h=220',
+    url: 'https://firebasestorage.googleapis.com/v0/b/phoenix-restaurant-401d8.appspot.com/o/Banner%2FFood%20Banner.png?alt=media&token=04e370ad-ffa7-454e-93ef-acc6d09e8bfe',
   },
   {
-    url: 'https://tse1.mm.bing.net/th?id=OIP.AqqmJFXr7aLUs8esOYE6GwHaEK&pid=Api&P=0&h=220',
+    url: 'https://firebasestorage.googleapis.com/v0/b/phoenix-restaurant-401d8.appspot.com/o/Banner%2FIce%20Cream%20Food%20Banner.png?alt=media&token=50ab00da-a04f-4959-ab53-36fcfbc0c466',
   },
   {
-    url: 'https://staticg.sportskeeda.com/editor/2024/08/f3bbb-17250270311992-1920.jpg',
+    url: 'https://firebasestorage.googleapis.com/v0/b/phoenix-restaurant-401d8.appspot.com/o/Banner%2FFast%20Food%20Banner.png?alt=media&token=80895639-688f-490c-9835-6e9c5aab7879',
   },
 ];
 
 const HomeMenu = (props) => {
-  const [selectedId, setSelectedId] = useState(); // sắp xếp món ăn
-  const [position, setPosition] = useState(0); // slide ảnh quảng cáo
-
-  const {navigation} = props;
+  const { navigation } = props;
 
   const toProfile = () => {
     navigation.navigate("Profile")
   }
 
-  // Danh sách loại món ăn (test)
-  const [filter, setFilter] = useState([
-    {
-      id: '1',
-      image:
-        'https://tse3.mm.bing.net/th?id=OIP.jgSKnzfbsAaRWxczKM4OZwAAAA&pid=Api&P=0&h=220',
-      categoryID: 'gr1',
-      title: 'Gura 1',
-      price: '434',
-    },
-    {
-      id: '2',
-      image:
-        'https://tse3.mm.bing.net/th?id=OIP.jgSKnzfbsAaRWxczKM4OZwAAAA&pid=Api&P=0&h=220',
-      categoryID: 'gr1',
-      title: 'Gura 1',
-      price: '43114',
-    },
-    {
-      id: '3',
-      image:
-        'https://tse3.mm.bing.net/th?id=OIP.jgSKnzfbsAaRWxczKM4OZwAAAA&pid=Api&P=0&h=220',
-      categoryID: 'gr2',
-      title: 'Gura 2',
-      price: '54343',
-    },
-    {
-      id: '4',
-      image:
-        'https://tse3.mm.bing.net/th?id=OIP.jgSKnzfbsAaRWxczKM4OZwAAAA&pid=Api&P=0&h=220',
-      categoryID: 'gr2',
-      title: 'Gura 2',
-      price: '865244',
-    },
-    {
-      id: '5',
-      image:
-        'https://tse3.mm.bing.net/th?id=OIP.jgSKnzfbsAaRWxczKM4OZwAAAA&pid=Api&P=0&h=220',
-      categoryID: 'gr3',
-      title: 'Gura 3',
-      price: '8532',
-    },
-    {
-      id: '6',
-      image:
-        'https://tse3.mm.bing.net/th?id=OIP.jgSKnzfbsAaRWxczKM4OZwAAAA&pid=Api&P=0&h=220',
-      categoryID: 'gr3',
-      title: 'Gura 3',
-      price: '9322',
-    },
-  ]);
+  const [position, setPosition] = useState(0); // slide ảnh quảng cáo
+  const [idCategory, setidCategory] = useState(null);
 
-  const [ctgrID, setCTGRID] = useState('gr1'); // id loại món ăn
+  // get all menu
+  const [dataMenu, setdataMenu] = useState([]);
+  const getData = async () => {
+    const dataFood = await AxiosInstance().get("/menu/get");
+    if (!dataFood || dataFood.lenght === 0) {
+      ToastAndroid.show("Lấy dữ liệu thấy bại", ToastAndroid.SHORT);
+    } else {
+      setdataMenu(dataFood);
+    }
+  };
 
-  const filterList = useMemo(() => {
-    if (ctgrID === 'gr1') return filter;
-    return filter.filter(itemListOder => ctgrID === itemListOder.categoryID);
-  }, [ctgrID, filter]);
+  // get menu by category
+  const getMenuByCategory = async () => {
+    const dataByCategory = await AxiosInstance().get("/menu/getByCategory/" + idCategory);
+    if (!dataByCategory || dataByCategory.lenght === 0) {
+      ToastAndroid.show("Lấy dữ liệu thấy bại", ToastAndroid.SHORT);
+    } else {
+      setdataMenu(dataByCategory);
+    }
+  };
+
+  // get category
+  const [dataCategory, setdataCategory] = useState([]);
+  const getCategory = async () => {
+    const dataCate = await AxiosInstance().get("/category/get");
+    if (!dataCate || dataCate.lenght === 0) {
+      ToastAndroid.show("Lấy dữ liệu thấy bại", ToastAndroid.SHORT);
+    } else {
+      setdataCategory(dataCate);
+    }
+  };
 
   useEffect(() => {
-    const toggle = setInterval(() => {
-      setPosition(position === Banner.length - 1 ? 0 : position + 1);
-    }, 3000);
+    getData(),
+      getCategory();
+    return () => {
 
-    return () => clearInterval(toggle);
-  }, [position]);
+    }
+  }, [])
+
+  useEffect(() => {
+    if (idCategory && idCategory !== null) {
+      getMenuByCategory();
+    }
+  }, [idCategory])
 
   const renderHeader = () => (
     <View>
@@ -168,23 +108,23 @@ const HomeMenu = (props) => {
         height={180}
         position={position}
         dataSource={Banner}
-        scrollEnabled={false}
+        scrollEnabled={true}
       />
 
       {/* Danh sách loại món ăn */}
       <View style={styles.list_category}>
         <FlatList
-          data={DATA}
-          extraData={selectedId}
-          renderItem={({item}) => (
+          data={dataCategory}
+          renderItem={({ item }) => (
             <Item_List_Category
               data={item}
-              onPress={() => [setSelectedId(item.id), setCTGRID(item.cateID)]}
-              bgcl={item.id === selectedId ? '#95AE45' : '#ffffff'}
-              textColor={item.id === selectedId ? 'white' : 'black'}
+              onchangeIdCategory={setidCategory}
+              onPress={getMenuByCategory}
+              bgcl={item._id === dataCategory._id ? '#95AE45' : '#ffffff'}
+              textColor={item._id === dataCategory._id ? 'white' : 'black'}
             />
           )}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item._id}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.categoryListContainer}
@@ -196,9 +136,9 @@ const HomeMenu = (props) => {
   return (
     <FlatList
       ListHeaderComponent={renderHeader}
-      data={filterList}
-      renderItem={({item}) => <Item_List_Order data={item} />}
-      keyExtractor={item => item.id}
+      data={dataMenu}
+      renderItem={({ item }) => <Item_List_Order data={item} />}
+      keyExtractor={item => item._id}
       numColumns={2}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.foodListContainer}
@@ -247,7 +187,7 @@ const styles = StyleSheet.create({
     height: 45,
     borderRadius: 20,
     shadowColor: 'black',
-    shadowOffset: {width: 0, height: 3},
+    shadowOffset: { width: 0, height: 3 },
     shadowRadius: 1,
     shadowOpacity: 0.1,
     flexDirection: 'row',
@@ -263,9 +203,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   banner: {
+    marginLeft: '5%',
     marginTop: 20,
     borderRadius: 20,
-    width: '100%',
+    width: '90%',
     height: 180,
   },
   list_category: {

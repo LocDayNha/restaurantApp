@@ -1,7 +1,7 @@
-import {View, Text, Image, StyleSheet} from 'react-native';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import HomeMenu from './HomeMenu';
 import History from './History';
@@ -20,9 +20,9 @@ const Stack = createNativeStackNavigator();
 
 const Home = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Home" component={HomeMenu} />
-      
+
     </Stack.Navigator>
   );
 };
@@ -49,15 +49,15 @@ const Tabbar = () => {
           height: 80,
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
-          
+
         },
       }}>
       <Tab.Screen
         name="Trang chu"
         component={Home}
         options={{
-          tabBarIcon: ({focused}) => (
-            <View style={{alignItems: 'center'}}>
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: 'center' }}>
               <Image
                 style={{
                   width: 20,
@@ -67,7 +67,7 @@ const Tabbar = () => {
                 source={require('../../icon/home.png')}
               />
               <Text
-                style={{color: focused ? '#95AE45' : 'black', fontSize: 13}}>
+                style={{ color: focused ? '#95AE45' : 'black', fontSize: 13 }}>
                 Trang chủ
               </Text>
             </View>
@@ -78,8 +78,8 @@ const Tabbar = () => {
         name="Khuyen mai"
         component={History}
         options={{
-          tabBarIcon: ({focused}) => (
-            <View style={{alignItems: 'center'}}>
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: 'center' }}>
               <Image
                 style={{
                   width: 20,
@@ -89,14 +89,14 @@ const Tabbar = () => {
                 source={require('../../icon/promo-code.png')}
               />
               <Text
-                style={{color: focused ? '#95AE45' : 'black', fontSize: 13}}>
+                style={{ color: focused ? '#95AE45' : 'black', fontSize: 13 }}>
                 Khuyến mãi
               </Text>
             </View>
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Thanh toan"
         component={Home}
         options={{
@@ -109,13 +109,13 @@ const Tabbar = () => {
             </View>
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Đặt bàn"
         component={Book}
         options={{
-          tabBarIcon: ({focused}) => (
-            <View style={{alignItems: 'center'}}>
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: 'center' }}>
               <Image
                 style={{
                   width: 20,
@@ -125,8 +125,30 @@ const Tabbar = () => {
                 source={require('../../icon/clipboard.png')}
               />
               <Text
-                style={{color: focused ? '#95AE45' : 'black', fontSize: 13}}>
+                style={{ color: focused ? '#95AE45' : 'black', fontSize: 13 }}>
                 Đặt bàn
+              </Text>
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Đặt ghe"
+        component={Home}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: 'center' }}>
+              <Image
+                style={{
+                  width: 20,
+                  height: 20,
+                  tintColor: focused ? '#95AE45' : 'black',
+                }}
+                source={require('../../icon/clipboard.png')}
+              />
+              <Text
+                style={{ color: focused ? '#95AE45' : 'black', fontSize: 13 }}>
+                datghe
               </Text>
             </View>
           ),
@@ -136,8 +158,8 @@ const Tabbar = () => {
         name="Trang cá nhân"
         component={Profile}
         options={{
-          tabBarIcon: ({focused}) => (
-            <View style={{alignItems: 'center'}}>
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: 'center' }}>
               <Image
                 style={{
                   width: 20,
@@ -147,7 +169,7 @@ const Tabbar = () => {
                 source={require('../../icon/user.png')}
               />
               <Text
-                style={{color: focused ? '#95AE45' : 'black', fontSize: 13}}>
+                style={{ color: focused ? '#95AE45' : 'black', fontSize: 13 }}>
                 Cá nhân
               </Text>
             </View>
@@ -160,7 +182,7 @@ const Tabbar = () => {
 
 const Main = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Tabbar" component={Tabbar} />
     </Stack.Navigator>
   );
@@ -168,7 +190,7 @@ const Main = () => {
 
 const Appnavigator = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       {/* <Stack.Screen name="OnboardingScreen" component={OnboardingScreen} />
       <Stack.Screen name="Login2" component={Login2} />
       <Stack.Screen name = "ForgotPassword" component={ForgotPassword}/>
