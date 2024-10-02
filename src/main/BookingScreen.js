@@ -15,6 +15,11 @@ const BookingScreen = () => {
     console.log('Navigate to another screen');
   };
 
+  const handleCardPress = () => {
+    console.log('Card pressed');
+    // Thực hiện điều hướng hoặc hành động khác khi nhấn vào card
+  };
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -38,22 +43,12 @@ const BookingScreen = () => {
           />
         </View>
       </ImageBackground>
+
       <View style={styles.content}>
-        <Text style={styles.headerText}>Hello, Arti!</Text>
-        <Text style={styles.title}>Your reservations</Text>
-        <View style={styles.card}>
+        {/* Card có thể nhấn */}
+        <TouchableOpacity onPress={handleCardPress} style={styles.card}>
           <View style={styles.row}>
-            <Text style={styles.restaurantName}>
-              Paragon Restaurant, Calicut
-            </Text>
-            <TouchableOpacity
-              style={styles.editIconContainer}
-              onPress={() => {}}>
-              <Image
-                source={require('../icon/edit_icon.png')}
-                style={styles.editIcon}
-              />
-            </TouchableOpacity>
+            {/* Bạn có thể thêm các thông tin khác ở đây */}
           </View>
           <View style={styles.tableImageRow}>
             <Image
@@ -61,10 +56,6 @@ const BookingScreen = () => {
               style={styles.tableImage}
             />
             <View style={styles.detailsContainer}>
-              <View style={styles.row}>
-                <Text style={styles.label}>Date</Text>
-                <Text style={styles.value}>January 2, 2023</Text>
-              </View>
               <View style={styles.row}>
                 <Text style={styles.label}>Time</Text>
                 <Text style={styles.value}>7:00AM</Text>
@@ -79,7 +70,8 @@ const BookingScreen = () => {
               </View>
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
+
         <View style={styles.addButtonContainer}>
           <TouchableOpacity style={styles.addButton}>
             <Text style={styles.addButtonText}>+</Text>
@@ -143,10 +135,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   card: {
+    height: 140,
     backgroundColor: '#2c2c2e',
     borderRadius: 10,
     padding: 20,
-    marginTop: 20,
+    marginTop: 5,
   },
   restaurantName: {
     color: '#fff',
@@ -169,6 +162,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 20,
+    top: -50,
   },
   tableImage: {
     width: 100,
@@ -197,7 +191,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginBottom: 100,
+    marginLeft: 220,
+    marginBottom: 20,
   },
   addButton: {
     backgroundColor: '#2c2c2e',
