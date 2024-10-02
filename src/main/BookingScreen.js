@@ -10,7 +10,10 @@ import {
 
 import backgroundImage from '../image/bg_booking.png';
 
-const BookingScreen = () => {
+const BookingScreen = (props) => {
+
+  const {navigation} = props;
+
   const handleNavigation = () => {
     console.log('Navigate to another screen');
   };
@@ -46,7 +49,7 @@ const BookingScreen = () => {
 
       <View style={styles.content}>
         {/* Card có thể nhấn */}
-        <TouchableOpacity onPress={handleCardPress} style={styles.card}>
+        <TouchableOpacity  style={styles.card} onPress={() => navigation.navigate('ReservationScreen')}>
           <View style={styles.row}>
             {/* Bạn có thể thêm các thông tin khác ở đây */}
           </View>

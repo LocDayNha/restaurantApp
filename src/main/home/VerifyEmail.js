@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, SafeAreaView } from 'react-native';
 
-const VerifyEmailActivity = () => {
+const VerifyEmail = (props) => {
 
+  const {navigation} = props;
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -39,7 +40,7 @@ const VerifyEmailActivity = () => {
 
         </View>
         {/* Nút Continue */}
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')} style={styles.button}>
           <Text style={styles.buttonText}>Tiếp tục</Text>
         </TouchableOpacity>
         </View>
@@ -122,4 +123,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VerifyEmailActivity;
+export default VerifyEmail;

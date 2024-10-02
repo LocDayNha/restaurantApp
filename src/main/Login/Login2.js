@@ -154,12 +154,12 @@ const Login2 = () => {
 
       <TouchableOpacity
         style={[styles.view2, {marginTop: '5%'}]}
-        onPress={() => navigation.navigate('ForgotPassword')}>
+        onPress={() => navigation.navigate('VerifyEmail')}>
         <Text style={[styles.textLogin, {color: '#000'}]}>Quên mật khẩu?</Text>
       </TouchableOpacity>
 
       <View style={[styles.view2, {marginTop: '5%'}]}>
-        <Pressable style={styles.btnLogin} onPress={onLogin}>
+        <Pressable style={styles.btnLogin} onPress={() => navigation.navigate('Main')}>
           {loading ? ( // Show ActivityIndicator when loading
             <ActivityIndicator size="small" color="#FFF" />
           ) : (

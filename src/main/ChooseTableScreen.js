@@ -30,7 +30,10 @@ const tableImages = {
 
 const { width, height } = Dimensions.get('window');
 
-const ChooseTableScreen = () => {
+const ChooseTableScreen = (props) => {
+
+  const {navigation} = props;
+
   const [selectedTable, setSelectedTable] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -132,7 +135,7 @@ const ChooseTableScreen = () => {
 
         {/* Nút NEXT luôn hiển thị ở dưới cùng màn hình */}
         {selectedTable && (
-          <TouchableOpacity style={styles.nextButton}>
+          <TouchableOpacity style={styles.nextButton} onPress={() => navigation.navigate('BookingScreen')}>
             <Text style={styles.nextButtonText}>NEXT</Text>
           </TouchableOpacity>
         )}
@@ -146,7 +149,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingVertical: 20,
     alignItems: 'center',
-    backgroundColor: '#1c1c1c',
     width: '100%',
     height: '100%',
   },
@@ -179,21 +181,21 @@ const styles = StyleSheet.create({
   },
   selectedBackground: {
     position: 'absolute',
-    top: 5,
-    left: 5,
-    right: 5,
-    bottom: 5,
-    backgroundColor: 'rgba(255, 0, 0, 0.5)',
+    top: 0,
+    left: 3,
+    right: 3,
+    bottom: 0,
+    backgroundColor: 'green',//rgba(255, 0, 0, 0.5)
     borderRadius: 10,
     zIndex: -1,
   },
   selectedBackgroundLarge: {
     position: 'absolute',
-    top: 10,
+    top: 0,
     left: 10,
     right: 10,
-    bottom: 10,
-    backgroundColor: 'rgba(255, 0, 0, 0.5)',
+    bottom: 0,
+    backgroundColor: 'green',//rgba(255, 0, 0, 0.5)
     borderRadius: 10,
     zIndex: -1,
   },
