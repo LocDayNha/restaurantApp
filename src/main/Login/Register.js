@@ -85,7 +85,7 @@ const {navigation}= props;
 
       if (response && response.status) {
         ToastAndroid.show('Đăng ký thành công!', ToastAndroid.SHORT);
-        navigationToForgotPassword();
+        navigation.navigate("VerifyRegister", {guiEmail: email});
       } else {
         ToastAndroid.show('Đăng ký thất bại!', ToastAndroid.SHORT);
       }
@@ -97,10 +97,6 @@ const {navigation}= props;
     } finally {
       setLoading(false); // Set loading to false
     }
-  };
-
-  const navigationToForgotPassword = () => {
-    navigation.navigate('ForgotPassword');
   };
 
   return (
@@ -192,7 +188,7 @@ const {navigation}= props;
       </View>
 
       <View style={[styles.view2, {marginTop: '7%'}]}>
-        <Pressable style={styles.btnLogin} onPress={() => navigation.navigate('VerifyRegister')}>
+        <Pressable style={styles.btnLogin} onPress={onRegister}>
           {loading ? ( // Show ActivityIndicator when loading
             <ActivityIndicator size="small" color="#FFF" />
           ) : (

@@ -7,49 +7,64 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
-  StyleSheet
+  StyleSheet,
+  ToastAndroid
 } from 'react-native';
+import AxiosInstance from '../../util/AxiosInstance';
 
 const VerifyRegister = (props) => {
 
-  const {navigation} = props;
+  const { navigation, route } = props;
+  const { params } = route;
 
-  const [code, setCode] = useState(['', '', '', '']);
-  const [timer, setTimer] = useState(60);
-
-  // const navigation = useNavigation();
-
-  // Handle the countdown timer
-  useEffect(() => {
-    if (timer > 0) {
-      const interval = setInterval(() => setTimer(prev => prev - 1), 1000);
-      return () => clearInterval(interval);
-    }
-  }, [timer]);
-
+  const [codeInput, setcodeInput] = useState(['', '', '', '']);
   const handleCodeInput = (index, value) => {
-    let newCode = [...code];
+    let newCode = [...codeInput];
     newCode[index] = value;
-    setCode(newCode);
+    setcodeInput(newCode);
+  };
+
+  useEffect(() => {
+    send();
+  }, [])
+
+  const send = async () => {
+    try {
+      const codeSend = await AxiosInstance().post("/user/send-mail", { email: params.guiEmail });
+      if (codeSend) {
+        ToastAndroid.show("Đã gửi Email", ToastAndroid.SHORT);
+      } else {
+        ToastAndroid.show("Gửi Email thất bại", ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      console.log("Send Code error:", error);
+    }
+
+  };
+
+  const clickVerify = async () => {
+    const numericCode = parseInt(codeInput.join(''));
+    try {
+      const verify = await AxiosInstance().post("/user/verify", { code: numericCode, email: params.guiEmail });
+      if (verify) {
+        ToastAndroid.show("Xác minh thành công", ToastAndroid.SHORT);
+        navigation.navigate("Login2");
+      } else {
+        ToastAndroid.show("Xác minh thất bại", ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      console.log("Verify Code error:", error);
+    }
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <View style={styles.top}> */}
-            {/* Nút quay lại sử dụng ảnh thay cho icon */}
-            {/* <TouchableOpacity style={styles.backButton}> */}
-                {/* <Image source={require('../../image/back.png')} style={styles.icon} />  */}
-            {/* </TouchableOpacity> */}
-            {/* <Text style={styles.topdes} >Xác minh OTP</Text> */}
-      {/* </View> */}
-
-      {/* OTP Input Section */}
       <Text style={styles.description}>
-        Mã đã được gửi về mail
+        Nhập mã đã được gửi vè mail để xác thực
       </Text>
 
       <View style={styles.codeContainer}>
-        {code.map((digit, index) => (
+        {codeInput.map((digit, index) => (
           <TextInput
             key={index}
             style={styles.codeInput}
@@ -61,13 +76,7 @@ const VerifyRegister = (props) => {
         ))}
       </View>
 
-      {/* Timer and Resend Button */}
-      <Text style={styles.timerText}>
-        Mã sẽ được gửi lại sau {timer}s
-      </Text>
-
-      {/* Verify Button */}
-      <TouchableOpacity onPress={() => navigation.navigate('Login2')} style={styles.verifyButton}>
+      <TouchableOpacity onPress={clickVerify} style={styles.verifyButton}>
         <Text style={styles.verifyText}>Xác minh</Text>
       </TouchableOpacity>
     </SafeAreaView>
@@ -98,7 +107,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   topdes: {
-    color:"black",
+    color: "black",
     fontSize: 21,
     top: 35,
     left: 50,
