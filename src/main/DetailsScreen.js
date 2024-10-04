@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-const ReservationScreen = () => {
+const DetailsScreen = () => {
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
 
@@ -115,4 +115,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ReservationScreen;
+export default DetailsScreen;

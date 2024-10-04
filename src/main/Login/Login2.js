@@ -159,7 +159,7 @@ const Login2 = () => {
       </TouchableOpacity>
 
       <View style={[styles.view2, {marginTop: '5%'}]}>
-        <Pressable style={styles.btnLogin} onPress={onLogin}>
+        <Pressable style={styles.btnLogin} onPress={() => navigation.navigate('Main')}>
           {loading ? ( // Show ActivityIndicator when loading
             <ActivityIndicator size="small" color="#FFF" />
           ) : (

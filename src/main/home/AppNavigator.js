@@ -10,8 +10,13 @@ import Profile from './Profile'
 import OnboardingScreen from '../Login/OnbroadingScreen';
 import Order from './Order';
 import OrderDetail from './OrderDetail';
+import ReservationScreen from '../DetailsScreen';
 
 import { ConfirmPassword, ForgotPassword, Login2, Register } from '../Login';
+import ChooseTableScreen from '../ChooseTableScreen';
+import DetailsScreen from '../DetailsScreen';
+import BookingScreen from '../BookingScreen';
+
 
 
 const Tab = createBottomTabNavigator();
@@ -99,7 +104,7 @@ const Tabbar = () => {
       /> */}
       <Tab.Screen
         name="Đặt bàn"
-        component={Home}
+        component={ChooseTableScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{ alignItems: 'center' }}>
@@ -185,6 +190,9 @@ const Appnavigator = () => {
       <Stack.Screen name="ConfirmPassword" component={ConfirmPassword}/>
       <Stack.Screen name="Main" component={Main} />
       <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="ChooseTableScreen" component={ChooseTableScreen} />
+      <Stack.Screen name="ReservationScreen" component={ReservationScreen} />
+      <Stack.Screen name="BookingScreen" component={BookingScreen} />
     </Stack.Navigator>
   );
 };

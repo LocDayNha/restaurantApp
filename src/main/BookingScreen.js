@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -6,19 +6,56 @@ import {
   TouchableOpacity,
   ImageBackground,
   Image,
+  FlatList,
+  ToastAndroid
 } from 'react-native';
 
 import backgroundImage from '../image/bg_booking.png';
+import Item_Booking_Screen from '../item/Item_Booking_Screen';
+import AxiosInstance from '../util/AxiosInstance';
 
-const BookingScreen = () => {
-  const handleNavigation = () => {
-    console.log('Navigate to another screen');
-  };
+const Table = [
+  {
+    "id" : "111",
+    "number": 1,
+    "userNumber": 4
+  },
+  {
+    "id" : "222",
+    "number": 2,
+    "userNumber": 4
+  },
+  {
+    "id" : "333",
+    "number": 3,
+    "userNumber": 4
+  },
+]
 
-  const handleCardPress = () => {
-    console.log('Card pressed');
-    // Thực hiện điều hướng hoặc hành động khác khi nhấn vào card
-  };
+const BookingScreen = (props) => {
+  const {navigation, route} = props
+  const {params} = route
+
+  // Lấy API danh sách bàn
+  const [dataTable, setDataTable] = useState([]);
+  useEffect(() => {
+    const getData = async () => {
+      const data = await AxiosInstance().post("/table/getByNumber", 
+        {
+          number: params.sendNumber
+        }
+      );
+      if (!data || data.lenght === 0) {
+        ToastAndroid.show("Lấy dữ liệu thấy bại", ToastAndroid.SHORT);
+        console.log("Lay du lieu that bai")
+      } else {
+        setDataTable(data);
+      }
+    };
+    getData();
+
+  return () => {}
+  }, [])
 
   return (
     <View style={styles.container}>
@@ -28,7 +65,7 @@ const BookingScreen = () => {
         imageStyle={styles.backgroundImage}>
         <View style={styles.iconContainerLeft}>
           <TouchableOpacity
-            onPress={handleNavigation}
+            onPress={() => navigation.goBack()}
             style={styles.navigationButton}>
             <Image
               source={require('../icon/left_icon.png')}
@@ -46,32 +83,12 @@ const BookingScreen = () => {
 
       <View style={styles.content}>
         {/* Card có thể nhấn */}
-        <TouchableOpacity onPress={handleCardPress} style={styles.card}>
-          <View style={styles.row}>
-            {/* Bạn có thể thêm các thông tin khác ở đây */}
-          </View>
-          <View style={styles.tableImageRow}>
-            <Image
-              source={require('../image/image_booking.png')}
-              style={styles.tableImage}
-            />
-            <View style={styles.detailsContainer}>
-              <View style={styles.row}>
-                <Text style={styles.label}>Time</Text>
-                <Text style={styles.value}>7:00AM</Text>
-              </View>
-              <View style={styles.row}>
-                <Text style={styles.label}>Seats</Text>
-                <Text style={styles.value}>4</Text>
-              </View>
-              <View style={styles.row}>
-                <Text style={styles.label}>Table</Text>
-                <Text style={styles.value}>6</Text>
-              </View>
-            </View>
-          </View>
-        </TouchableOpacity>
-
+        <FlatList
+          data={dataTable}
+          renderItem={({ item }) => <Item_Booking_Screen data={item} />}
+          keyExtractor={item => item._id}
+          showsVerticalScrollIndicator={false}
+        />
         <View style={styles.addButtonContainer}>
           <TouchableOpacity style={styles.addButton}>
             <Text style={styles.addButtonText}>+</Text>

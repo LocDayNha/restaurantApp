@@ -30,9 +30,15 @@ const tableImages = {
 
 const { width, height } = Dimensions.get('window');
 
-const ChooseTableScreen = () => {
+const ChooseTableScreen = (props) => {
+
+  const {navigation} = props
+
   const [selectedTable, setSelectedTable] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
+
+  //truyền number qua BookingScreen
+  const [number, setNumber] = useState(null)
 
   const handleTablePress = (id) => {
     setSelectedTable(id); // Chọn bàn
@@ -56,7 +62,7 @@ const ChooseTableScreen = () => {
                     styles.table,
                     id === 1 && isHovered && styles.hoveredTable,
                   ]}
-                  onPress={() => handleTablePress(id)}
+                  onPress={() => {handleTablePress(id), setNumber(id)}}
                   onPressIn={() => id === 1 && setIsHovered(true)}
                   onPressOut={() => id === 1 && setIsHovered(false)}
                 >
@@ -70,7 +76,7 @@ const ChooseTableScreen = () => {
                 <TouchableOpacity
                   key={id}
                   style={styles.table}
-                  onPress={() => handleTablePress(id)}
+                  onPress={() => {handleTablePress(id), setNumber(id)}}
                 >
                   {selectedTable === id && <View style={styles.selectedBackground} />}
                   <Image source={tableImages[id]} style={styles.tableImage} />
@@ -82,7 +88,7 @@ const ChooseTableScreen = () => {
                 <TouchableOpacity
                   key={id}
                   style={styles.table}
-                  onPress={() => handleTablePress(id)}
+                  onPress={() => {handleTablePress(id), setNumber(id)}}
                 >
                   {selectedTable === id && <View style={styles.selectedBackground} />}
                   <Image source={tableImages[id]} style={styles.tableImage} />
@@ -97,7 +103,7 @@ const ChooseTableScreen = () => {
                     styles.table,
                     (id === 11 || id === 12) && styles.tableRight,
                   ]}
-                  onPress={() => handleTablePress(id)}
+                  onPress={() => {handleTablePress(id), setNumber(id)}}
                 >
                   {selectedTable === id && (
                     <View
@@ -120,7 +126,7 @@ const ChooseTableScreen = () => {
                 <TouchableOpacity
                   key={id}
                   style={[styles.table, id === 14 && styles.tableRight]}
-                  onPress={() => handleTablePress(id)}
+                  onPress={() => {handleTablePress(id), setNumber(id)}}
                 >
                   {selectedTable === id && <View style={styles.selectedBackgroundLarge} />}
                   <Image source={tableImages[id]} style={styles.tableImageLarge} />
@@ -132,7 +138,7 @@ const ChooseTableScreen = () => {
 
         {/* Nút NEXT luôn hiển thị ở dưới cùng màn hình */}
         {selectedTable && (
-          <TouchableOpacity style={styles.nextButton}>
+          <TouchableOpacity onPress={() => navigation.navigate('BookingScreen', {sendNumber: number})} style={styles.nextButton}>
             <Text style={styles.nextButtonText}>NEXT</Text>
           </TouchableOpacity>
         )}
