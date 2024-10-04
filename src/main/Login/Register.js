@@ -13,7 +13,10 @@ import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import AxiosInstance from '../../util/AxiosInstance';
 
-const Register = () => {
+const Register = (props) => {
+
+const {navigation}= props;
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -23,8 +26,6 @@ const Register = () => {
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const [loading, setLoading] = useState(false); // Add loading state
-
-  const navigation = useNavigation();
 
   const validationForm = () => {
     let valid = true;
@@ -191,7 +192,7 @@ const Register = () => {
       </View>
 
       <View style={[styles.view2, {marginTop: '7%'}]}>
-        <Pressable style={styles.btnLogin} onPress={onRegister}>
+        <Pressable style={styles.btnLogin} onPress={() => navigation.navigate('VerifyRegister')}>
           {loading ? ( // Show ActivityIndicator when loading
             <ActivityIndicator size="small" color="#FFF" />
           ) : (

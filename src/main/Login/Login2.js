@@ -154,7 +154,7 @@ const Login2 = () => {
 
       <TouchableOpacity
         style={[styles.view2, {marginTop: '5%'}]}
-        onPress={() => navigation.navigate('ForgotPassword')}>
+        onPress={() => navigation.navigate('VerifyEmail')}>
         <Text style={[styles.textLogin, {color: '#000'}]}>Quên mật khẩu?</Text>
       </TouchableOpacity>
 

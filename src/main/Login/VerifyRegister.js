@@ -10,7 +10,7 @@ import {
   StyleSheet
 } from 'react-native';
 
-const ForgotPasswordActivity = (props) => {
+const VerifyRegister = (props) => {
 
   const {navigation} = props;
 
@@ -67,7 +67,7 @@ const ForgotPasswordActivity = (props) => {
       </Text>
 
       {/* Verify Button */}
-      <TouchableOpacity onPress={() => navigation.navigate('ConfirmPassword')} style={styles.verifyButton}>
+      <TouchableOpacity onPress={() => navigation.navigate('Login2')} style={styles.verifyButton}>
         <Text style={styles.verifyText}>Xác minh</Text>
       </TouchableOpacity>
     </SafeAreaView>
@@ -152,4 +152,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ForgotPasswordActivity;
+export default VerifyRegister;

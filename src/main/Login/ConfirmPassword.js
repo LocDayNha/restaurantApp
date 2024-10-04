@@ -2,15 +2,16 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { SafeAreaView, View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
-const ConfirmPassword = () => {
+const ConfirmPassword = (props) => {
+
+  const {navigation} = props;
+
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [message, setMessage] = useState(''); // Trạng thái để lưu trữ thông báo
   const [isSuccess, setIsSuccess] = useState(false); // Trạng thái để lưu trữ kết quả thành công hoặc thất bại
-
-  const navigation = useNavigation();
   
   const handlePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -93,7 +94,7 @@ const ConfirmPassword = () => {
         </Text>
       ) : null}
 
-      <TouchableOpacity style={styles.button} onPress={handleContinue}>
+      <TouchableOpacity onPress={() => navigation.navigate('Login2')} style={styles.button}>
         <Text style={styles.buttonText}>Hoàn tất</Text>
       </TouchableOpacity>
     </SafeAreaView>

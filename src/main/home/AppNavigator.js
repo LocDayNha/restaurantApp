@@ -10,14 +10,14 @@ import Profile from './Profile'
 import OnboardingScreen from '../Login/OnbroadingScreen';
 import Order from './Order';
 import OrderDetail from './OrderDetail';
+import ChooseTableScreen from '../ChooseTableScreen';
+import Setting from './Setting';
+import VerifyEmail from './VerifyEmail';
+import VerifyRegister from '../Login/VerifyRegister';
+import BookingScreen from '../BookingScreen';
 import ReservationScreen from '../DetailsScreen';
 
 import { ConfirmPassword, ForgotPassword, Login2, Register } from '../Login';
-import ChooseTableScreen from '../ChooseTableScreen';
-import DetailsScreen from '../DetailsScreen';
-import BookingScreen from '../BookingScreen';
-
-
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -26,7 +26,6 @@ const Home = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Home" component={HomeMenu} />
-
     </Stack.Navigator>
   );
 };
@@ -45,7 +44,7 @@ const Tabbar = () => {
         },
       }}>
       <Tab.Screen
-        name="Trang chu"
+        name="Menu"
         component={Home}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -60,14 +59,14 @@ const Tabbar = () => {
               />
               <Text
                 style={{ color: focused ? '#95AE45' : 'black', fontSize: 13 }}>
-                Trang chủ
+                Menu
               </Text>
             </View>
           ),
         }}
       />
       <Tab.Screen
-        name="Khuyen mai"
+        name="Món Ăn"
         component={History}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -82,26 +81,12 @@ const Tabbar = () => {
               />
               <Text
                 style={{ color: focused ? '#95AE45' : 'black', fontSize: 13 }}>
-                Khuyến mãi
+                Món Ăn
               </Text>
             </View>
           ),
         }}
       />
-      {/* <Tab.Screen
-        name="Thanh toan"
-        component={Home}
-        options={{
-          tabBarIcon: ({focused}) => (
-            <View style={styles.checkout}>
-              <Image
-                style={{width: 40, height: 40}}
-                source={require('../../icon/ic_tab_checkout.png')}
-              />
-            </View>
-          ),
-        }}
-      /> */}
       <Tab.Screen
         name="Đặt bàn"
         component={ChooseTableScreen}
@@ -125,8 +110,8 @@ const Tabbar = () => {
         }}
       />
       <Tab.Screen
-        name="Đặt ghe"
-        component={Home}
+        name="Order"
+        component={Order}
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{ alignItems: 'center' }}>
@@ -140,7 +125,7 @@ const Tabbar = () => {
               />
               <Text
                 style={{ color: focused ? '#95AE45' : 'black', fontSize: 13 }}>
-                datghe
+                Order
               </Text>
             </View>
           ),
@@ -148,7 +133,7 @@ const Tabbar = () => {
       />
       <Tab.Screen
         name="Trang cá nhân"
-        component={Home}
+        component={Setting}
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{ alignItems: 'center' }}>
@@ -185,14 +170,14 @@ const Appnavigator = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {/* <Stack.Screen name="OnboardingScreen" component={OnboardingScreen} /> */}
       <Stack.Screen name="Login2" component={Login2} />
-      <Stack.Screen name = "ForgotPassword" component={ForgotPassword}/>
-      <Stack.Screen name="Register" component={Register}/>
-      <Stack.Screen name="ConfirmPassword" component={ConfirmPassword}/>
+      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+      <Stack.Screen name="VerifyEmail" component={VerifyEmail} />
+      <Stack.Screen name="Register" component={Register} />
+      <Stack.Screen name="ConfirmPassword" component={ConfirmPassword} />
+      <Stack.Screen name="VerifyRegister" component={VerifyRegister} />
       <Stack.Screen name="Main" component={Main} />
-      <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="ChooseTableScreen" component={ChooseTableScreen} />
-      <Stack.Screen name="ReservationScreen" component={ReservationScreen} />
       <Stack.Screen name="BookingScreen" component={BookingScreen} />
+      <Stack.Screen name="ReservationScreen" component={ReservationScreen} />
     </Stack.Navigator>
   );
 };
