@@ -84,7 +84,6 @@ const {navigation}= props;
       console.log(response);
 
       if (response && response.status) {
-        ToastAndroid.show('Đăng ký thành công!', ToastAndroid.SHORT);
         navigation.navigate("VerifyRegister", {guiEmail: email});
       } else {
         ToastAndroid.show('Đăng ký thất bại!', ToastAndroid.SHORT);

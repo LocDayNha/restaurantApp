@@ -47,7 +47,7 @@ const VerifyRegister = (props) => {
     try {
       const verify = await AxiosInstance().post("/user/verify", { code: numericCode, email: params.guiEmail });
       if (verify) {
-        ToastAndroid.show("Xác minh thành công", ToastAndroid.SHORT);
+        ToastAndroid.show('Đăng ký thành công!', ToastAndroid.SHORT);
         navigation.navigate("Login2");
       } else {
         ToastAndroid.show("Xác minh thất bại", ToastAndroid.SHORT);

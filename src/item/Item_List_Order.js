@@ -13,7 +13,7 @@ const Item_List_Order = (props) => {
       <View style={{justifyContent:'center', alignItems:'center'}}>
         <Image style={styles.avata} source={{uri: data.image}}/>
         <Text style={styles.title}>{data.name}</Text>
-        <Text style={styles.price}>{data.price}</Text>
+        <Text style={styles.price}>{data.price} vnđ</Text>
       </View>
     </View>
     

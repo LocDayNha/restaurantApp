@@ -77,7 +77,7 @@ const HomeMenu = (props) => {
     <View>
       {/* Header */}
       <View style={styles.header_container}>
-        <Text style={styles.header}>Chào Phi đẹp trai</Text>
+        <Text style={styles.header}>Phoenix Restaurant</Text>
         <TouchableOpacity onPress={toProfile}>
           <Image style={styles.avata} source={require('../../image/gura.jpg')} />
         </TouchableOpacity>

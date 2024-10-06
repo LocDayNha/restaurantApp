@@ -20,7 +20,7 @@ const initialFoodItems = [
     tableName: '5',
     userName: 'John Doe',
     quantity: 3,
-    totalPrice: '147$',
+    totalPrice: '123456',
     paymentStatus: 'Chưa thanh toán',
   },
   {

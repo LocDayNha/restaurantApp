@@ -28,17 +28,9 @@ const Setting = () => {
       </TouchableOpacity>
 
       <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '27%' }}>
-          <Image style={styles.icon} source={require('../../icon/setting/location.png')}></Image>
-          <Text style={styles.text}>Address</Text>
-        </View>
-        <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '34.5%' }}>
-          <Image style={[styles.icon, { height: 20, width: 20 }]} source={require('../../icon/setting/notification.png')}></Image>
-          <Text style={styles.text}>Notification</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '26%' }}>
+          <Image style={styles.icon} source={require('../../icon/setting/armchair.png')}></Image>
+          <Text style={styles.text}>Dat ban</Text>
         </View>
         <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
       </TouchableOpacity>
@@ -47,14 +39,6 @@ const Setting = () => {
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '28.5%' }}>
           <Image style={styles.icon} source={require('../../icon/setting/wallet.png')}></Image>
           <Text style={styles.text}>Payment</Text>
-        </View>
-        <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '26.5%' }}>
-          <Image style={styles.icon} source={require('../../icon/setting/security.png')}></Image>
-          <Text style={styles.text}>Security</Text>
         </View>
         <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
       </TouchableOpacity>
@@ -71,30 +55,6 @@ const Setting = () => {
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '33%' }}>
           <Image style={styles.icon} source={require('../../icon/setting/eye.png')}></Image>
           <Text style={styles.text}>Dark Mode</Text>
-        </View>
-        <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '40%' }}>
-          <Image style={styles.icon} source={require('../../icon/setting/lock.png')}></Image>
-          <Text style={styles.text}>Privacy Policy</Text>
-        </View>
-        <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '35.5%' }}>
-          <Image style={styles.icon} source={require('../../icon/setting/support.png')}></Image>
-          <Text style={styles.text}>Help Center</Text>
-        </View>
-        <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '39.3%' }}>
-          <Image style={styles.icon} source={require('../../icon/setting/friends.png')}></Image>
-          <Text style={styles.text}>Invite Friends</Text>
         </View>
         <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
       </TouchableOpacity>
