@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   Dimensions,
 } from 'react-native';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const initialFoodItems = [
   {
@@ -56,44 +56,38 @@ const initialFoodItems = [
 
 const CheckoutScreen = () => {
   const [foodItems, setFoodItems] = useState(initialFoodItems);
+  const [tableNumber, setTableNumber] = useState('Table 5');
+  const [customerName, setCustomerName] = useState('John Doe');
 
-  const increaseQuantity = id => {
-    setFoodItems(prevItems =>
-      prevItems.map(item =>
-        item.id === id ? {...item, quantity: item.quantity + 1} : item,
-      ),
+  const increaseQuantity = (id) => {
+    setFoodItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+      )
     );
   };
 
-  const decreaseQuantity = id => {
-    setFoodItems(prevItems =>
-      prevItems.map(item =>
+  const decreaseQuantity = (id) => {
+    setFoodItems((prevItems) =>
+      prevItems.map((item) =>
         item.id === id && item.quantity > 1
-          ? {...item, quantity: item.quantity - 1}
-          : item,
-      ),
+          ? { ...item, quantity: item.quantity - 1 }
+          : item
+      )
     );
   };
 
-  // Hàm tính số lượng món
   const calculateTotalQuantity = () => {
-    const totalQuantity = foodItems.reduce(
-      (acc, item) => acc + item.quantity,
-      0,
-    );
+    const totalQuantity = foodItems.reduce((acc, item) => acc + item.quantity, 0);
     return totalQuantity;
   };
 
-  // Hàm tính tiền món ăn
   const calculateTotalPrice = () => {
-    const totalAmount = foodItems.reduce(
-      (acc, item) => acc + item.price * item.quantity,
-      0,
-    );
+    const totalAmount = foodItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
     return totalAmount.toFixed(2);
   };
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <View style={styles.orderCard}>
       <Image source={item.image} style={styles.orderImage} />
       <Text style={styles.title}>{item.title}</Text>
@@ -118,17 +112,30 @@ const CheckoutScreen = () => {
     <View style={styles.container}>
       <Text style={styles.header}>Checkout</Text>
 
+      
+
       {/* Food List */}
       <FlatList
         data={foodItems}
-        keyExtractor={item => item.id}
+        keyExtractor={(item) => item.id}
         renderItem={renderItem}
         contentContainerStyle={styles.listContent}
       />
 
       {/* Total Section */}
+      {/* Customer and Table Information */}
       <View style={styles.totalContainer}>
-        {/* Hiển thị bảng tính tổng số lượng món và giá tiền */}
+        <View style={styles.infoRow}>
+          <Text style={styles.infoLabel}>Customer Name:</Text>
+          <Text style={styles.infoValue}>{customerName}</Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Text style={styles.infoLabel}>Table Number:</Text>
+          <Text style={styles.infoValue}>{tableNumber}</Text>
+        </View>
+      </View>
+
+      <View style={styles.totalContainer}>
         <View style={styles.priceRow}>
           <Text style={styles.priceLabel}>Amount (Total Items)</Text>
           <Text style={styles.priceValue}>{calculateTotalQuantity()}</Text>
@@ -160,19 +167,20 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingLeft: 20,
   },
+  
   listContent: {
     paddingHorizontal: 20,
-    paddingBottom: 100,
+    paddingBottom: 10,
   },
   orderCard: {
     backgroundColor: '#FFF',
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 15,
+    padding: 10,
     borderRadius: 15,
-    marginBottom: 15,
+    marginBottom: 10,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 3,
@@ -182,10 +190,6 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 10,
     resizeMode: 'cover',
-  },
-  orderDetails: {
-    flex: 1,
-    marginLeft: 15,
   },
   title: {
     color: 'black',
@@ -216,7 +220,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   quantityButton: {
-    // backgroundColor: '#DDD',
     padding: 10,
     borderRadius: 5,
     top: -1,
@@ -231,14 +234,34 @@ const styles = StyleSheet.create({
     color: '#000',
     fontWeight: 'bold',
   },
+  // infoContainer: {
+  //   paddingHorizontal: 20,
+  //   marginBottom: 5,
+  // },
+  infoRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 5,
+  },
+  infoLabel: {
+    fontSize: 16,
+    color: '#8E8E93',
+    marginTop: 5,
+  },
+  infoValue: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#000',
+    marginTop: 5,
+  },
   totalContainer: {
     paddingHorizontal: 20,
-    marginTop: 20,
+    marginTop: 5,
   },
   priceRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 10,
+    marginBottom: 5,
   },
   priceLabel: {
     fontSize: 16,
@@ -269,7 +292,8 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderRadius: 30,
     marginHorizontal: 20,
-    marginTop: 30,
+    marginTop: 20,
+    marginBottom: 20,
     alignItems: 'center',
   },
   paymentButtonText: {
