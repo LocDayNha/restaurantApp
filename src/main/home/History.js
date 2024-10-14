@@ -1,6 +1,7 @@
-import { View, Text, FlatList, StyleSheet, Pressable, TextInput } from 'react-native';
-import React, { useState } from 'react';
+import { View, Text, FlatList, StyleSheet, Pressable, TextInput } from 'react-native'
+import React from 'react'
 import Item_List_History from '../../item/Item_List_History';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const initialData = [
   {
@@ -46,87 +47,45 @@ const initialData = [
     quantity: 1
   },
 ];
-
 const History = () => {
-  const [data, setData] = useState(initialData);
-
-  // Function to calculate total quantity and price
-  const calculateTotal = () => {
-    const totalQuantity = data.reduce((sum, item) => sum + item.quantity, 0);
-    const totalPrice = data.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    return { totalQuantity, totalPrice };
-  };
-
-  // Increase quantity
-  const increaseQuantity = (id) => {
-    const updatedData = data.map(item =>
-      item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-    );
-    setData(updatedData);
-  };
-
-  // Decrease quantity
-  const decreaseQuantity = (id) => {
-    const updatedData = data.map(item =>
-      item.id === id && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
-    );
-    setData(updatedData);
-  };
-
-  // Delete item
-  const deleteItem = (id) => {
-    const updatedData = data.filter(item => item.id !== id);
-    setData(updatedData);
-  };
-
-  const { totalQuantity, totalPrice } = calculateTotal();
 
   return (
     <View style={{ height: '100%', width: '100%' }}>
-      {/* List of items */}
-      <View style={{ width: '100%', height: '65%' }}>
-        <FlatList
-          data={data}
-          renderItem={({ item }) => (
-            <Item_List_History
-              data={item}
-              onIncrease={increaseQuantity}
-              onDecrease={decreaseQuantity}
-              onDelete={deleteItem}
-            />
-          )}
-          keyExtractor={item => item.id}
-        />
+
+      <View style={{ width: '100%', height: '77%' }}>
+        <View style={styles.container}>
+          <FlatList
+            data={DATAhistory}
+            extraData={DATAhistory}
+            renderItem={({ item }) => <Item_List_History data={item} />}
+            keyExtractor={item => item.id}
+            scrollEnabled={true}
+            showsVerticalScrollIndicator={false}
+          />
+        </View>
       </View>
 
-      {/* Bottom Section for Total and Customer Details */}
-      <View style={{ height: '35%',paddingTop: 10, paddingHorizontal: 20, backgroundColor:'rgba(221, 221, 221, 0.1)'}}>
-        {/* Quantity and Total Price Section */}
-        <View style={{ marginBottom: 5 }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 0 }}>
-            <Text style={styles.textTotal}>Số Lượng:</Text>
-            <Text style={[styles.textTotal, { marginLeft: 10, fontSize: 20, fontWeight: 'bold' }]}>
-              {totalQuantity}
-            </Text>
+      <View style={{ height: '23%', borderRadius: 30 }}>
+        <View style={{ flexDirection: 'row' }}>
+          <View style={{ width: '50%' }}>
+            <TextInput style={styles.textIn} placeholder="So ban:"></TextInput>
+            <TextInput style={styles.textIn} placeholder="Ten Khach Hang:"></TextInput>
           </View>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={styles.textTotal}>Tổng:</Text>
-            <Text style={[styles.textTotal, { marginLeft: 10, fontSize: 20, fontWeight: 'bold' }]}>
-              {totalPrice} vnđ
-            </Text>
+          <View style={{ justifyContent: 'center', marginLeft: '7%' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={styles.textTotal}>So Luong:</Text>
+              <Text style={[styles.textTotal, { marginLeft: '3%', fontSize: 20, fontWeight: 'bold' }]}>3</Text>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={styles.textTotal}>Tong:</Text>
+              <Text style={[styles.textTotal, { marginLeft: '3%', fontSize: 20, fontWeight: 'bold' }]}>30000 vnd</Text>
+            </View>
           </View>
         </View>
 
-        {/* Input fields for Table Number and Customer Name */}
-        <View style={{ flexDirection: 'column', marginBottom: 15 }}>
-          <TextInput style={styles.textIn} placeholder="Số bàn:" />
-          <TextInput style={styles.textIn} placeholder="Tên Khách Hàng:" />
-        </View>
-
-        {/* Order Button */}
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: 'center', marginTop: '2%' }}>
           <Pressable style={styles.order}>
-            <Text style={styles.textOrder}>Gọi Món</Text>
+            <Text style={styles.textOrder}>Goi Mon</Text>
           </Pressable>
         </View>
       </View>

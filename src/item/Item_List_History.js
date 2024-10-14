@@ -1,32 +1,19 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
 
-const Item_List_History = ({ data, onIncrease, onDecrease, onDelete }) => {
+const Item_List_History = (props) => {
+  const { data } = props
   return (
-    <View elevation={3} style={styles.item}>
+    <View elevation={3} style={styles.item} key={data._id}>
       <Image style={styles.avata} source={{ uri: data.image }} />
       <View style={styles.text_container}>
         <View>
           <Text style={styles.title}>{data.title}</Text>
-          <Text style={styles.price}>{data.price} vnđ</Text>
+          <Text style={styles.price}>{data.price}</Text>
         </View>
-
-        <View style={styles.quantityContainer}>
-          {/* Decrease Button */}
-          <TouchableOpacity onPress={() => onDecrease(data.id)} style={styles.button}>
-            <Text style={styles.buttonTextde}>-</Text>
-          </TouchableOpacity>
-
-          {/* Quantity Display */}
-          <Text style={styles.quantityText}>{data.quantity}</Text>
-
-          {/* Increase Button */}
-          <TouchableOpacity onPress={() => onIncrease(data.id)} style={styles.button}>
-            <Text style={styles.buttonTextin}>+</Text>
-          </TouchableOpacity>
-          
-          {/* Delete Button */}
-          <TouchableOpacity onPress={() => onDelete(data.id)} style={styles.deleteButton}>
+        <View style={{marginTop:'7%'}}> 
+          <Text style={[styles.price, {color:'black', fontSize:20, marginBottom:'50%'}]}>x1</Text>
+          <TouchableOpacity style={{ marginRight: 5 }}>
             <Image style={styles.imageDelete} source={require('../icon/deleteCart.png')} />
           </TouchableOpacity>
         </View>
