@@ -23,6 +23,9 @@ const HomeMenu = (props) => {
   const toProfile = () => {
     navigation.navigate("Profile")
   }
+  const toHistory = () => {
+    navigation.navigate("History")
+  }
 
   const [position, setPosition] = useState(0); // slide ảnh quảng cáo
   const [idCategory, setidCategory] = useState(null);
@@ -63,7 +66,6 @@ const HomeMenu = (props) => {
     getData(),
       getCategory();
     return () => {
-
     }
   }, [])
 
@@ -137,7 +139,7 @@ const HomeMenu = (props) => {
     <FlatList
       ListHeaderComponent={renderHeader}
       data={dataMenu}
-      renderItem={({ item }) => <Item_List_Order data={item} />}
+      renderItem={({ item }) => <Item_List_Order data={item}/>}
       keyExtractor={item => item._id}
       numColumns={2}
       showsVerticalScrollIndicator={false}

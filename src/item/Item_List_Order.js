@@ -1,15 +1,45 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity  } from 'react-native'
 import React,{useState} from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 const Item_List_Order = (props) => {
   const {data} = props
 
+  //add order
+  const storeData = async (value) => {
+    try {
+      // lấy danh sách trong asyncstorage id: 'orther'
+      const jsonValue = await AsyncStorage.getItem('orther');
+      const json = JSON.parse(jsonValue)
+      if(json){ // nếu trong danh sách có item thì add thêm vào
+        const list = json
+        list.push(value)
+        try{
+          await AsyncStorage.setItem('orther', JSON.stringify(list));
+        }catch(error){
+          console.log(error)
+        }
+      }
+      else{ // nếu chưa có item nào thì add item đầu tiên (chưa hiểu phần này thì liên hệ Phi)
+        const list = []
+        list.push(value)
+        try{
+          await AsyncStorage.setItem('orther', JSON.stringify(list));
+        }catch(error){
+          console.log(error)
+        }
+      }
+    } catch (e) {
+      // saving error
+    }
+  };
+
   return (
     <View elevation={5} style={styles.item} key={data._id}>
-      <TouchableOpacity style={{marginLeft:'70%', marginTop:'5%'}}>
+      <TouchableOpacity onPress={()=>{storeData(data)}} style={{marginLeft:'70%', marginTop:'5%'}}>
         <Image style={{width:24, height:24}} source={require('../icon/add.png')}></Image>
-      </TouchableOpacity>
+      </TouchableOpacity >
       <View style={{justifyContent:'center', alignItems:'center'}}>
         <Image style={styles.avata} source={{uri: data.image}}/>
         <Text style={styles.title}>{data.name}</Text>

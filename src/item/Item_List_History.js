@@ -3,17 +3,18 @@ import React from 'react'
 
 const Item_List_History = (props) => {
   const { data } = props
+ 
   return (
-    <View elevation={3} style={styles.item}>
+    <View elevation={3} style={styles.item} key={data._id}>
       <Image style={styles.avata} source={{ uri: data.image }} />
       <View style={styles.text_container}>
         <View>
-          <Text style={styles.title}>{data.title}</Text>
+          <Text style={styles.title}>{data.name}</Text>
           <Text style={styles.price}>{data.price}</Text>
         </View>
         <View style={{marginTop:'7%'}}> 
           <Text style={[styles.price, {color:'black', fontSize:20, marginBottom:'50%'}]}>x1</Text>
-          <TouchableOpacity style={{ marginRight: 5 }}>
+          <TouchableOpacity onPress={() => { }} style={{ marginRight: 5 }}>
             <Image style={styles.imageDelete} source={require('../icon/deleteCart.png')} />
           </TouchableOpacity>
         </View>

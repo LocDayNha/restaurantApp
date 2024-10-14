@@ -179,6 +179,7 @@ const Appnavigator = () => {
       <Stack.Screen name="BookingScreen" component={BookingScreen} />
       <Stack.Screen name="ReservationScreen" component={ReservationScreen} />
       <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="History" component={History} />
     </Stack.Navigator>
   );
 };

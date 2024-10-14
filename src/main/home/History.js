@@ -1,6 +1,7 @@
 import { View, Text, FlatList, StyleSheet, Pressable, TextInput } from 'react-native'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Item_List_History from '../../item/Item_List_History';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DATAhistory = [
   {
@@ -46,7 +47,27 @@ const DATAhistory = [
     price: '100000 vnđ'
   },
 ];
-const History = () => {
+const History = (props) => {
+
+  const {navigation} =props
+
+  const [dataOrder, setDataOrder] = useState([])
+  
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('orther');
+      const value = JSON.parse(jsonValue)
+      setDataOrder(value)
+    } catch (e) {
+      console.log(e)
+    }
+  };
+  useEffect(() => {
+    const unSubscribe = navigation.addListener('focus', ()=>{
+      getData()
+    })
+    return unSubscribe
+  }, [navigation])
 
   return (
     <View style={{ height: '100%', width: '100%' }}>
@@ -54,10 +75,9 @@ const History = () => {
       <View style={{ width: '100%', height: '77%' }}>
         <View style={styles.container}>
           <FlatList
-            data={DATAhistory}
-            extraData={DATAhistory}
+            data={dataOrder}
             renderItem={({ item }) => <Item_List_History data={item} />}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item._id}
             scrollEnabled={true}
             showsVerticalScrollIndicator={false}
           />
@@ -83,7 +103,7 @@ const History = () => {
         </View>
 
         <View style={{ alignItems: 'center', marginTop: '2%' }}>
-          <Pressable style={styles.order}>
+          <Pressable onPress={()=> {console.log(dataOrder)}}  style={styles.order}>
             <Text style={styles.textOrder}>Goi Mon</Text>
           </Pressable>
         </View>
