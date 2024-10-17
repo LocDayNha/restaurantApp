@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   View,
   Text,
@@ -10,46 +10,21 @@ import {
   ToastAndroid
 } from 'react-native';
 
-import backgroundImage from '../image/bg_booking.png';
-import Item_Booking_Screen from '../item/Item_Booking_Screen';
-import AxiosInstance from '../util/AxiosInstance';
+import backgroundImage from '../../image/bg_booking.png';
+import Item_Booking_Screen from '../../item/Item_Booking_Screen';
+import Item_History_Table from '../../item/Item_History_Table'
+import AxiosInstance from '../../util/AxiosInstance';
+import { AppContext } from '../../util/AppContext';
 
-const Table = [
-  {
-    "id" : "111",
-    "number": 1,
-    "userNumber": 4
-  },
-  {
-    "id" : "222",
-    "number": 2,
-    "userNumber": 4
-  },
-  {
-    "id" : "333",
-    "number": 3,
-    "userNumber": 4
-  },
-]
-
-const BookingScreen = (props) => {
-  const {navigation, route} = props
-  const {params} = route
-
-  const movetoDetail= (item) => {
-    navigation.navigate('DetailsScreen', {table: item})
-  }
+const History_Table = (props) => {
+  const {navigation} = props
+  const {infoUser} = useContext(AppContext)
   
-  // Lấy API danh sách bàn
+  // Lấy API danh sách lịch sử đặt bàn
   const [dataTable, setDataTable] = useState([]);
   useEffect(() => {
     const getData = async () => {
-      const data = await AxiosInstance().post("/table/getByNumber", 
-        {
-          number: params.sendNumber,
-          isOrder: false
-        }
-      );
+      const data = await AxiosInstance().get("/booking/getByUser/" + infoUser._id);
       if (!data || data.lenght === 0) {
         ToastAndroid.show("Lấy dữ liệu thấy bại", ToastAndroid.SHORT);
         console.log("Lay du lieu that bai")
@@ -73,14 +48,14 @@ const BookingScreen = (props) => {
             onPress={() => navigation.goBack()}
             style={styles.navigationButton}>
             <Image
-              source={require('../icon/left_icon.png')}
+              source={require('../../icon/left_icon.png')}
               style={styles.navigationIcon}
             />
           </TouchableOpacity>
         </View>
         <View style={styles.iconContainerRight}>
           <Image
-            source={require('../icon/notification_icon.png')}
+            source={require('../../icon/notification_icon.png')}
             style={styles.icon}
           />
         </View>
@@ -89,18 +64,11 @@ const BookingScreen = (props) => {
       <View style={styles.content}>
         <FlatList
           data={dataTable}
-          renderItem={({ item }) => <Item_Booking_Screen 
-          data={item}
-          onPress={()=>{movetoDetail(item)}} 
+          renderItem={({ item }) => <Item_History_Table data={item}
           />}
           keyExtractor={item => item._id}
           showsVerticalScrollIndicator={false}
         />
-        <View style={styles.addButtonContainer}>
-          <TouchableOpacity onPress={() => {console.log(dataTable)}} style={styles.addButton}>
-            <Text style={styles.addButtonText}>+</Text>
-          </TouchableOpacity>
-        </View>
       </View>
     </View>
   );
@@ -232,4 +200,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BookingScreen;
+export default History_Table;
