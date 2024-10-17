@@ -1,4 +1,4 @@
-import { View, Text, FlatList, StyleSheet, Pressable, TextInput } from 'react-native'
+import { View, Text, FlatList, StyleSheet, Pressable, TextInput, TouchableOpacity } from 'react-native'
 import { React, useState, useEffect } from 'react'
 import Item_List_History from '../../item/Item_List_History';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -48,6 +48,10 @@ const History = (props) => {
       console.log(e)
     }
   };
+
+  const checkdata = () => {
+    const id = data.find(data => data.name == "Hamburger" )
+  }
   useEffect(() => {
     const unSubscribe = navigation.addListener('focus', () => {
       getData()

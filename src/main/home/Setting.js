@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 
-const Setting = () => {
+const Setting = (props) => {
+  const {navigation} = props
   return (
     <View style={{ margin: '5%' }}>
 
@@ -27,7 +28,7 @@ const Setting = () => {
         <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
       </TouchableOpacity>
 
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
+      <TouchableOpacity onPress={()=>navigation.navigate('History_Table')} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '26%' }}>
           <Image style={styles.icon} source={require('../../icon/setting/armchair.png')}></Image>
           <Text style={styles.text}>Dat ban</Text>
