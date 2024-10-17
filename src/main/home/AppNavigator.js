@@ -177,7 +177,7 @@ const Main = () => {
 const Appnavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {/* <Stack.Screen name="OnboardingScreen" component={OnboardingScreen} /> */}
+      <Stack.Screen name="OnboardingScreen" component={OnboardingScreen} />
       <Stack.Screen name="Login2" component={Login2} />
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       <Stack.Screen name="VerifyEmail" component={VerifyEmail} />

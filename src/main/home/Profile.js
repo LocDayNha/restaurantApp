@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -9,22 +9,27 @@ import {
   Alert,
   TextInput,
   ScrollView,
+  ToastAndroid
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import DatePicker from 'react-native-date-picker';
+import DropDownPicker from 'react-native-dropdown-picker';
+import AxiosInstance from '../../util/AxiosInstance';
+import { AppContext } from '../../util/AppContext';
 
 const ProfileScreen = props => {
-  const {navigation} = props;
+  const { navigation } = props;
   React.useLayoutEffect(() => {
-    navigation.setOptions({tabBarVisible: true});
+    navigation.setOptions({ tabBarVisible: true });
   });
 
   const [fullName, setFullName] = useState('');
   const [dob, setDob] = useState(null);
   const [city, setCity] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [gender, setGender] = useState('');
+  const [newphoneNumber, setPhoneNumber] = useState('');
+  const [newgender, setGender] = useState('');
   const [profileImage, setProfileImage] = useState(null);
+  const [choseImageee, setChoseImageee] = useState(null);
   const [errors, setErrors] = useState({});
   const [open, setOpen] = useState(false);
   const [selectedGender, setSelectedGender] = useState('');
@@ -37,12 +42,64 @@ const ProfileScreen = props => {
       cropping: true,
     })
       .then(image => {
-        setProfileImage({uri: image.path});
+        setChoseImageee({ uri: image.path });
+        // uploadImageToServer(image);
       })
       .catch(error => {
         console.log('Error picking image:', error);
       });
   };
+
+  const [loading, setLoading] = useState(false);
+  const uploadImageToServer = async (image) => {
+
+    setLoading(true);
+
+    const formData = new FormData();
+    formData.append('image', {
+      uri: image.path,
+      type: image.mime,
+      name: 'profile_photo_' + Date.now() + '.' + image.path.split('.').pop(),
+    });
+
+    console.log('formData:',formData);
+    console.log('formData:',formData._parts);
+
+    try {
+      const response = await AxiosInstance().post("/menu/upload-image-firebase", formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      console.log('Response:', response);
+
+      const dataUploadImage = response.data;
+
+      if (response.status === 200 && dataUploadImage.imageUrl) {
+        console.log('Image URL: ', dataUploadImage.imageUrl);
+        return dataUploadImage.imageUrl;
+      } else {
+        console.log('Error1 uploading image: ', dataUploadImage);
+      }
+    } catch (error) {
+      console.log('Error2 uploading image: ', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const selectedImage = () => {
+    if (!choseImageee) {
+      if (profileImage) {
+        return <Image source={{ uri: profileImage }} style={styles.profileImage} />
+      } else {
+        return <Image source={require('../../image/user.png')} style={styles.profileImage} />
+      }
+    } else {
+      return <Image source={{ uri: choseImageee.uri }} style={styles.profileImage} />
+    }
+  }
 
   const getAge = date => {
     const today = new Date();
@@ -67,7 +124,7 @@ const ProfileScreen = props => {
   };
 
   const validateInputs = (field, value) => {
-    const newErrors = {...errors};
+    const newErrors = { ...errors };
 
     switch (field) {
       case 'fullName':
@@ -173,17 +230,56 @@ const ProfileScreen = props => {
     }
   };
 
-  const handleGenderSelection = gender => {
-    setGender(gender);
-    setSelectedGender(gender);
-    validateInputs('gender', gender);
+  const handleGenderSelection = newgender => {
+    setGender(newgender);
+    setSelectedGender(newgender);
+    validateInputs('newgender', newgender);
   };
+
+  const [openn, setOpenn] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+    { label: 'Nam', value: 'Nam' },
+    { label: 'Nữ', value: 'Nữ' },
+  ]);
+
+  const { idUser, infoUser } = useContext(AppContext);
+  const { name, gender, phoneNumber, image, birth, address } = infoUser;
+
+  useEffect(() => {
+    setFullName(name),
+      setValue(gender),
+      setCity(address),
+      // setDob(birth),
+      setPhoneNumber(phoneNumber),
+      setProfileImage(image)
+  }, [infoUser])
+
+  const updateInforUser = async () => {
+    let updateFields = { name: fullName, birth: dob ? formatDate(dob) : birth, phoneNumber: newphoneNumber, address: city, image: profileImage, gender: value };
+    if (choseImageee) {
+      const url = await uploadImageToServer();
+      updateFields = { ...updateFields, image: url }
+      // console.log('updateFields:',updateFields);
+    }
+    try {
+      const update = await AxiosInstance().post("/user/profileUpdate/" + idUser, updateFields);
+      if (update) {
+        ToastAndroid.show('Cap Nhat thành công!', ToastAndroid.SHORT);
+      } else {
+        ToastAndroid.show("Cap Nhat thất bại", ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      console.log("Verify Code error:", error);
+    }
+  };
+
 
   // ... existing code ...
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <View contentContainerStyle={styles.scrollContainer}>
         <View>
           <View style={styles.top}>
             <TouchableOpacity
@@ -195,16 +291,8 @@ const ProfileScreen = props => {
               />
             </TouchableOpacity>
           </View>
-
           <View style={styles.profileContainer}>
-            {profileImage ? (
-              <Image source={profileImage} style={styles.profileImage} />
-            ) : (
-              <Image
-                source={require('../../image/food.jpg')}
-                style={styles.profileImage}
-              />
-            )}
+            {selectedImage()}
             <TouchableOpacity
               style={styles.iconContainer}
               onPress={handleChoosePhoto}>
@@ -222,10 +310,6 @@ const ProfileScreen = props => {
                 styles.inputContainer,
                 errors.fullName && styles.inputContainerError,
               ]}>
-              <Image
-                source={require('../../icon/user.png')}
-                style={styles.icon}
-              />
               <TextInput
                 style={styles.input}
                 placeholder="Họ và tên"
@@ -237,49 +321,64 @@ const ProfileScreen = props => {
             {errors.fullName && (
               <Text style={styles.errorText}>{errors.fullName}</Text>
             )}
-            <View
-              style={[
-                styles.inputContainer,
-                errors.dob && styles.inputContainerError,
-              ]}>
-              <Image
-                source={require('../../icon/calendar.png')}
-                style={styles.icon}
-              />
-              <TouchableOpacity
-                style={[styles.inputContainer, {top: 5, left: -10}]}
-                onPress={() => setOpen(true)}>
-                <Text style={{color: dob ? '#000' : '#999', padding: 10}}>
-                  {dob ? formatDate(dob) : 'Chọn ngày sinh'}
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <DatePicker
-              modal
-              open={open}
-              date={dob || new Date()}
-              mode="date"
-              onConfirm={date => {
-                setOpen(false);
-                setDob(date);
-                validateInputs('dob', date);
-              }}
-              onCancel={() => {
-                setOpen(false);
-              }}
-            />
 
-            {errors.dob && <Text style={styles.errorText}>{errors.dob}</Text>}
+            <View style={{ flexDirection: 'row' }}>
+              <View
+                style={[
+                  styles.inputContainer,
+                  errors.dob && styles.inputContainerError, { width: '48%' }
+                ]}>
+                <TouchableOpacity
+                  style={[styles.inputContainer, { top: 5, left: -10 }]}
+                  onPress={() => setOpen(true)}>
+                  <Text style={{ padding: 10, color: '#000' }}>
+                    {dob ? formatDate(dob) : birth}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <DatePicker
+                modal
+                open={open}
+                date={dob || new Date()}
+                mode="date"
+                onConfirm={date => {
+                  setOpen(false);
+                  setDob(date);
+                  validateInputs('dob', date);
+                }}
+                onCancel={() => {
+                  setOpen(false);
+                }}
+              />
+
+              <View style={{ flex: 1, zIndex: 1000, marginTop: -28 }}>
+                <View
+                  style={{
+                    flex: 1,
+                  }}>
+                  <DropDownPicker
+                    style={{ backgroundColor: '#f2f2f2', borderWidth: 0 }}
+                    open={openn}
+                    value={value}
+                    items={items}
+                    setOpen={setOpenn}
+                    setValue={setValue}
+                    setItems={setItems}
+                    placeholder={'Choose a fruit.'}
+                  />
+                </View>
+              </View>
+            </View>
+
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              {errors.dob && <Text style={[styles.errorText, { width: '50%' }]}>{errors.dob}</Text>}
+            </View>
 
             <View
               style={[
                 styles.inputContainer,
                 errors.city && styles.inputContainerError,
               ]}>
-              <Image
-                source={require('../../icon/location.png')}
-                style={styles.icon}
-              />
               <TextInput
                 style={styles.input}
                 placeholder="Thành phố"
@@ -295,15 +394,11 @@ const ProfileScreen = props => {
                 styles.inputContainer,
                 errors.phoneNumber && styles.inputContainerError,
               ]}>
-              <Image
-                source={require('../../icon/phone-call.png')}
-                style={styles.icon}
-              />
               <TextInput
                 style={styles.input}
                 placeholder="Số điện thoại"
                 placeholderTextColor="#999"
-                value={phoneNumber}
+                value={newphoneNumber}
                 onChangeText={handleInputChange(setPhoneNumber, 'phoneNumber')}
                 keyboardType="numeric"
               />
@@ -311,67 +406,14 @@ const ProfileScreen = props => {
             {errors.phoneNumber && (
               <Text style={styles.errorText}>{errors.phoneNumber}</Text>
             )}
-
-            <View
-              style={[
-                styles.inputContainer,
-                styles.genderContainer,
-                errors.gender && styles.inputContainerError,
-              ]}>
-              <Image
-                source={require('../../icon/gender.png')}
-                style={styles.icon}
-              />
-              <View style={styles.genderOptionsContainer}>
-                <TouchableOpacity
-                  style={[
-                    styles.genderOption,
-                    selectedGender === 'Nam' && styles.selectedGender,
-                  ]}
-                  onPress={() => handleGenderSelection('Nam')}>
-                  <Image
-                    source={require('../../icon/male.png')}
-                    style={styles.genderIcon}
-                  />
-                  <Text style={styles.genderText}>Nam</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    styles.genderOption,
-                    selectedGender === 'Nữ' && styles.selectedGender,
-                  ]}
-                  onPress={() => handleGenderSelection('Nữ')}>
-                  <Image
-                    source={require('../../icon/female.png')}
-                    style={styles.genderIcon}
-                  />
-                  <Text style={styles.genderText}>Nữ</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    styles.genderOption,
-                    selectedGender === 'Khác' && styles.selectedGender,
-                  ]}
-                  onPress={() => handleGenderSelection('Khác')}>
-                  <Image
-                    source={require('../../icon/other-gender.png')}
-                    style={styles.genderIcon}
-                  />
-                  <Text style={styles.genderText}>Khác</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-            {errors.gender && (
-              <Text style={styles.errorText}>{errors.gender}</Text>
-            )}
           </View>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={handleContinue}>
-            <Text style={styles.buttonText}>Hoàn tất chỉnh sửa</Text>
+          <TouchableOpacity style={styles.button} onPress={updateInforUser}>
+            <Text style={styles.buttonText}>Cập Nhật</Text>
           </TouchableOpacity>
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
@@ -503,6 +545,40 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontWeight: 'bold',
+    fontSize: 16,
+  },
+  dropdown: {
+    width: 150,
+    height: 50,
+    borderColor: 'gray',
+    borderWidth: 0.5,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+  },
+  iconnn: {
+    marginRight: 5,
+  },
+  label: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
     fontSize: 16,
   },
 });
