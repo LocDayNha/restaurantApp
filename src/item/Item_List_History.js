@@ -4,11 +4,15 @@ import React from 'react';
 const Item_List_History = ({ data, onIncrease, onDecrease, onDelete }) => {
   return (
     <View elevation={3} style={styles.item} key={data._id}>
-      <Image style={styles.avata} source={{ uri: data.image }} />
-      <View style={styles.text_container}>
-        <View>
-          <Text style={styles.title}>{data.name}</Text>
-          <Text style={styles.price}>{data.price} vnd</Text>
+      <Image style={styles.avatar} source={{ uri: data.image }} />
+      <View style={styles.textContainer}>
+        <View style={styles.detailsContainer}>
+          <Text style={styles.title} numberOfLines={2}>
+            {data.name}
+          </Text>
+          <Text style={styles.price} numberOfLines={1}>
+            {data.price} vnd
+          </Text>
         </View>
         <View style={styles.quantityContainer}>
           {/* Decrease Button */}
@@ -23,47 +27,55 @@ const Item_List_History = ({ data, onIncrease, onDecrease, onDelete }) => {
           <TouchableOpacity onPress={() => onIncrease(data._id)} style={styles.button}>
             <Text style={styles.buttonTextin}>+</Text>
           </TouchableOpacity>
-
-          {/* Delete Button */}
-          <TouchableOpacity onPress={() => onDelete(data._id)} style={styles.deleteButton}>
-            <Image style={styles.imageDelete} source={require('../icon/deleteCart.png')} />
-          </TouchableOpacity>
         </View>
       </View>
+
+      {/* Delete Button */}
+      <TouchableOpacity onPress={() => onDelete(data._id)} style={styles.deleteButton}>
+        <Image style={styles.imageDelete} source={require('../icon/deleteCart.png')} />
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  avata: {
-    width: 80,
-    height: 80,
-    borderRadius: 50,
+  avatar: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
   },
   item: {
-    width: '95%',
-    height: 100,
+    width: '84%',
     shadowColor: 'black',
     shadowOffset: { width: 5, height: 3 },
     shadowRadius: 2,
     shadowOpacity: 0.8,
-    marginVertical: 8,
+    marginVertical: 5,
+    marginHorizontal: '3%',
     borderRadius: 20,
     backgroundColor: '#ffffff',
     flexDirection: 'row',
-    paddingHorizontal: '4%',
+    paddingHorizontal: '3%',
+    paddingVertical: 10,
     alignItems: 'center',
+    justifyContent: 'space-between', 
   },
-  text_container: {
-    marginLeft: '5%',
-    width: '70%',
-    height: '100%',
-    flexDirection: 'row',
+  textContainer: {
+    flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
+    flex: 1,
+    marginLeft: 10,
+  },
+  detailsContainer: {
+    width: '100%',
+    marginLeft: 10,
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
   },
   title: {
-    fontSize: 20,
+    fontSize: 18,
     color: '#000000',
     fontWeight: 'bold',
   },
@@ -75,39 +87,33 @@ const styles = StyleSheet.create({
   quantityContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginLeft: 30,
   },
   button: {
-    // padding: 10,
-    // width: 10,
-    // height: 10,
+    paddingHorizontal: 5,
     borderRadius: 5,
-    marginTop: -20,
-    marginLeft: 20,
-  },
-  buttonTextde: {
-    fontSize: 40,
-    // backgroundColor: 'gray',
-    color: '#000',
   },
   buttonTextin: {
-    fontSize: 24,
-    // backgroundColor: 'gray',
+    // height: 30,
+    fontSize: 28,
     color: '#000',
-    marginTop: 5,
-    // zIndex: 0,
+  },
+  buttonTextde: {
+    marginBottom: 20,
+    height: 30,
+    fontSize: 36,
+    color: '#000',
   },
   quantityText: {
     color: 'black',
-    padding: 5,
-    marginLeft: 24,
-    marginTop: -15,
-    fontSize: 20,
+    paddingHorizontal: 10,
+    fontSize: 22,
+    textAlign: 'center',
   },
   deleteButton: {
     marginTop: 50,
-    // marginLeft: 5,
-    padding: 0,
-    borderRadius: 5,
+    marginLeft: 10,
+    padding: 5,
   },
   imageDelete: {
     width: 24,
