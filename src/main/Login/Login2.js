@@ -72,7 +72,7 @@ const Login2 = () => {
         setIsLogin(true);
         setInfoUser(user);
         setIdUser(user._id);
-        ToastAndroid.show('Đăng nhập thành công', ToastAndroid.SHORT);
+        console.log('Đăng nhập thành công')
         navigateToMain();
       } else {
         ToastAndroid.show('Thông tin đăng nhập sai', ToastAndroid.SHORT);

@@ -2,6 +2,7 @@ import { View, Text, FlatList, StyleSheet, Pressable, TextInput } from 'react-na
 import { React, useState, useEffect } from 'react'
 import Item_List_History from '../../item/Item_List_History';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AxiosInstance from '../../util/AxiosInstance';
 
 const History = (props) => {
   const { navigation } = props;
@@ -35,6 +36,12 @@ const History = (props) => {
     saveData(updatedData); // Lưu AsyncStorage
   };
 
+  const deleteAllItem = () => {
+    AsyncStorage.removeItem('orther');
+    setData([]);
+    saveData([]); // Lưu AsyncStorage
+  };
+
   const saveData = async (dataToSave) => {
     try {
       const jsonValue = JSON.stringify(dataToSave);
@@ -53,6 +60,24 @@ const History = (props) => {
       console.log(e);
     }
   };
+
+  const [soBan, setSoBan] = useState('');
+  const [nguoiDung, setNguoiDung] = useState('');
+  const [monAn, setMonAn] = useState('');
+  const orderDishes = async () => {
+    try {
+      const dataFood = await AxiosInstance().post("/order/addNew", { tableNumber: soBan, nameUser: nguoiDung, dishes: data });
+      if (dataFood) {
+        console.log('Order Thanh Cong');
+        deleteAllItem();
+      } else {
+        console.log('Order That Bai');
+      }
+    } catch (error) {
+      console.log('Order Dishes Error:', error);
+    }
+  }
+
   useEffect(() => {
     const unSubscribe = navigation.addListener('focus', () => {
       getData();
@@ -95,11 +120,11 @@ const History = (props) => {
             </View>
           </View>
           <View style={{ flexDirection: 'column', marginBottom: 15 }}>
-            <TextInput style={styles.textIn} placeholder="Số bàn:" />
-            <TextInput style={styles.textIn} placeholder="Tên Khách Hàng:" />
+            <TextInput style={styles.textIn} placeholder="Số bàn:" onChangeText={setSoBan} />
+            <TextInput style={styles.textIn} placeholder="Tên Khách Hàng:" onChangeText={setNguoiDung} />
           </View>
           <View style={{ alignItems: 'center' }}>
-            <Pressable style={styles.order} onPress={() => {/* Lệnh nhảy màn hình sang Payment/OrderDetail, maybe? */}}>
+            <Pressable style={styles.order} onPress={orderDishes}>
               <Text style={styles.textOrder}>Gọi Món</Text>
             </Pressable>
           </View>

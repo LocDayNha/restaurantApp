@@ -32,9 +32,9 @@ const VerifyRegister = (props) => {
     try {
       const codeSend = await AxiosInstance().post("/user/send-mail", { email: params.guiEmail });
       if (codeSend) {
-        ToastAndroid.show("Đã gửi Email", ToastAndroid.SHORT);
+        console.log('Gửi Email thành công');
       } else {
-        ToastAndroid.show("Gửi Email thất bại", ToastAndroid.SHORT);
+        console.log('Gửi Email thất bại');
       }
     } catch (error) {
       console.log("Send Code error:", error);

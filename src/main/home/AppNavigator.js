@@ -16,7 +16,7 @@ import VerifyEmail from './VerifyEmail';
 import VerifyRegister from '../Login/VerifyRegister';
 import BookingScreen from '../BookingScreen';
 import ReservationScreen from '../DetailsScreen';
-import History_Table from './History_Table'
+import History_Table from './History_Table';
 
 import { ConfirmPassword, ForgotPassword, Login2, Register } from '../Login';
 import DetailsScreen from '../DetailsScreen';
@@ -189,6 +189,7 @@ const Appnavigator = () => {
       <Stack.Screen name="ReservationScreen" component={ReservationScreen} />
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
+      <Stack.Screen name="OrderDetail" component={OrderDetail} />
     </Stack.Navigator>
   );
 };

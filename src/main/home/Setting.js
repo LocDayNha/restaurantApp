@@ -1,26 +1,48 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
-import React from 'react'
+import React, { useState, useContext, useEffect } from 'react'
+import { AppContext } from '../../util/AppContext';
+import AxiosInstance from '../../util/AxiosInstance';
 
 const Setting = (props) => {
-  const {navigation} = props
+  const { navigation } = props;
+  const toProfile = () => {
+    navigation.navigate("Profile")
+  };
+
+  const [fullName, setFullName] = useState('');
+  const [imgAvatar, setImgAvatar] = useState('');
+  const [showEmail, setShowEmail] = useState('');
+  const { idUser, infoUser } = useContext(AppContext);
+  const { image, name, email } = infoUser;
+
+  useEffect(() => {
+    setImgAvatar(image),
+      setFullName(name),
+      setShowEmail(email)
+  }, [infoUser])
+
+
   return (
     <View style={{ margin: '5%' }}>
 
       <View style={[styles.view2, { marginBottom: '5%' }]}>
         <TouchableOpacity style={[styles.view3, { alignItems: 'center', width: 110, height: 110 }]}>
-          <Image style={styles.imageAvatar} source={require('../../image/user.png')} ></Image>
-          <Image style={styles.iconEdit} source={require('../../icon/setting/edit.png')} ></Image>
+          {
+            imgAvatar ?
+              <Image style={styles.imageAvatar} source={{ uri: imgAvatar }} ></Image> :
+              <Image style={styles.imageAvatar} source={require('../../image/user.png')} ></Image>
+          }
         </TouchableOpacity>
       </View>
 
       <View style={[styles.view2, { marginBottom: '5%' }]}>
-        <Text style={[styles.textName, { fontWeight: 'bold', color: 'black' }]}>Olivier Giroud</Text>
-        <Text style={{ color: 'black' }}>vohoangloc200@gmail.com</Text>
+        <Text style={[styles.textName, { fontWeight: 'bold', color: 'black' }]}>{fullName}</Text>
+        <Text style={{ color: 'black' }}>{showEmail}</Text>
       </View>
 
       <View style={[styles.view2, { borderBottomWidth: 1, borderColor: '#DDDDDD', marginBottom: '5%' }]}></View>
 
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
+      <TouchableOpacity onPress={toProfile} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '33%' }}>
           <Image style={styles.icon} source={require('../../icon/setting/user.png')}></Image>
           <Text style={styles.text}>Edit Profile</Text>
@@ -28,7 +50,7 @@ const Setting = (props) => {
         <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={()=>navigation.navigate('History_Table')} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
+      <TouchableOpacity onPress={() => navigation.navigate('History_Table')} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '26%' }}>
           <Image style={styles.icon} source={require('../../icon/setting/armchair.png')}></Image>
           <Text style={styles.text}>Dat ban</Text>
@@ -63,7 +85,7 @@ const Setting = (props) => {
       <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '25%' }}>
           <Image style={styles.icon} source={require('../../icon/setting/out.png')}></Image>
-          <Text style={[styles.text, {color:'red'}]}>Logout</Text>
+          <Text style={[styles.text, { color: 'red' }]}>Logout</Text>
         </View>
         <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
       </TouchableOpacity>
@@ -86,7 +108,8 @@ const styles = StyleSheet.create({
   },
   imageAvatar: {
     width: 110,
-    height: 110
+    height: 110,
+    borderRadius:50
   },
   iconEdit: {
     width: 25,

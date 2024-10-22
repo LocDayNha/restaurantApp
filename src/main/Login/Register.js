@@ -77,12 +77,8 @@ const {navigation}= props;
       createAt: new Date(),
     };
 
-    console.log(data)
-
     try {
       const response = await AxiosInstance().post('/user/register', data);
-      console.log(response);
-
       if (response && response.status) {
         navigation.navigate("VerifyRegister", {guiEmail: email});
       } else {

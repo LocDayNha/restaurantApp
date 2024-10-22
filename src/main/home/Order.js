@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,129 +9,93 @@ import {
   Alert,
   Dimensions,
 } from 'react-native';
+import AxiosInstance from '../../util/AxiosInstance';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const initialFoodItems = [
   {
     id: '1',
-    image: require('../../icon/bill.jpg'),
     price: '49$',
-    tableName: '5',
-    userName: 'John Doe',
+    tableName: 'Bàn 1',
+    timeOrder: '17:34:59',
+    dayOrder: '11-11-1111',
+    userName: 'Nguyễn Trần Trung Quốc',
     quantity: 3,
-    totalPrice: '123456',
-    paymentStatus: 'Chưa thanh toán',
-  },
-  {
-    id: '2',
-    image: require('../../icon/bill.jpg'),
-    price: '39$',
-    tableName: '14',
-    userName: 'Alice Smith',
-    quantity: 2,
-    totalPrice: '78$',
-    paymentStatus: 'Đã thanh toán',
-  },
-  {
-    id: '3',
-    image: require('../../icon/bill.jpg'),
-    price: '50$',
-    tableName: '6',
-    userName: 'Bob Johnson',
-    quantity: 1,
-    totalPrice: '50$',
-    paymentStatus: 'Chưa thanh toán',
-  },
-  {
-    id: '4',
-    image: require('../../icon/bill.jpg'),
-    price: '25$',
-    tableName: '2',
-    userName: 'Emily Davis',
-    quantity: 4,
-    totalPrice: '100$',
-    paymentStatus: 'Đã thanh toán',
-  },
-  {
-    id: '5',
-    image: require('../../icon/bill.jpg'),
-    price: '60$',
-    tableName: '7',
-    userName: 'Chris Brown',
-    quantity: 5,
-    totalPrice: '300$',
-    paymentStatus: 'Chưa thanh toán',
+    totalPrice: '1,200,365',
+    paymentStatus: false,
   },
 ];
 
-const FoodOrderScreen = () => {
-  const [foodItems, setFoodItems] = useState(initialFoodItems);
+const FoodOrderScreen = (props) => {
+  const { navigation } = props;
+  const [foodItems, setFoodItems] = useState(null);
 
-  // Hàm xóa
-  const handleDelete = id => {
-    const updatedItems = foodItems.filter(item => item.id !== id);
-    setFoodItems(updatedItems);
+  const getOrder = async () => {
+    try {
+      const orderList = await AxiosInstance().get("/order/get");
+      if (orderList) {
+        console.log('Get Order List Thanh Cong');
+        setFoodItems(orderList);
+      } else {
+        console.log('Get Order List That Bai');
+      }
+    } catch (error) {
+      console.log('Get Order Dishes Error:', error);
+    }
   };
 
-  // Hàm ấn vào card item
-  const handleCardPress = item => {
-    Alert.alert(
-      `Order from Table ${item.tableName}`,
-      `User: ${item.userName}\nTotal Price: ${item.totalPrice}`,
-    );
-  };
+  const clickDetail = (itemid) => {
+    navigation.navigate("OrderDetail", { id: itemid });
+  }
 
-  // Hàm bắt lỗi thanh toán thành công/thất bại
+  useEffect(() => {
+    getOrder();
+  }, [])
+
+
   const getPaymentStatusStyle = status => {
-    return status === 'Đã thanh toán'
-      ? {color: '#008001', backgroundColor: '#D4EDDA', borderColor: '#C3E6CB'} // Green
-      : {color: '#FF0000', backgroundColor: '#F8D7DA', borderColor: '#F5C6CB'}; // Red
+    return status
+      ? { color: '#008001', backgroundColor: '#00CC33', borderColor: '#C3E6CB' } // Green
+      : { color: '#FF0000', backgroundColor: '#FF3333', borderColor: '#F5C6CB' }; // Red
   };
 
-  const renderItem = ({item}) => {
-    const paymentStatusStyle = getPaymentStatusStyle(item.paymentStatus);
+  const renderItem = ({ item }) => {
+    const paymentStatusStyle = getPaymentStatusStyle(item.isPayment);
 
     return (
-      <TouchableOpacity
-        style={styles.foodCard}
-        onPress={() => handleCardPress(item)}>
-        <Image source={item.image} style={styles.foodImage} />
+      <View style={styles.foodCard}>
         <View style={styles.infoContainer}>
-          <Text style={styles.userInfo}>{item.userName}</Text>
-          <Text style={styles.tableInfo}>
-            Bàn: {item.tableName} | Số lượng: {item.quantity}
+          <Text style={[styles.tableInfo, { fontWeight: 'bold', fontSize: 25 }]}>
+            Ban {item.tableNumber}
           </Text>
-          <Text style={styles.totalPrice}>{item.totalPrice}</Text>
-          <View
-            style={[
-              styles.paymentStatusContainer,
-              {borderColor: paymentStatusStyle.borderColor},
-            ]}>
-            <Text
-              style={[styles.paymentStatus, {color: paymentStatusStyle.color}]}>
-              {item.paymentStatus}
-            </Text>
+          <Text style={styles.tableInfo}>
+            {item.nameUser}
+          </Text>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={styles.userInfo}>{item.timeOrder} | {item.dayOrder}</Text>
+          </View>
+          <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', width: '100%', height: 50, marginTop: '2%' }}>
+            <Text style={styles.totalPrice}>{item.totalMoney} vnđ</Text>
+            <TouchableOpacity onPress={() => clickDetail(item._id)} style={[styles.paymentStatusContainer, { backgroundColor: paymentStatusStyle.backgroundColor },]}>
+              {
+                item.paymentStatus ?
+                  <Text style={[styles.paymentStatus, {}]}>Thanh Toán</Text> :
+                  <Text style={[styles.paymentStatus, {}]}>Thanh Toán</Text>
+              }
+            </TouchableOpacity>
           </View>
         </View>
-        <TouchableOpacity
-          style={styles.deleteButton}
-          onPress={() => handleDelete(item.id)}>
-          <Image
-            source={require('../../icon/x-button.jpg')}
-            style={styles.icon}
-          />
-        </TouchableOpacity>
-      </TouchableOpacity>
+      </View>
     );
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Đơn hàng của tôi</Text>
+      <Text style={styles.header}>Đơn hàng</Text>
       <FlatList
         data={foodItems}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item._id}
         renderItem={renderItem}
         contentContainerStyle={styles.listContent}
       />
@@ -141,16 +105,18 @@ const FoodOrderScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
+    width: '100%',
+    height: '100%',
     flex: 1,
     backgroundColor: '#F9F9F9',
-    paddingTop: 20,
+    marginTop: '5%',
   },
   header: {
     fontSize: 30,
     color: 'black',
     fontWeight: 'bold',
-    marginBottom: 40,
-    paddingLeft: 30,
+    marginBottom: '7%',
+    marginLeft: 30,
   },
   listContent: {
     paddingHorizontal: 20,
@@ -158,17 +124,16 @@ const styles = StyleSheet.create({
   },
   foodCard: {
     backgroundColor: '#FFF',
-    flexDirection: 'row',
     alignItems: 'center',
-    padding: 15,
     borderRadius: 15,
     marginBottom: 15,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 3,
-    height: 110,
+    height: 180,
+    width: '100%'
   },
   foodImage: {
     width: 80,
@@ -178,41 +143,37 @@ const styles = StyleSheet.create({
     // top: -20,
   },
   infoContainer: {
-    flex: 1,
-    marginLeft: 10,
-    top: 15,
+    margin: '5%'
   },
   userInfo: {
     color: '#000',
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 19,
   },
   tableInfo: {
-    fontSize: 17,
-    color: '#333',
+    fontSize: 19,
+    color: '#000',
+    marginBottom: '1%'
   },
   totalPrice: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#008001',
+    color: '#000',
+    width: '60%',
+    height: '100%',
+    fontWeight: 'bold'
   },
   paymentStatusContainer: {
-    borderWidth: 3,
     borderRadius: 20,
-    marginTop: 5,
-    width: 130,
+    justifyContent: 'center',
     alignItems: 'center',
-    top: -32,
-    left: 70,
+    width: '40%',
+    height: '100%',
   },
   paymentStatus: {
-    fontSize: 16,
+    fontSize: 17,
+    color: '#fff',
+    fontWeight: 'bold'
   },
   deleteButton: {
-    padding: 10,
-    alignSelf: 'center',
-    top: -35,
-    left: 15,
   },
   icon: {
     width: 24,
