@@ -10,29 +10,45 @@ import {
   StyleSheet,
   ToastAndroid
 } from 'react-native';
-
 import AxiosInstance from '../../util/AxiosInstance';
 
-const ForgotPasswordActivity = (props) => {
+const VerifyRegister = (props) => {
 
   const { navigation, route } = props;
   const { params } = route;
 
   const [codeInput, setcodeInput] = useState(['', '', '', '']);
-
   const handleCodeInput = (index, value) => {
     let newCode = [...codeInput];
     newCode[index] = value;
     setcodeInput(newCode);
   };
 
+  useEffect(() => {
+    send();
+  }, [])
+
+  const send = async () => {
+    try {
+      const codeSend = await AxiosInstance().post("/user/send-mail", { email: params.guiEmail });
+      if (codeSend) {
+        console.log('Gửi Email thành công');
+      } else {
+        console.log('Gửi Email thất bại');
+      }
+    } catch (error) {
+      console.log("Send Code error:", error);
+    }
+
+  };
+
   const clickVerify = async () => {
     const numericCode = parseInt(codeInput.join(''));
     try {
-      const verify = await AxiosInstance().post("/user/verify", { code: numericCode, email: params.sentEmail });
+      const verify = await AxiosInstance().post("/user/verify", { code: numericCode, email: params.guiEmail });
       if (verify) {
-        ToastAndroid.show("Xác minh thành công", ToastAndroid.SHORT);
-        navigation.navigate("ConfirmPassword", {guiEmail: params.sentEmail});
+        ToastAndroid.show('Đăng ký thành công!', ToastAndroid.SHORT);
+        navigation.navigate("Login2");
       } else {
         ToastAndroid.show("Xác minh thất bại", ToastAndroid.SHORT);
       }
@@ -145,4 +161,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ForgotPasswordActivity;
+export default VerifyRegister;

@@ -1,25 +1,48 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
-import React from 'react'
+import React, { useState, useContext, useEffect } from 'react'
+import { AppContext } from '../../util/AppContext';
+import AxiosInstance from '../../util/AxiosInstance';
 
-const Setting = () => {
+const Setting = (props) => {
+  const { navigation } = props;
+  const toProfile = () => {
+    navigation.navigate("Profile")
+  };
+
+  const [fullName, setFullName] = useState('');
+  const [imgAvatar, setImgAvatar] = useState('');
+  const [showEmail, setShowEmail] = useState('');
+  const { idUser, infoUser } = useContext(AppContext);
+  const { image, name, email } = infoUser;
+
+  useEffect(() => {
+    setImgAvatar(image),
+      setFullName(name),
+      setShowEmail(email)
+  }, [infoUser])
+
+
   return (
     <View style={{ margin: '5%' }}>
 
       <View style={[styles.view2, { marginBottom: '5%' }]}>
         <TouchableOpacity style={[styles.view3, { alignItems: 'center', width: 110, height: 110 }]}>
-          <Image style={styles.imageAvatar} source={require('../../image/user.png')} ></Image>
-          <Image style={styles.iconEdit} source={require('../../icon/setting/edit.png')} ></Image>
+          {
+            imgAvatar ?
+              <Image style={styles.imageAvatar} source={{ uri: imgAvatar }} ></Image> :
+              <Image style={styles.imageAvatar} source={require('../../image/user.png')} ></Image>
+          }
         </TouchableOpacity>
       </View>
 
       <View style={[styles.view2, { marginBottom: '5%' }]}>
-        <Text style={[styles.textName, { fontWeight: 'bold', color: 'black' }]}>Olivier Giroud</Text>
-        <Text style={{ color: 'black' }}>vohoangloc200@gmail.com</Text>
+        <Text style={[styles.textName, { fontWeight: 'bold', color: 'black' }]}>{fullName}</Text>
+        <Text style={{ color: 'black' }}>{showEmail}</Text>
       </View>
 
       <View style={[styles.view2, { borderBottomWidth: 1, borderColor: '#DDDDDD', marginBottom: '5%' }]}></View>
 
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
+      <TouchableOpacity onPress={toProfile} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '33%' }}>
           <Image style={styles.icon} source={require('../../icon/setting/user.png')}></Image>
           <Text style={styles.text}>Edit Profile</Text>
@@ -27,18 +50,10 @@ const Setting = () => {
         <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
       </TouchableOpacity>
 
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '27%' }}>
-          <Image style={styles.icon} source={require('../../icon/setting/location.png')}></Image>
-          <Text style={styles.text}>Address</Text>
-        </View>
-        <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '34.5%' }}>
-          <Image style={[styles.icon, { height: 20, width: 20 }]} source={require('../../icon/setting/notification.png')}></Image>
-          <Text style={styles.text}>Notification</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('History_Table')} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '26%' }}>
+          <Image style={styles.icon} source={require('../../icon/setting/armchair.png')}></Image>
+          <Text style={styles.text}>Dat ban</Text>
         </View>
         <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
       </TouchableOpacity>
@@ -47,14 +62,6 @@ const Setting = () => {
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '28.5%' }}>
           <Image style={styles.icon} source={require('../../icon/setting/wallet.png')}></Image>
           <Text style={styles.text}>Payment</Text>
-        </View>
-        <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '26.5%' }}>
-          <Image style={styles.icon} source={require('../../icon/setting/security.png')}></Image>
-          <Text style={styles.text}>Security</Text>
         </View>
         <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
       </TouchableOpacity>
@@ -76,33 +83,9 @@ const Setting = () => {
       </TouchableOpacity>
 
       <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '40%' }}>
-          <Image style={styles.icon} source={require('../../icon/setting/lock.png')}></Image>
-          <Text style={styles.text}>Privacy Policy</Text>
-        </View>
-        <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '35.5%' }}>
-          <Image style={styles.icon} source={require('../../icon/setting/support.png')}></Image>
-          <Text style={styles.text}>Help Center</Text>
-        </View>
-        <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '39.3%' }}>
-          <Image style={styles.icon} source={require('../../icon/setting/friends.png')}></Image>
-          <Text style={styles.text}>Invite Friends</Text>
-        </View>
-        <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '25%' }}>
           <Image style={styles.icon} source={require('../../icon/setting/out.png')}></Image>
-          <Text style={[styles.text, {color:'red'}]}>Logout</Text>
+          <Text style={[styles.text, { color: 'red' }]}>Logout</Text>
         </View>
         <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
       </TouchableOpacity>
@@ -125,7 +108,8 @@ const styles = StyleSheet.create({
   },
   imageAvatar: {
     width: 110,
-    height: 110
+    height: 110,
+    borderRadius:50
   },
   iconEdit: {
     width: 25,

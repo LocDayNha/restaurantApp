@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useState, useContext } from 'react';
+=======
+import React, { useState } from 'react';
+>>>>>>> main
 import {
   View,
   Text,
@@ -9,6 +13,7 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
 } from 'react-native';
+<<<<<<< HEAD
 import { useAppContext } from './home/AppContext';
 import { useNavigation } from '@react-navigation/native';
 
@@ -21,10 +26,47 @@ const ChooseTableScreen = ({ props, navigation }) => {
   const [isHovered, setIsHovered] = useState(false);
   const handleTablePress = idTable => {
     setSelectedTable(idTable);
+=======
+
+// Import images
+const tableImages = {
+  1: require('..//tables/chair_1.png'),
+  2: require('..//tables/chair_2.png'),
+  3: require('..//tables/chair_3.png'),
+  4: require('..//tables/chair_4.png'),
+  5: require('..//tables/chair_5.png'),
+  6: require('..//tables/chair_6.png'),
+  7: require('..//tables/chair_7.png'),
+  8: require('..//tables/chair_8.png'),
+  9: require('..//tables/chair_9.png'),
+  10: require('..//tables/chair_10.png'),
+  11: require('..//tables/chair_11.png'),
+  12: require('..//tables/chair_12.png'),
+  13: require('..//tables/chair_13.png'),
+  14: require('..//tables/chair_14.png'),
+};
+
+const { width, height } = Dimensions.get('window');
+
+const ChooseTableScreen = (props) => {
+
+  const {navigation} = props
+
+  const [selectedTable, setSelectedTable] = useState(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  //truyền number qua BookingScreen
+  const [number, setNumber] = useState(null)
+
+  const handleTablePress = (id) => {
+    setSelectedTable(id); // Chọn bàn
+>>>>>>> main
   };
+
   const handleOutsidePress = () => {
-    setSelectedTable(null);
+    setSelectedTable(null); // Bỏ chọn khi bấm bên ngoài
   };
+<<<<<<< HEAD
   const handleNext = () => {
     const newBookingData = table.find((item) => item.idTable === selectedTable.toString());
     addBooking(newBookingData);
@@ -160,20 +202,28 @@ const ChooseTableScreen = ({ props, navigation }) => {
     },
   ]
 
+=======
+>>>>>>> main
 
   return (
     <TouchableWithoutFeedback onPress={handleOutsidePress}>
       <View style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContainer}  >
           <View style={styles.tableContainer}>
+            {/* Hiển thị các bàn */}
             <View style={styles.row}>
+<<<<<<< HEAD
               {[1, 2, 3].map((idTable) => (
+=======
+              {[1, 2, 3].map((id) => (
+>>>>>>> main
                 <TouchableOpacity
                   key={idTable}
                   style={[
                     styles.table,
                     idTable === 1 && isHovered && styles.hoveredTable,
                   ]}
+<<<<<<< HEAD
                   onPress={() => {
                     handleTablePress(idTable)
                   }}
@@ -183,45 +233,85 @@ const ChooseTableScreen = ({ props, navigation }) => {
                     <View style={styles.selectedBackground} />
                   )}
                   <Image source={table.find((item) => item.idTable === idTable.toString()).tableImage} style={styles.tableImage} />
+=======
+                  onPress={() => {handleTablePress(id), setNumber(id)}}
+                  onPressIn={() => id === 1 && setIsHovered(true)}
+                  onPressOut={() => id === 1 && setIsHovered(false)}
+                >
+                  {selectedTable === id && <View style={styles.selectedBackground} />}
+                  <Image source={tableImages[id]} style={styles.tableImage} />
+>>>>>>> main
                 </TouchableOpacity>
               ))}
             </View>
             <View style={styles.row}>
+<<<<<<< HEAD
               {[4, 5, 6].map(idTable => (
+=======
+              {[4, 5, 6].map((id) => (
+>>>>>>> main
                 <TouchableOpacity
                   key={idTable}
                   style={styles.table}
+<<<<<<< HEAD
                   onPress={() => handleTablePress(idTable)}>
                   {selectedTable === idTable && (
                     <View style={styles.selectedBackground} />
                   )}
                   <Image source={table.find((item) => item.idTable === idTable.toString()).tableImage} style={styles.tableImage} />
+=======
+                  onPress={() => {handleTablePress(id), setNumber(id)}}
+                >
+                  {selectedTable === id && <View style={styles.selectedBackground} />}
+                  <Image source={tableImages[id]} style={styles.tableImage} />
+>>>>>>> main
                 </TouchableOpacity>
               ))}
             </View>
             <View style={styles.row}>
+<<<<<<< HEAD
               {[7, 8, 9].map(idTable => (
+=======
+              {[7, 8, 9].map((id) => (
+>>>>>>> main
                 <TouchableOpacity
                   key={idTable}
                   style={styles.table}
+<<<<<<< HEAD
                   onPress={() => handleTablePress(idTable)}>
                   {selectedTable === idTable && (
                     <View style={styles.selectedBackground} />
                   )}
                   <Image source={table.find((item) => item.idTable === idTable.toString()).tableImage} style={styles.tableImage} />
+=======
+                  onPress={() => {handleTablePress(id), setNumber(id)}}
+                >
+                  {selectedTable === id && <View style={styles.selectedBackground} />}
+                  <Image source={tableImages[id]} style={styles.tableImage} />
+>>>>>>> main
                 </TouchableOpacity>
               ))}
             </View>
             <View style={styles.row}>
+<<<<<<< HEAD
               {[10, 11, 12].map(idTable => (
+=======
+              {[10, 11, 12].map((id) => (
+>>>>>>> main
                 <TouchableOpacity
                   key={idTable}
                   style={[
                     styles.table,
                     (idTable === 11 || idTable === 12) && styles.tableRight,
                   ]}
+<<<<<<< HEAD
                   onPress={() => handleTablePress(idTable)}>
                   {selectedTable === idTable && (
+=======
+                  onPress={() => {handleTablePress(id), setNumber(id)}}
+                >
+                  {selectedTable === id && (
+>>>>>>> main
                     <View
                       style={
                         idTable === 12
@@ -231,14 +321,20 @@ const ChooseTableScreen = ({ props, navigation }) => {
                     />
                   )}
                   <Image
+<<<<<<< HEAD
                     source={table.find((item) => item.idTable === idTable.toString()).tableImage} style={
                       idTable === 12 ? styles.tableImageLarge : styles.tableImage
                     }
+=======
+                    source={tableImages[id]}
+                    style={id === 12 ? styles.tableImageLarge : styles.tableImage}
+>>>>>>> main
                   />
                 </TouchableOpacity>
               ))}
             </View>
             <View style={styles.row}>
+<<<<<<< HEAD
               {[13, 14].map(idTable => (
                 <TouchableOpacity
                   key={idTable}
@@ -251,26 +347,46 @@ const ChooseTableScreen = ({ props, navigation }) => {
                     source={table.find((item) => item.idTable === idTable.toString()).tableImage}
                     style={styles.tableImageLarge}
                   />
+=======
+              {[13, 14].map((id) => (
+                <TouchableOpacity
+                  key={id}
+                  style={[styles.table, id === 14 && styles.tableRight]}
+                  onPress={() => {handleTablePress(id), setNumber(id)}}
+                >
+                  {selectedTable === id && <View style={styles.selectedBackgroundLarge} />}
+                  <Image source={tableImages[id]} style={styles.tableImageLarge} />
+>>>>>>> main
                 </TouchableOpacity>
               ))}
             </View>
           </View>
+<<<<<<< HEAD
           {selectedTable && (
             <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
               <Text style={styles.nextButtonText}>NEXT</Text>
             </TouchableOpacity>
           )}
+=======
+>>>>>>> main
         </ScrollView>
+
+        {/* Nút NEXT luôn hiển thị ở dưới cùng màn hình */}
+        {selectedTable && (
+          <TouchableOpacity onPress={() => navigation.navigate('BookingScreen', {sendNumber: number})} style={styles.nextButton}>
+            <Text style={styles.nextButtonText}>NEXT</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </TouchableWithoutFeedback>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     paddingVertical: 20,
     alignItems: 'center',
-    backgroundColor: '#1c1c1c',
     width: '100%',
     height: '100%',
   },
@@ -303,21 +419,21 @@ const styles = StyleSheet.create({
   },
   selectedBackground: {
     position: 'absolute',
-    top: 5,
-    left: 5,
-    right: 5,
-    bottom: 5,
-    backgroundColor: 'rgba(255, 0, 0, 0.5)',
+    top: 0,
+    left: 3,
+    right: 3,
+    bottom: 0,
+    backgroundColor: 'green',//rgba(255, 0, 0, 0.5)
     borderRadius: 10,
     zIndex: -1,
   },
   selectedBackgroundLarge: {
     position: 'absolute',
-    top: 10,
+    top: 0,
     left: 10,
     right: 10,
-    bottom: 10,
-    backgroundColor: 'rgba(255, 0, 0, 0.5)',
+    bottom: 0,
+    backgroundColor: 'green',//rgba(255, 0, 0, 0.5)
     borderRadius: 10,
     zIndex: -1,
   },
@@ -332,9 +448,11 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   nextButton: {
-    marginTop: 20,
+    position: 'absolute',
+    bottom: 20, 
+    left: 20, 
+    right: 20, 
     paddingVertical: 15,
-    width: '90%',
     backgroundColor: '#2c2c2c',
     borderRadius: 25,
     alignItems: 'center',
@@ -351,6 +469,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
 export default ChooseTableScreen;
 const DATA = [
   {

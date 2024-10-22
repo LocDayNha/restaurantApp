@@ -1,8 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { SafeAreaView, View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { SafeAreaView, View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ToastAndroid } from 'react-native';
+import AxiosInstance from '../../util/AxiosInstance';
 
-const ConfirmPassword = () => {
+const ConfirmPassword = (props) => {
+
+  const { navigation, route } = props;
+  const { params } = route;
+
+  const [emailUser, setemailUser] = useState('')
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -10,8 +16,6 @@ const ConfirmPassword = () => {
   const [message, setMessage] = useState(''); // Trạng thái để lưu trữ thông báo
   const [isSuccess, setIsSuccess] = useState(false); // Trạng thái để lưu trữ kết quả thành công hoặc thất bại
 
-  const navigation = useNavigation();
-  
   const handlePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -41,6 +45,25 @@ const ConfirmPassword = () => {
     }
   };
 
+  const clickForgotPass = async () => {
+
+    if (!password || !confirmPassword || password !== confirmPassword) {
+      ToastAndroid.show("Vui lòng nhập đúng và đầy đủ", ToastAndroid.SHORT);
+    } else {
+      try {
+        const forgot = await AxiosInstance().post("/user/forgotpass", { email: params.guiEmail, password: password, password2: confirmPassword });
+        if (forgot) {
+          ToastAndroid.show("Cập nhật thành công", ToastAndroid.SHORT);
+          navigation.navigate("Login2");
+        } else {
+          ToastAndroid.show("Cập nhật thất bại", ToastAndroid.SHORT);
+        }
+      } catch (error) {
+        console.log("Forgot Password error:", error);
+      }
+    }
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.profileContainer}>
@@ -56,15 +79,15 @@ const ConfirmPassword = () => {
         <TextInput
           style={styles.input}
           placeholder="Nhập mật khẩu mới"
-          placeholderTextColor='#999' 
+          placeholderTextColor='#999'
           value={password}
           onChangeText={setPassword}
           secureTextEntry={!showPassword}
         />
         <TouchableOpacity onPress={handlePasswordVisibility} style={styles.icon1}>
-          <Image 
+          <Image
             source={showPassword ? require('../../icon/view.png') : require('../../icon/hide.png')}
-            style={styles.icon} 
+            style={styles.icon}
           />
         </TouchableOpacity>
       </View>
@@ -73,15 +96,15 @@ const ConfirmPassword = () => {
         <TextInput
           style={styles.input}
           placeholder="Xác nhận lại mật khẩu"
-          placeholderTextColor='#999' 
+          placeholderTextColor='#999'
           value={confirmPassword}
           onChangeText={setConfirmPassword}
           secureTextEntry={!showConfirmPassword}
         />
-         <TouchableOpacity onPress={handleConfirmPasswordVisibility} style={styles.icon1}>
-          <Image 
+        <TouchableOpacity onPress={handleConfirmPasswordVisibility} style={styles.icon1}>
+          <Image
             source={showConfirmPassword ? require('../../icon/view.png') : require('../../icon/hide.png')}
-            style={styles.icon} 
+            style={styles.icon}
           />
         </TouchableOpacity>
       </View>
@@ -93,7 +116,7 @@ const ConfirmPassword = () => {
         </Text>
       ) : null}
 
-      <TouchableOpacity style={styles.button} onPress={handleContinue}>
+      <TouchableOpacity onPress={clickForgotPass} style={styles.button}>
         <Text style={styles.buttonText}>Hoàn tất</Text>
       </TouchableOpacity>
     </SafeAreaView>
@@ -106,7 +129,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: '#fff',
   },
-  profileContainer:{
+  profileContainer: {
     top: 40,
     left: 20,
   },
@@ -117,7 +140,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   topdes: {
-    color:"black",
+    color: "black",
     fontSize: 21,
     top: 35,
     left: 50,

@@ -23,6 +23,9 @@ const HomeMenu = (props) => {
   const toProfile = () => {
     navigation.navigate("Profile")
   }
+  const toHistory = () => {
+    navigation.navigate("History")
+  }
 
   const [position, setPosition] = useState(0); // slide ảnh quảng cáo
   const [idCategory, setidCategory] = useState(null);
@@ -32,7 +35,7 @@ const HomeMenu = (props) => {
   const getData = async () => {
     const dataFood = await AxiosInstance().get("/menu/get");
     if (!dataFood || dataFood.lenght === 0) {
-      ToastAndroid.show("Lấy dữ liệu thấy bại", ToastAndroid.SHORT);
+      console.log('Lấy dữ liệu thấy bại của /menu/get');
     } else {
       setdataMenu(dataFood);
     }
@@ -42,7 +45,7 @@ const HomeMenu = (props) => {
   const getMenuByCategory = async () => {
     const dataByCategory = await AxiosInstance().get("/menu/getByCategory/" + idCategory);
     if (!dataByCategory || dataByCategory.lenght === 0) {
-      ToastAndroid.show("Lấy dữ liệu thấy bại", ToastAndroid.SHORT);
+      console.log('Lấy dữ liệu thấy bại của /menu/getByCategory/');
     } else {
       setdataMenu(dataByCategory);
     }
@@ -53,7 +56,7 @@ const HomeMenu = (props) => {
   const getCategory = async () => {
     const dataCate = await AxiosInstance().get("/category/get");
     if (!dataCate || dataCate.lenght === 0) {
-      ToastAndroid.show("Lấy dữ liệu thấy bại", ToastAndroid.SHORT);
+      console.log('Lấy dữ liệu thấy bại của /category/get');
     } else {
       setdataCategory(dataCate);
     }
@@ -63,7 +66,6 @@ const HomeMenu = (props) => {
     getData(),
       getCategory();
     return () => {
-
     }
   }, [])
 
@@ -77,10 +79,8 @@ const HomeMenu = (props) => {
     <View>
       {/* Header */}
       <View style={styles.header_container}>
-        <Text style={styles.header}>Chào Phi đẹp trai</Text>
-        <TouchableOpacity onPress={toProfile}>
-          <Image style={styles.avata} source={require('../../image/gura.jpg')} />
-        </TouchableOpacity>
+        <Text style={styles.header}>Phoenix Restaurant</Text>
+          <Image style={styles.avata} source={require('../../image/logo_phoenixRestaurant.png')} />
       </View>
 
       {/* Tìm kiếm */}
@@ -137,7 +137,7 @@ const HomeMenu = (props) => {
     <FlatList
       ListHeaderComponent={renderHeader}
       data={dataMenu}
-      renderItem={({ item }) => <Item_List_Order data={item} />}
+      renderItem={({ item }) => <Item_List_Order data={item}/>}
       keyExtractor={item => item._id}
       numColumns={2}
       showsVerticalScrollIndicator={false}

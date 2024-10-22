@@ -7,68 +7,31 @@ import {
   Pressable,
   TouchableOpacity,
   ToastAndroid,
+  ActivityIndicator, // Import ActivityIndicator
 } from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import AxiosInstance from '../../util/AxiosInstance';
 
-const Register = () => {
+const Register = (props) => {
+
+const {navigation}= props;
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // Trạng thái mới để hiển thị mật khẩu
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Trạng thái mới để hiển thị xác nhận mật khẩu
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [loading, setLoading] = useState(false); // Add loading state
 
-  const navigation = useNavigation();
-
-  const handleEmailChange = (text) => {
-    setEmail(text);
-    if (!text) {
-      setEmailError('Vui lòng nhập email của bạn');
-    } else {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(text)) {
-        setEmailError('Vui lòng nhập email hợp lệ');
-      } else {
-        setEmailError('');
-      }
-    }
-  };
-
-  const handlePasswordChange = (text) => {
-    setPassword(text);
-    if (!text) {
-      setPasswordError('Vui lòng nhập mật khẩu của bạn');
-    } else if (text.length < 8) {
-      setPasswordError('Mật khẩu phải có ít nhất 8 ký tự');
-    } else if (!/[A-Z]/.test(text)) {
-      setPasswordError('Mật khẩu phải chứa ít nhất một chữ hoa');
-    } else if (!/[a-z]/.test(text)) {
-      setPasswordError('Mật khẩu phải chứa ít nhất một chữ thường');
-    } else {
-      setPasswordError('');
-    }
-  };
-
-  const handleConfirmPasswordChange = (text) => {
-    setConfirmPassword(text);
-    if (!text) {
-      setConfirmPasswordError('Vui lòng xác nhận mật khẩu của bạn');
-    } else if (text !== password) {
-      setConfirmPasswordError('Mật khẩu không khớp');
-    } else {
-      setConfirmPasswordError('');
-    }
-  };
-
-  const handleRegister = () => {
+  const validationForm = () => {
     let valid = true;
 
-    // Kiểm tra hợp lệ email
     if (!email) {
-      setEmailError('Vui lòng nhập email của bạn');
+      setEmailError('Vui lòng nhập email');
       valid = false;
     } else {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -80,37 +43,54 @@ const Register = () => {
       }
     }
 
-    // Kiểm tra hợp lệ mật khẩu
     if (!password) {
-      setPasswordError('Vui lòng nhập mật khẩu của bạn');
-      valid = false;
-    } else if (password.length < 8) {
-      setPasswordError('Mật khẩu phải có ít nhất 8 ký tự');
-      valid = false;
-    } else if (!/[A-Z]/.test(password)) {
-      setPasswordError('Mật khẩu phải chứa ít nhất một chữ hoa');
-      valid = false;
-    } else if (!/[a-z]/.test(password)) {
-      setPasswordError('Mật khẩu phải chứa ít nhất một chữ thường');
+      setPasswordError('Vui lòng nhập mật khẩu');
       valid = false;
     } else {
       setPasswordError('');
     }
 
-    // Kiểm tra hợp lệ xác nhận mật khẩu
     if (!confirmPassword) {
-      setConfirmPasswordError('Vui lòng xác nhận mật khẩu của bạn');
+      setConfirmPasswordError('Vui lòng nhập lại mật khẩu');
       valid = false;
     } else if (password !== confirmPassword) {
-      setConfirmPasswordError('Mật khẩu không khớp');
+      setConfirmPasswordError('Mật khẩu và xác nhận mật khẩu không khớp');
       valid = false;
     } else {
       setConfirmPasswordError('');
     }
 
-    if (valid) {
-      ToastAndroid.show('Đăng ký thành công!', ToastAndroid.SHORT);
-      navigation.navigate('Login2');
+    return valid;
+  };
+
+  const onRegister = async () => {
+    if (!validationForm()) {
+      return;
+    }
+
+    setLoading(true); // Set loading to true
+
+    let data = {
+      email,
+      password,
+      password2: confirmPassword,
+      createAt: new Date(),
+    };
+
+    try {
+      const response = await AxiosInstance().post('/user/register', data);
+      if (response && response.status) {
+        navigation.navigate("VerifyRegister", {guiEmail: email});
+      } else {
+        ToastAndroid.show('Đăng ký thất bại!', ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      ToastAndroid.show(
+        error.response?.data?.message || 'Có lỗi xảy ra, vui lòng thử lại',
+        ToastAndroid.SHORT,
+      );
+    } finally {
+      setLoading(false); // Set loading to false
     }
   };
 
@@ -125,30 +105,30 @@ const Register = () => {
         <View style={styles.inputContainer}>
           <TextInput
             placeholder="Email"
-            style={[
-              styles.inputEmailAndPass,
-              emailError ? styles.errorInput : null,
-            ]}
+            style={[styles.inputEmailAndPass, emailError && styles.errorInput]}
             value={email}
-            onChangeText={handleEmailChange} // Updated to use handleEmailChange
+            onChangeText={text => {
+              setEmail(text);
+              setEmailError('');
+            }}
           />
-          {emailError ? (
-            <Text style={styles.errorText}>{emailError}</Text>
-          ) : null}
+          {emailError && <Text style={styles.errorText}>{emailError}</Text>}
         </View>
         <View style={styles.inputContainer}>
           <View
             style={[
-              styles.inputEmailAndPass,
               styles.passwordContainer,
-              passwordError ? styles.errorInput : null,
+              passwordError && styles.errorInput,
             ]}>
             <TextInput
               placeholder="Mật khẩu"
               style={styles.passwordInput}
               secureTextEntry={!showPassword}
               value={password}
-              onChangeText={handlePasswordChange} // Updated to use handlePasswordChange
+              onChangeText={text => {
+                setPassword(text);
+                setPasswordError('');
+              }}
             />
             <TouchableOpacity
               onPress={() => setShowPassword(!showPassword)}
@@ -163,23 +143,25 @@ const Register = () => {
               />
             </TouchableOpacity>
           </View>
-          {passwordError ? (
+          {passwordError && (
             <Text style={styles.errorText}>{passwordError}</Text>
-          ) : null}
+          )}
         </View>
         <View style={styles.inputContainer}>
           <View
             style={[
-              styles.inputEmailAndPass,
               styles.passwordContainer,
-              confirmPasswordError ? styles.errorInput : null,
+              confirmPasswordError && styles.errorInput,
             ]}>
             <TextInput
               placeholder="Nhập lại mật khẩu"
               style={styles.passwordInput}
               secureTextEntry={!showConfirmPassword}
               value={confirmPassword}
-              onChangeText={handleConfirmPasswordChange} // Updated to use handleConfirmPasswordChange
+              onChangeText={text => {
+                setConfirmPassword(text);
+                setConfirmPasswordError('');
+              }}
             />
             <TouchableOpacity
               onPress={() => setShowConfirmPassword(!showConfirmPassword)}
@@ -194,17 +176,21 @@ const Register = () => {
               />
             </TouchableOpacity>
           </View>
-          {confirmPasswordError ? (
+          {confirmPasswordError && (
             <Text style={styles.errorText}>{confirmPasswordError}</Text>
-          ) : null}
+          )}
         </View>
       </View>
 
       <View style={[styles.view2, {marginTop: '7%'}]}>
-        <Pressable style={styles.btnLogin} onPress={handleRegister}>
-          <Text style={[styles.textLogin, {marginTop: 10, color: '#FFF'}]}>
-            Đăng ký
-          </Text>
+        <Pressable style={styles.btnLogin} onPress={onRegister}>
+          {loading ? ( // Show ActivityIndicator when loading
+            <ActivityIndicator size="small" color="#FFF" />
+          ) : (
+            <Text style={[styles.textLogin, {marginTop: 10, color: '#FFF'}]}>
+              Đăng ký
+            </Text>
+          )}
         </Pressable>
       </View>
 
@@ -285,8 +271,8 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   passwordInput: {
-    flex: 1, // Cho phép TextInput chiếm không gian có sẵn
-    paddingRight: 50, // Thêm padding để tránh chồng chéo với icon
+    flex: 1,
+    paddingRight: 50,
   },
   btnLogin: {
     height: 50,
@@ -334,14 +320,6 @@ const styles = StyleSheet.create({
     color: '#000',
     marginLeft: '5%',
   },
-  errorText: {
-    color: 'red',
-    marginTop: 5,
-  },
-  errorInput: {
-    borderColor: 'red',
-    borderWidth: 1,
-  },
   passwordContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -361,5 +339,13 @@ const styles = StyleSheet.create({
   icon: {
     width: 24,
     height: 24,
+  },
+  errorText: {
+    color: 'red',
+    marginTop: 5,
+  },
+  errorInput: {
+    borderColor: 'red',
+    borderWidth: 1,
   },
 });

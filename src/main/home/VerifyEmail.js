@@ -1,48 +1,51 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, SafeAreaView, ToastAndroid } from 'react-native';
+import AxiosInstance from '../../util/AxiosInstance';
 
-const VerifyEmailActivity = () => {
+const VerifyEmail = (props) => {
+  const { navigation } = props;
+
+  // check mail and send code to mail
+  const [emailUser, setemailUser] = useState("");
+  const clickSend = async () => {
+    try {
+      const send = await AxiosInstance().post("/user/sent-code", { email: emailUser });
+      if (send) {
+        console.log('Đã gửi mã về Email');
+        navigation.navigate("ForgotPassword", { sentEmail: emailUser });
+      } else {
+        ToastAndroid.show("Kiểm tra lại Email", ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      console.log("Send Code to Mail error:", error);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        {/* <View style={styles.top}> */}
-            {/* Nút quay lại sử dụng ảnh thay cho icon */}
-            {/* <TouchableOpacity style={styles.backButton}> */}
-                {/* <Image source={require('../../image/back.png')} style={styles.icon} />  */}
-            {/* </TouchableOpacity> */}
-            {/* <Text style={styles.topdes} >Xác minh Email của bạn</Text> */}
-        {/* </View> */}
-      
-
-      {/* Ảnh hồ sơ */}
-      <View style={styles.profileContainer}>
-        <Image
-          source={require('../../image/background_verify.png')}
-          style={styles.profileImage}
-        />
-      </View>
-
-      {/* Form thông tin người dùng */}
-      <View style={styles.form}>
-      
-        <Text style={styles.text} >Nhập Email của bạn</Text>  
-        {/* Email */}
-        <View style={styles.inputContainer}>
-        <Image source={require('../../icon/email.png')} style={styles.icon} /> 
-          <TextInput 
-            style={[styles.input, { flex: 1 }]} 
-            placeholder="Email"
-            placeholderTextColor='#999' 
+        <View style={styles.profileContainer}>
+          <Image
+            source={require('../../image/background_verify.png')}
+            style={styles.profileImage}
           />
         </View>
+        <View style={styles.form}>
+          <Text style={styles.text} >Nhập Email của bạn</Text>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={[styles.input]}
+              placeholder="Email"
+              placeholderTextColor='#999'
+              onChangeText={setemailUser}
+            />
+          </View>
 
         </View>
-        {/* Nút Continue */}
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity onPress={clickSend} style={styles.button}>
           <Text style={styles.buttonText}>Tiếp tục</Text>
         </TouchableOpacity>
-        </View>
+      </View>
     </SafeAreaView>
   );
 };
@@ -59,7 +62,7 @@ const styles = StyleSheet.create({
     left: 10,
     zIndex: 1,
   },
-  profileContainer:{
+  profileContainer: {
     top: 80,
     left: 20,
   },
@@ -74,28 +77,26 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   form: {
-    marginTop: 40,
+    marginTop: '37%',
   },
   input: {
-    color:"black",
-    backgroundColor: '#F5F5F5',
-    // paddingVertical: 15,
-    paddingHorizontal: 20,
-    borderRadius: 10,
+    width: '100%',
+    height: 48,
+    backgroundColor: '#EEEEEE',
+    borderRadius: 13,
+    fontFamily: 'Klarna Text',
     fontSize: 16,
-    // marginBottom: 20,
+    fontStyle: 'normal',
+    fontWeight: '400',
+    color: '#000',
+    paddingLeft: 20,
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F5F5F5',
-    borderRadius: 10,
-    paddingHorizontal: 20,
-    marginBottom: 20,
-    top: 110,
+    width: '100%',
+    marginTop: '5%',
   },
   topdes: {
-    color:"black",
+    color: "black",
     fontSize: 21,
     top: 35,
     left: 50,
@@ -103,7 +104,6 @@ const styles = StyleSheet.create({
   text: {
     color: "black",
     fontSize: 20,
-    top: 100,
     left: 15,
     // zIndex: 0
   },
@@ -112,8 +112,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderRadius: 30,
     alignItems: 'center',
-    marginTop: 45,
-    top: 200,
+    marginTop: '20%',
   },
   buttonText: {
     color: '#fff',
@@ -122,4 +121,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VerifyEmailActivity;
+export default VerifyEmail;
