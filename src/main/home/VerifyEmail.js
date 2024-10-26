@@ -11,7 +11,7 @@ const VerifyEmail = (props) => {
     try {
       const send = await AxiosInstance().post("/user/sent-code", { email: emailUser });
       if (send) {
-        ToastAndroid.show("Đã gửi mã về Email", ToastAndroid.SHORT);
+        console.log('Đã gửi mã về Email');
         navigation.navigate("ForgotPassword", { sentEmail: emailUser });
       } else {
         ToastAndroid.show("Kiểm tra lại Email", ToastAndroid.SHORT);

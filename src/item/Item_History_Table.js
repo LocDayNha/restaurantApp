@@ -1,9 +1,9 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
 import React from 'react'
 
-const Item_Booking_Screen = ({data, onPress}) => {
+const Item_History_Table = ({data}) => {
   return (
-    <TouchableOpacity onPress={onPress} style={styles.card}>
+    <TouchableOpacity style={styles.card}>
           <View style={styles.row}>
             {/* Bạn có thể thêm các thông tin khác ở đây */}
           </View>
@@ -15,15 +15,15 @@ const Item_Booking_Screen = ({data, onPress}) => {
             <View style={styles.detailsContainer}>
               <View style={styles.row}>
                 <Text style={styles.label}>Time</Text>
-                <Text style={styles.value}>{data.timeline_id.name}</Text>
+                <Text style={styles.value}>{data.day}</Text>
               </View>
               <View style={styles.row}>
                 <Text style={styles.label}>Seats</Text>
-                <Text style={styles.value}>{data.userNumber}</Text>
+                <Text style={styles.value}>{data.table_id.userNumber}</Text>
               </View>
               <View style={styles.row}>
                 <Text style={styles.label}>Table</Text>
-                <Text style={styles.value}>{data.number}</Text>
+                <Text style={styles.value}>{data.table_id.number}</Text>
               </View>
             </View>
           </View>
@@ -156,4 +156,4 @@ const styles = StyleSheet.create({
     },
   });
 
-export default Item_Booking_Screen
+export default Item_History_Table

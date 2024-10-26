@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,102 +8,57 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
+import AxiosInstance from '../../util/AxiosInstance';
 
 const { width } = Dimensions.get('window');
 
-const initialFoodItems = [
-  {
-    id: '1',
-    title: 'Macaroni Pasta',
-    image: require('../../image/macaroni_pasta.png'),
-    rating: 5,
-    price: 49,
-    quantity: 1,
-  },
-  {
-    id: '2',
-    title: 'Rotini Pasta',
-    image: require('../../image/macaroni_pasta.png'),
-    rating: 4.5,
-    price: 39,
-    quantity: 1,
-  },
-  {
-    id: '3',
-    title: 'Mixed Pasta',
-    image: require('../../image/macaroni_pasta.png'),
-    rating: 4.5,
-    price: 49,
-    quantity: 1,
-  },
-  {
-    id: '4',
-    title: 'Fettuccine Pasta',
-    image: require('../../image/macaroni_pasta.png'),
-    rating: 4,
-    price: 39,
-    quantity: 1,
-  },
-  {
-    id: '5',
-    title: 'Broccoli Pasta',
-    image: require('../../image/macaroni_pasta.png'),
-    rating: 4,
-    price: 49,
-    quantity: 1,
-  },
-];
+const CheckoutScreen = (props) => {
+  const { route } = props;
+  const { params } = route;
 
-const CheckoutScreen = () => {
-  const [foodItems, setFoodItems] = useState(initialFoodItems);
-  const [tableNumber, setTableNumber] = useState('Table 5');
-  const [customerName, setCustomerName] = useState('John Doe');
+  const [foodItems, setFoodItems] = useState({});
+  const [list, setList] = useState([]);
 
-  const increaseQuantity = (id) => {
-    setFoodItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    );
-  };
+  const getDataOrder = async () => {
+    try {
+      const orderList = await AxiosInstance().get("/order/getById/" + params.id);
+      if (orderList) {
+        console.log('Get Order List By Id Thanh Cong');
+        setFoodItems(orderList.list);
+        setList(orderList.list.dishes);
+        console.log(orderList);
+      } else {
+        console.log('Get Order List By Id That Bai');
+      }
+    } catch (error) {
+      console.log('Get Order List By Id Error:', error);
+    }
+  }
 
-  const decreaseQuantity = (id) => {
-    setFoodItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
-      )
-    );
-  };
+  useEffect(() => {
+    getDataOrder();
+  }, [])
 
-  const calculateTotalQuantity = () => {
-    const totalQuantity = foodItems.reduce((acc, item) => acc + item.quantity, 0);
-    return totalQuantity;
-  };
-
-  const calculateTotalPrice = () => {
-    const totalAmount = foodItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    return totalAmount.toFixed(2);
-  };
 
   const renderItem = ({ item }) => (
     <View style={styles.orderCard}>
-      <Image source={item.image} style={styles.orderImage} />
-      <Text style={styles.title}>{item.title}</Text>
-      <Text style={styles.price}>${item.price.toFixed(2)}</Text>
-      <View style={styles.quantityContainer}>
-        <TouchableOpacity
-          style={styles.quantityButton}
-          onPress={() => decreaseQuantity(item.id)}>
-          <Text style={styles.quantityButtonTextt}>-</Text>
-        </TouchableOpacity>
-        <Text style={styles.quantityText}>{item.quantity}</Text>
-        <TouchableOpacity
-          style={styles.quantityButton}
-          onPress={() => increaseQuantity(item.id)}>
-          <Text style={styles.quantityButtonTextc}>+</Text>
-        </TouchableOpacity>
+      <Image source={{ uri: item.image }} style={styles.orderImage} />
+      <View style={{ width: '75%', marginLeft: '5%' }}>
+        <Text style={styles.title}>{item.name}</Text>
+        <Text style={[styles.price, { marginTop: '10%' }]}>{item.price} vnđ</Text>
+        <View style={styles.quantityContainer}>
+          {/* <TouchableOpacity
+    style={styles.quantityButton}
+    onPress={() => decreaseQuantity(item.id)}>
+    <Text style={styles.quantityButtonTextt}>-</Text>
+  </TouchableOpacity> */}
+          <Text style={styles.quantityText}>{item.quantity}</Text>
+          {/* <TouchableOpacity
+    style={styles.quantityButton}
+    onPress={() => increaseQuantity(item.id)}>
+    <Text style={styles.quantityButtonTextc}>+</Text>
+  </TouchableOpacity> */}
+        </View>
       </View>
     </View>
   );
@@ -112,12 +67,12 @@ const CheckoutScreen = () => {
     <View style={styles.container}>
       <Text style={styles.header}>Checkout</Text>
 
-      
+
 
       {/* Food List */}
       <FlatList
-        data={foodItems}
-        keyExtractor={(item) => item.id}
+        data={list}
+        keyExtractor={(item) => item._id}
         renderItem={renderItem}
         contentContainerStyle={styles.listContent}
       />
@@ -126,23 +81,23 @@ const CheckoutScreen = () => {
       {/* Customer and Table Information */}
       <View style={styles.totalContainer}>
         <View style={styles.infoRow}>
-          <Text style={styles.infoLabel}>Customer Name:</Text>
-          <Text style={styles.infoValue}>{customerName}</Text>
+          <Text style={styles.infoLabel}>Khách Hàng</Text>
+          <Text style={styles.infoValue}>{foodItems?.nameUser}</Text>
         </View>
         <View style={styles.infoRow}>
-          <Text style={styles.infoLabel}>Table Number:</Text>
-          <Text style={styles.infoValue}>{tableNumber}</Text>
+          <Text style={styles.infoLabel}>Số Bàn</Text>
+          <Text style={styles.infoValue}>{foodItems?.tableNumber}</Text>
         </View>
       </View>
 
       <View style={styles.totalContainer}>
         <View style={styles.priceRow}>
-          <Text style={styles.priceLabel}>Amount (Total Items)</Text>
-          <Text style={styles.priceValue}>{calculateTotalQuantity()}</Text>
+          <Text style={styles.priceLabel}>Số Lượng Món Ăn</Text>
+          <Text style={styles.priceValue}>{foodItems?.quantity}</Text>
         </View>
         <View style={styles.priceRowTotal}>
-          <Text style={styles.priceLabelTotal}>Total Price</Text>
-          <Text style={styles.priceValueTotal}>${calculateTotalPrice()}</Text>
+          <Text style={styles.priceLabelTotal}>Tổng</Text>
+          <Text style={styles.priceValueTotal}>{foodItems?.totalMoney}</Text>
         </View>
       </View>
 
@@ -167,15 +122,15 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingLeft: 20,
   },
-  
+
   listContent: {
-    paddingHorizontal: 20,
-    paddingBottom: 10,
+    marginLeft: '3%',
+    marginRight: '3%'
   },
   orderCard: {
+    width: '100%',
     backgroundColor: '#FFF',
     flexDirection: 'row',
-    alignItems: 'center',
     padding: 10,
     borderRadius: 15,
     marginBottom: 10,
@@ -186,7 +141,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   orderImage: {
-    width: 80,
+    width: '25%',
     height: 80,
     borderRadius: 10,
     resizeMode: 'cover',
@@ -196,28 +151,19 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     position: 'absolute',
-    top: 20,
-    left: 100,
   },
   price: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#008001',
-    top: 5,
-    left: 5,
+    color: '#000',
   },
   quantityContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    top: 30,
-    left: 60,
+    marginLeft:'85%'
   },
   quantityText: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#000',
-    marginHorizontal: 10,
   },
   quantityButton: {
     padding: 10,

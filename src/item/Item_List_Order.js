@@ -1,11 +1,10 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity  } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity, ToastAndroid  } from 'react-native'
 import React,{useState} from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 const Item_List_Order = (props) => {
   const {data} = props
-
   //add order
   const storeData = async (value) => {
     try {
@@ -13,12 +12,20 @@ const Item_List_Order = (props) => {
       const jsonValue = await AsyncStorage.getItem('orther');
       const json = JSON.parse(jsonValue)
       if(json){ // nếu trong danh sách có item thì add thêm vào
+        const idvalue = value._id // lấy id món ăn đang chọn
+        const idjson = json.find(json => json._id == idvalue) // lấy id món ăn trong danh sách
         const list = json
-        list.push(value)
-        try{
-          await AsyncStorage.setItem('orther', JSON.stringify(list));
-        }catch(error){
-          console.log(error)
+        if(idjson == undefined){ // kiểm tra id món ăn có bị trùng hay không
+          list.push(value)
+          try{
+            await AsyncStorage.setItem('orther', JSON.stringify(list));
+            ToastAndroid.show("Món ăn đã duoc them", ToastAndroid.SHORT);
+          }catch(error){
+            console.log(error)
+          } 
+        }
+        else{
+          ToastAndroid.show("Món ăn đã có trong giỏ hàng", ToastAndroid.SHORT);
         }
       }
       else{ // nếu chưa có item nào thì add item đầu tiên (chưa hiểu phần này thì liên hệ Phi)

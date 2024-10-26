@@ -16,8 +16,10 @@ import VerifyEmail from './VerifyEmail';
 import VerifyRegister from '../Login/VerifyRegister';
 import BookingScreen from '../BookingScreen';
 import ReservationScreen from '../DetailsScreen';
+import History_Table from './History_Table';
 
 import { ConfirmPassword, ForgotPassword, Login2, Register } from '../Login';
+import DetailsScreen from '../DetailsScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -29,7 +31,14 @@ const Home = () => {
     </Stack.Navigator>
   );
 };
-
+const SettingScreen = () => {
+  return (
+    <Stack.Navigator initialRouteName='Setting' screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Setting" component={Setting} />
+      <Stack.Screen name="History_Table" component={History_Table} />
+    </Stack.Navigator>
+  );
+};
 const Tabbar = () => {
   return (
     <Tab.Navigator
@@ -133,7 +142,7 @@ const Tabbar = () => {
       />
       <Tab.Screen
         name="Trang cá nhân"
-        component={Setting}
+        component={SettingScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{ alignItems: 'center' }}>
@@ -168,17 +177,19 @@ const Main = () => {
 const Appnavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {/* <Stack.Screen name="OnboardingScreen" component={OnboardingScreen} />
+      <Stack.Screen name="OnboardingScreen" component={OnboardingScreen} />
       <Stack.Screen name="Login2" component={Login2} />
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       <Stack.Screen name="VerifyEmail" component={VerifyEmail} />
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="ConfirmPassword" component={ConfirmPassword} />
-      <Stack.Screen name="VerifyRegister" component={VerifyRegister} /> */}
+      <Stack.Screen name="VerifyRegister" component={VerifyRegister} />
       <Stack.Screen name="Main" component={Main} />
       <Stack.Screen name="BookingScreen" component={BookingScreen} />
       <Stack.Screen name="ReservationScreen" component={ReservationScreen} />
       <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
+      <Stack.Screen name="OrderDetail" component={OrderDetail} />
     </Stack.Navigator>
   );
 };

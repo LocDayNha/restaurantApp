@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Platform, ToastAndroid } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import AxiosInstance from '../util/AxiosInstance';
+import {AppContext} from '../util/AppContext'
 
-const DetailsScreen = () => {
+const DetailsScreen = (props) => {
+  const {navigation, route} = props
+  const {params} = route
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
+  //get info user
+  const {infoUser} = useContext(AppContext)
 
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -16,6 +22,22 @@ const DetailsScreen = () => {
     return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
   };
 
+  //oder table
+  const OrderTable = async () => {
+    const data = await AxiosInstance().post("/booking/add", 
+      {
+        user_id: infoUser._id,
+        table_id: params.table._id ,
+        day: date
+      }
+    );
+    if (data.status == true) {
+      ToastAndroid.show("Đặt bàn thành công", ToastAndroid.SHORT);
+      navigation.goBack()
+    } else {
+      ToastAndroid.show("Đặt bàn that bai", ToastAndroid.SHORT);
+    }
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Confirm reservation?</Text>
@@ -45,22 +67,22 @@ const DetailsScreen = () => {
 
         <View style={[styles.infoRow, styles.withBorder]}>
           <Text style={styles.label}>Time</Text>
-          <Text style={styles.value}>7:00 AM</Text>
+          <Text style={styles.value}>{params.table.timeline_id.name}</Text>
         </View>
 
         <View style={[styles.infoRow, styles.withBorder]}>
           <Text style={styles.label}>No of seats</Text>
-          <Text style={styles.value}>4</Text>
+          <Text style={styles.value}>{params.table.userNumber}</Text>
         </View>
 
         <View style={styles.infoRow}>
           <Text style={styles.label}>Table no</Text>
-          <Text style={styles.value}>6</Text>
+          <Text style={styles.value}>{params.table.number}</Text>
         </View>
 
       </View>
 
-      <TouchableOpacity style={styles.confirmButton}>
+      <TouchableOpacity onPress={() => {OrderTable()}} style={styles.confirmButton}>
         <Text style={styles.confirmText}>CONFIRM RESERVATION</Text>
       </TouchableOpacity>
     </View>
