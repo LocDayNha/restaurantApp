@@ -10,7 +10,6 @@ const LoginGoogle = () => {
     GoogleSignin.configure({
       webClientId:
         '338426560887-0obe6e1n0mvkjkrr6qjn36djt60ihfp3.apps.googleusercontent.com',
-      offlineAccess: true,
     });
   }, []);
 
@@ -18,7 +17,6 @@ const LoginGoogle = () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      //console.log('User Info:', userInfo);
 
       // Accessing user data correctly
       const user = userInfo.data.user;

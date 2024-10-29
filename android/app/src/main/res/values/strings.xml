@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Phoenix Restaurant</string>
+    <string name="facebook_app_id">2033816147055110</string><string name="facebook_client_token">980651b74077100501062dcc8ca7edd9</string>
 </resources>

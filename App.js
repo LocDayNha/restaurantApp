@@ -9,7 +9,7 @@ import {
   ForgotPassword,
   Profile,
   VerifyEmail,
-  Order
+  Order,
 } from './src/main/home';
 
 import {
@@ -23,11 +23,12 @@ import {
 } from './src/main';
 
 import {NavigationContainer} from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import HomeMenu from './src/main/home/HomeMenu';
 import Setting from './src/main/home/Setting';
 import {AppContextProvider} from './src/util/AppContext';
 import LoginGoogle from './src/test/LoginGoogle';
+import LoginFacebook from './src/test/LoginFacebook';
 
 const App = () => {
   console.warn = () => {};
@@ -48,12 +49,13 @@ const App = () => {
       {isShowSplash ? (
         <Welcome />
       ) : ( */}
-        {/* <AppContextProvider>
+      {/* <AppContextProvider>
           <NavigationContainer>
             <AppNavigator />
           </NavigationContainer>
         </AppContextProvider> */}
-        <LoginGoogle/>
+      {/* <LoginGoogle /> */}
+      <LoginFacebook />
       {/* )} */}
     </>
   );
