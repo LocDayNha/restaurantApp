@@ -8,14 +8,14 @@ const Item_History_Table = ({data}) => {
             {/* Bạn có thể thêm các thông tin khác ở đây */}
           </View>
           <View style={styles.tableImageRow}>
-            <Image
-              source={require('../image/image_booking.png')}
-              style={styles.tableImage}
-            />
             <View style={styles.detailsContainer}>
               <View style={styles.row}>
+                <Text style={styles.label}>dayBooking</Text>
+                <Text style={styles.value}>{data.dayBooking}</Text>
+              </View>
+              <View style={styles.row}>
                 <Text style={styles.label}>Time</Text>
-                <Text style={styles.value}>{data.day}</Text>
+                <Text style={styles.value}>{data.table_id.timeline_id.name}</Text>
               </View>
               <View style={styles.row}>
                 <Text style={styles.label}>Seats</Text>
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
       marginTop: 10,
     },
     card: {
-      height: 140,
+      height: 200,
       backgroundColor: '#2c2c2e',
       borderRadius: 10,
       padding: 20,
