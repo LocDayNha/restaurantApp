@@ -322,17 +322,18 @@ const ProfileScreen = props => {
               <Text style={styles.errorText}>{errors.fullName}</Text>
             )}
 
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'  }}>
               <View
                 style={[
                   styles.inputContainer,
                   errors.dob && styles.inputContainerError, { width: '48%' }
+                  
                 ]}>
                 <TouchableOpacity
                   style={[styles.inputContainer, { top: 5, left: -10 }]}
                   onPress={() => setOpen(true)}>
-                  <Text style={{ padding: 10, color: '#000' }}>
-                    {dob ? formatDate(dob) : birth}
+                  <Text style={{ padding: 9, color: dob ? '#000' : '#999' }}>
+                    {dob ? formatDate(dob) : 'Chọn ngày sinh'}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -340,18 +341,20 @@ const ProfileScreen = props => {
                 modal
                 open={open}
                 date={dob || new Date()}
-                mode="date"
+                mode="date" 
+                
                 onConfirm={date => {
                   setOpen(false);
                   setDob(date);
                   validateInputs('dob', date);
+                 
                 }}
                 onCancel={() => {
                   setOpen(false);
                 }}
               />
 
-              <View style={{ flex: 1, zIndex: 1000, marginTop: -28 }}>
+              <View style={{ flex: 1, zIndex: 1000, marginTop: -29, marginLeft: 10 }}>
                 <View
                   style={{
                     flex: 1,
@@ -364,7 +367,9 @@ const ProfileScreen = props => {
                     setOpen={setOpenn}
                     setValue={setValue}
                     setItems={setItems}
-                    placeholder={'Choose a fruit.'}
+                    placeholder={'Chọn giới tính'}
+                    placeholderStyle={{ color: '#999' }} // Dimmed placeholder color
+                    textStyle={{ color: value ? '#000' : '#999' }} // Text color based on selection
                   />
                 </View>
               </View>
@@ -410,7 +415,7 @@ const ProfileScreen = props => {
         </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={updateInforUser}>
-            <Text style={styles.buttonText}>Cập Nhật</Text>
+            <Text style={styles.buttonText}>Cập nhật thông tin</Text>
           </TouchableOpacity>
         </View>
       </View>

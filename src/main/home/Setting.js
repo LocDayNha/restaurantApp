@@ -43,49 +43,49 @@ const Setting = (props) => {
       <View style={[styles.view2, { borderBottomWidth: 1, borderColor: '#DDDDDD', marginBottom: '5%' }]}></View>
 
       <TouchableOpacity onPress={toProfile} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '33%' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '77%' }}>
           <Image style={styles.icon} source={require('../../icon/setting/user.png')}></Image>
-          <Text style={styles.text}>Edit Profile</Text>
+          <Text style={styles.text}>Chỉnh sửa thông tin cá nhân</Text>
         </View>
         <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate('History_Table')} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '26%' }}>
-          <Image style={styles.icon} source={require('../../icon/setting/armchair.png')}></Image>
-          <Text style={styles.text}>Dat ban</Text>
-        </View>
-        <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '28.5%' }}>
+          <Image style={styles.icon} source={require('../../icon/setting/armchair.png')}></Image>
+          <Text style={styles.text}>Đặt bàn</Text>
+        </View>
+        <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '37%' }}>
           <Image style={styles.icon} source={require('../../icon/setting/wallet.png')}></Image>
-          <Text style={styles.text}>Payment</Text>
+          <Text style={styles.text}>Thanh toán</Text>
         </View>
         <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
       </TouchableOpacity>
 
       <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '31%' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '34%' }}>
           <Image style={[styles.icon, { width: 20, height: 20 }]} source={require('../../icon/setting/language.png')}></Image>
-          <Text style={styles.text}>Language</Text>
+          <Text style={styles.text}>Ngôn ngữ</Text>
         </View>
         <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
       </TouchableOpacity>
 
       <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '33%' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '47%' }}>
           <Image style={styles.icon} source={require('../../icon/setting/eye.png')}></Image>
-          <Text style={styles.text}>Dark Mode</Text>
+          <Text style={styles.text}>Chế độ tối màu</Text>
         </View>
         <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
       </TouchableOpacity>
 
       <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '25%' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '34.5%' }}>
           <Image style={styles.icon} source={require('../../icon/setting/out.png')}></Image>
-          <Text style={[styles.text, { color: 'red' }]}>Logout</Text>
+          <Text style={[styles.text, { color: 'red' }]}>Đăng xuất</Text>
         </View>
         <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
       </TouchableOpacity>

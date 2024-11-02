@@ -40,7 +40,7 @@ const DetailsScreen = (props) => {
   };
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Confirm reservation?</Text>
+      <Text style={styles.title}>Xác nhận đặt bàn?</Text>
 
       <View style={styles.infoContainer}>
         <View style={[styles.infoRow, styles.withBorder]}>
@@ -52,7 +52,7 @@ const DetailsScreen = (props) => {
           style={[styles.infoRow, styles.withBorder]} 
           onPress={() => setShowDatePicker(true)}
         >
-          <Text style={styles.label}>Date</Text>
+          <Text style={styles.label}>Ngày</Text>
           <Text style={styles.value}>{formatDate(date)}</Text>
         </TouchableOpacity>
 
@@ -66,24 +66,24 @@ const DetailsScreen = (props) => {
         )}
 
         <View style={[styles.infoRow, styles.withBorder]}>
-          <Text style={styles.label}>Time</Text>
+          <Text style={styles.label}>Thời gian</Text>
           <Text style={styles.value}>{params.table.timeline_id.name}</Text>
         </View>
 
         <View style={[styles.infoRow, styles.withBorder]}>
-          <Text style={styles.label}>No of seats</Text>
+          <Text style={styles.label}>Số ghế ngồi</Text>
           <Text style={styles.value}>{params.table.userNumber}</Text>
         </View>
 
         <View style={styles.infoRow}>
-          <Text style={styles.label}>Table no</Text>
+          <Text style={styles.label}>Bàn số</Text>
           <Text style={styles.value}>{params.table.number}</Text>
         </View>
 
       </View>
 
       <TouchableOpacity onPress={() => {OrderTable()}} style={styles.confirmButton}>
-        <Text style={styles.confirmText}>CONFIRM RESERVATION</Text>
+        <Text style={styles.confirmText}>Xác nhận đặt bàn</Text>
       </TouchableOpacity>
     </View>
   );

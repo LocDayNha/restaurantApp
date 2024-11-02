@@ -65,7 +65,7 @@ const CheckoutScreen = (props) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Checkout</Text>
+      <Text style={styles.header}>Tiếp tục thanh toán</Text>
 
 
 
@@ -103,7 +103,7 @@ const CheckoutScreen = (props) => {
 
       {/* Continue to Payment Button */}
       <TouchableOpacity style={styles.paymentButton}>
-        <Text style={styles.paymentButtonText}>Continue to Payment</Text>
+        <Text style={styles.paymentButtonText}>Tiếp tục thanh toán</Text>
       </TouchableOpacity>
     </View>
   );
