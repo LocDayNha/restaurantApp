@@ -30,7 +30,7 @@ const Login2 = () => {
     let valid = true;
 
     if (!email) {
-      setEmailError('Vui lòng nhập email');
+      setEmailError('Vui lòng nhập email');y
       valid = false;
     } else {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
