@@ -60,11 +60,11 @@ const Tabbar = () => {
             <View style={{ alignItems: 'center' }}>
               <Image
                 style={{
-                  width: 20,
-                  height: 20,
-                  tintColor: focused ? '#95AE45' : 'black',
+                  width: 25,
+                  height: 25,
+                  tintColor: focused ? '#859c3e' : 'black',
                 }}
-                source={require('../../icon/home.png')}
+                source={require('../../icon/menu.png')}
               />
               <Text
                 style={{ color: focused ? '#95AE45' : 'black', fontSize: 13 }}>
@@ -82,11 +82,11 @@ const Tabbar = () => {
             <View style={{ alignItems: 'center' }}>
               <Image
                 style={{
-                  width: 20,
-                  height: 20,
-                  tintColor: focused ? '#95AE45' : 'black',
+                  width: 25,
+                  height: 25,
+                  tintColor: focused ? '#859c3e' : 'black',
                 }}
-                source={require('../../icon/promo-code.png')}
+                source={require('../../icon/food.png')}
               />
               <Text
                 style={{ color: focused ? '#95AE45' : 'black', fontSize: 13 }}>
@@ -104,14 +104,14 @@ const Tabbar = () => {
             <View style={{ alignItems: 'center' }}>
               <Image
                 style={{
-                  width: 20,
-                  height: 20,
-                  tintColor: focused ? '#95AE45' : 'black',
+                  width: 25,
+                  height: 25,
+                  tintColor: focused ? '#859c3e' : 'black',
                 }}
-                source={require('../../icon/clipboard.png')}
+                source={require('../../icon/order_table.png')}
               />
               <Text
-                style={{ color: focused ? '#95AE45' : 'black', fontSize: 13 }}>
+                style={{ color: focused ? '#859c3e' : 'black', fontSize: 13 }}>
                 Đặt bàn
               </Text>
             </View>
@@ -126,11 +126,11 @@ const Tabbar = () => {
             <View style={{ alignItems: 'center' }}>
               <Image
                 style={{
-                  width: 20,
-                  height: 20,
-                  tintColor: focused ? '#95AE45' : 'black',
+                  width: 25,
+                  height: 25,
+                  tintColor: focused ? '#859c3e' : 'black',
                 }}
-                source={require('../../icon/clipboard.png')}
+                source={require('../../icon/order_history.png')}
               />
               <Text
                 style={{ color: focused ? '#95AE45' : 'black', fontSize: 13 }}>
@@ -148,14 +148,14 @@ const Tabbar = () => {
             <View style={{ alignItems: 'center' }}>
               <Image
                 style={{
-                  width: 20,
-                  height: 20,
-                  tintColor: focused ? '#95AE45' : 'black',
+                  width: 25,
+                  height: 25,
+                  tintColor: focused ? '#859c3e' : 'black',
                 }}
                 source={require('../../icon/user.png')}
               />
               <Text
-                style={{ color: focused ? '#95AE45' : 'black', fontSize: 13 }}>
+                style={{ color: focused ? '#859c3e' : 'black', fontSize: 13 }}>
                 Cá nhân
               </Text>
             </View>

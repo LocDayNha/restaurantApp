@@ -97,7 +97,7 @@ const HomeMenu = (props) => {
           />
           <Image
             style={styles.ic_search}
-            source={require('../../icon/ic_delete.png')}
+            
           />
         </View>
       </View>

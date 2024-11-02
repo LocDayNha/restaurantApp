@@ -53,12 +53,7 @@ const History_Table = (props) => {
             />
           </TouchableOpacity>
         </View>
-        <View style={styles.iconContainerRight}>
-          <Image
-            source={require('../../icon/notification_icon.png')}
-            style={styles.icon}
-          />
-        </View>
+        
       </ImageBackground>
 
       <View style={styles.content}>
