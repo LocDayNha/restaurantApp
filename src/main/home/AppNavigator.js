@@ -17,6 +17,9 @@ import VerifyRegister from '../Login/VerifyRegister';
 import BookingScreen from '../BookingScreen';
 import ReservationScreen from '../DetailsScreen';
 import History_Table from './History_Table';
+import CheckTypePayment from '../payment/CheckTypePayment';
+import VnPayWebView from '../payment/VnPayWebView';
+import OrderProcessing from '../payment/OrderProcessing';
 
 import { ConfirmPassword, ForgotPassword, Login2, Register } from '../Login';
 import DetailsScreen from '../DetailsScreen';
@@ -177,7 +180,7 @@ const Main = () => {
 const Appnavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="OnboardingScreen" component={OnboardingScreen} />
+      {/* <Stack.Screen name="OnboardingScreen" component={OnboardingScreen} />
       <Stack.Screen name="Login2" component={Login2} />
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       <Stack.Screen name="VerifyEmail" component={VerifyEmail} />
@@ -189,7 +192,10 @@ const Appnavigator = () => {
       <Stack.Screen name="ReservationScreen" component={ReservationScreen} />
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
-      <Stack.Screen name="OrderDetail" component={OrderDetail} />
+      <Stack.Screen name="OrderDetail" component={OrderDetail} /> */}
+      <Stack.Screen name="CheckTypePayment" component={CheckTypePayment} />
+      <Stack.Screen name="VnPayWebView" component={VnPayWebView} />
+      <Stack.Screen name="OrderProcessing" component={OrderProcessing} />
     </Stack.Navigator>
   );
 };
