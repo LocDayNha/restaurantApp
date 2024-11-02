@@ -14,29 +14,29 @@ const Login = () => {
 
             <Pressable style={styles.btnLoginfb}>
                 <Image style={styles.imageicon} source={require('../../image/facebook.png')}></Image>
-                <Text style={[styles.textLogin, { marginTop: 10 }]}>Continue with Facebook</Text>
+                <Text style={[styles.textLogin, { marginTop: 10 }]}>Tiếp tục đăng nhập bằng facebook</Text>
             </Pressable>
             <Pressable style={styles.btnLogingg}>
                 <Image style={[styles.imageicon, { marginLeft: '18%' }]} source={require('../../image/google.png')}></Image>
-                <Text style={[styles.textLogin, { marginTop: 10 }]}>Continue with Google</Text>
+                <Text style={[styles.textLogin, { marginTop: 10 }]}>Tiếp tục đăng nhập bằng google</Text>
             </Pressable>
             <Pressable style={styles.btnLoginapple}>
                 <Image style={[styles.imageicon, { marginLeft: '20%' }]} source={require('../../image/apple.png')}></Image>
-                <Text style={[styles.textLogin, { marginTop: 10 }]}>Continue with Apple</Text>
+                <Text style={[styles.textLogin, { marginTop: 10 }]}>Tiếp tục đăng nhập bằng apple</Text>
             </Pressable>
 
             <View style={styles.view}>
-                <Text style={styles.textor}>or</Text>
+                <Text style={styles.textor}>hoặc</Text>
             </View>
 
             <Pressable style={styles.btnLogin}>
-                <Text style={[styles.textLogin, { marginTop: 10, color: '#FFF' }]}>Sign in with Password</Text>
+                <Text style={[styles.textLogin, { marginTop: 10, color: '#FFF' }]}>Đăng nhập bằng mật khẩu</Text>
             </Pressable>
 
             <View style={[styles.view, { flexDirection: 'row' }]}>
-                <Text style={{ fontSize: 15 }}>Don't have an account?</Text>
+                <Text style={{ fontSize: 15 }}>Chưa có tài khoản? </Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-                    <Text style={styles.textSignup}>Sign up</Text>
+                    <Text style={styles.textSignup}>Đăng ký</Text>
                 </TouchableOpacity>
             </View>
 

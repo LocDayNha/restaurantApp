@@ -14,15 +14,15 @@ const Item_History_Table = ({data}) => {
             />
             <View style={styles.detailsContainer}>
               <View style={styles.row}>
-                <Text style={styles.label}>Time</Text>
+                <Text style={styles.label}>Thời gian</Text>
                 <Text style={styles.value}>{data.day}</Text>
               </View>
               <View style={styles.row}>
-                <Text style={styles.label}>Seats</Text>
+                <Text style={styles.label}>Chỗ ngồi</Text>
                 <Text style={styles.value}>{data.table_id.userNumber}</Text>
               </View>
               <View style={styles.row}>
-                <Text style={styles.label}>Table</Text>
+                <Text style={styles.label}>Bàn</Text>
                 <Text style={styles.value}>{data.table_id.number}</Text>
               </View>
             </View>

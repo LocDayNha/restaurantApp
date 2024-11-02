@@ -139,7 +139,7 @@ const ChooseTableScreen = (props) => {
         {/* Nút NEXT luôn hiển thị ở dưới cùng màn hình */}
         {selectedTable && (
           <TouchableOpacity onPress={() => navigation.navigate('BookingScreen', {sendNumber: number})} style={styles.nextButton}>
-            <Text style={styles.nextButtonText}>NEXT</Text>
+            <Text style={styles.nextButtonText}>Tiếp tục</Text>
           </TouchableOpacity>
         )}
       </View>

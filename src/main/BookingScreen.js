@@ -46,8 +46,7 @@ const BookingScreen = (props) => {
     const getData = async () => {
       const data = await AxiosInstance().post("/table/getByNumber", 
         {
-          number: params.sendNumber,
-          isOrder: false
+          number: params.sendNumber
         }
       );
       if (!data || data.lenght === 0) {

@@ -53,7 +53,7 @@ const Tabbar = () => {
         },
       }}>
       <Tab.Screen
-        name="Menu"
+        name="Món ăn"
         component={Home}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -68,14 +68,14 @@ const Tabbar = () => {
               />
               <Text
                 style={{ color: focused ? '#95AE45' : 'black', fontSize: 13 }}>
-                Menu
+                Món ăn
               </Text>
             </View>
           ),
         }}
       />
       <Tab.Screen
-        name="Món Ăn"
+        name="Đặt món"
         component={History}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -90,7 +90,7 @@ const Tabbar = () => {
               />
               <Text
                 style={{ color: focused ? '#95AE45' : 'black', fontSize: 13 }}>
-                Món Ăn
+                Đặt món
               </Text>
             </View>
           ),
@@ -119,7 +119,7 @@ const Tabbar = () => {
         }}
       />
       <Tab.Screen
-        name="Order"
+        name="Đơn hàng"
         component={Order}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -134,7 +134,7 @@ const Tabbar = () => {
               />
               <Text
                 style={{ color: focused ? '#95AE45' : 'black', fontSize: 13 }}>
-                Order
+                Đơn hàng
               </Text>
             </View>
           ),

@@ -31,8 +31,8 @@ const SuccessScreen  = ({ visible, onClose }) => {
             />
           </TouchableOpacity>
           <View style={styles.content}>
-            <Text style={styles.title}>Success</Text>
-            <Text style={styles.message}>Your table is reserved</Text>
+          <Text style={styles.title}>Thành công</Text>
+          <Text style={styles.message}>Bàn của bạn đã được đặt trước</Text>
             <View style={styles.iconContainer}>
               <Image
                 source={require('../image/success_icon.png')}
@@ -41,7 +41,7 @@ const SuccessScreen  = ({ visible, onClose }) => {
               />
             </View>
           </View>
-          <Text style={styles.note}>NOTE: Reservation is only for 1 hour</Text>
+          <Text style={styles.note}>Lưu ý: Bàn của bạn sau khi đặt chỉ có hiệu lực trong 1h</Text>
         </ImageBackground>
       </View>
     </Modal>
