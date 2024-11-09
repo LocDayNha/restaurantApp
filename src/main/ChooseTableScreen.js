@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     left: 3,
     right: 3,
     bottom: 0,
-    backgroundColor: 'green',//rgba(255, 0, 0, 0.5)
+    backgroundColor: '#66CC33',//rgba(255, 0, 0, 0.5)
     borderRadius: 10,
     zIndex: -1,
   },
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     left: 10,
     right: 10,
     bottom: 0,
-    backgroundColor: 'green',//rgba(255, 0, 0, 0.5)
+    backgroundColor: '#66CC33',//rgba(255, 0, 0, 0.5)
     borderRadius: 10,
     zIndex: -1,
   },

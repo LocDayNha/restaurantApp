@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 export default function VnPayWebView(props) {
   const [paymentUrl, setPaymentUrl] = useState('');
   const { idItemOrder, totalAmount } = props.route.params;
+  const navigation = useNavigation();
 
   const INJECTED_JAVASCRIPT = `(function() {
     let selector = document.querySelector("pre");
@@ -58,7 +59,7 @@ export default function VnPayWebView(props) {
             console.log('Transaction failed with responseCode:', responseData.responseCode);
           } else {
             console.log('Transaction successful');
-            navigation.navigate('CheckTypePayment');
+            navigation.navigate('Main');
           }
         }
       }}

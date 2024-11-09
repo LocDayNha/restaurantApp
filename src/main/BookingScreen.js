@@ -188,11 +188,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   label: {
-    color: '#AAAAAA',
+    color: 'black',
     fontSize: 16,
   },
   value: {
-    color: '#FFFFFF',
+    color: 'black',
     fontSize: 16,
   },
   row: {

@@ -8,10 +8,6 @@ const Item_Booking_Screen = ({data, onPress}) => {
             {/* Bạn có thể thêm các thông tin khác ở đây */}
           </View>
           <View style={styles.tableImageRow}>
-            <Image
-              source={require('../image/image_booking.png')}
-              style={styles.tableImage}
-            />
             <View style={styles.detailsContainer}>
               <View style={styles.row}>
                 <Text style={styles.label}>Thời gian</Text>
@@ -73,24 +69,25 @@ const styles = StyleSheet.create({
       padding: 20,
     },
     headerText: {
-      color: '#fff',
+      color: 'black',
+      fontWeight:'bold',
       fontSize: 24,
     },
     title: {
-      color: '#fff',
+      color: 'black',
       fontSize: 32,
       fontWeight: 'bold',
       marginTop: 10,
     },
     card: {
       height: 140,
-      backgroundColor: '#2c2c2e',
       borderRadius: 10,
       padding: 20,
       marginTop: 5,
+      backgroundColor:'#fff'
     },
     restaurantName: {
-      color: '#fff',
+      color: 'black',
       fontSize: 18,
       fontWeight: 'bold',
     },
@@ -122,12 +119,14 @@ const styles = StyleSheet.create({
       flex: 1,
     },
     label: {
-      color: '#AAAAAA',
+      color: 'black',
       fontSize: 16,
+      fontWeight:'bold'
     },
     value: {
-      color: '#FFFFFF',
+      color: 'black',
       fontSize: 16,
+      fontWeight:'bold'
     },
     row: {
       flexDirection: 'row',

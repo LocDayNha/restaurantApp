@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   },
   card: {
     height: 200,
-    backgroundColor: '#2c2c2e',
+    backgroundColor: '#fff',
     borderRadius: 10,
     padding: 20,
     marginTop: 5,
@@ -122,12 +122,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   label: {
-    color: '#AAAAAA',
+    color: 'black',
     fontSize: 16,
+    fontWeight:'bold'
   },
   value: {
-    color: '#FFFFFF',
+    color: 'black',
     fontSize: 16,
+    fontWeight:'bold'
   },
   row: {
     flexDirection: 'row',

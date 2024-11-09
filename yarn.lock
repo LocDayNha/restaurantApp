@@ -6553,7 +6553,7 @@ react-native-swiper@^1.6.0:
   dependencies:
     prop-types "^15.5.10"
 
-  react-native-webview@^13.12.3:
+react-native-webview@^13.12.3:
   version "13.12.3"
   resolved "https://registry.npmjs.org/react-native-webview/-/react-native-webview-13.12.3.tgz"
   integrity sha512-Y1I5YyDYyE7NC96RHLhd2nxh7ymLYOYLTefgx5ixxw2OToQK0ow3OJ+o77QcI1Tuevj5PCxwqC/14ceS/7yPJQ==
