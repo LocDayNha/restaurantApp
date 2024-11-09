@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -17,24 +17,24 @@ import AxiosInstance from '../../util/AxiosInstance';
 import { AppContext } from '../../util/AppContext';
 
 const History_Table = (props) => {
-  const {navigation} = props
-  const {infoUser} = useContext(AppContext)
-  
+  const { navigation } = props
+  const { infoUser } = useContext(AppContext)
+
   // Lấy API danh sách lịch sử đặt bàn
   const [dataTable, setDataTable] = useState([]);
   useEffect(() => {
     const getData = async () => {
       const data = await AxiosInstance().get("/booking/getByUser/" + infoUser._id);
-      if (!data || data.lenght === 0) {
+      if (data) {
+        setDataTable(data.listBooking);
+      } else {
         ToastAndroid.show("Lấy dữ liệu thấy bại", ToastAndroid.SHORT);
-        console.log("Lay du lieu that bai")
-      } else { 
-        setDataTable(data);  
+        console.log("Lay du lieu that bai");
       }
     };
     getData();
 
-  return () => {}
+    return () => { }
   }, [])
 
   return (

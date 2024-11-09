@@ -27,6 +27,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeMenu from './src/main/home/HomeMenu';
 import Setting from './src/main/home/Setting';
 import { AppContextProvider } from './src/util/AppContext';
+import VnPayWebView from './src/main/payment/VnPayWebView';
+import CheckTypePayment from './src/main/payment/CheckTypePayment';
+import OrderProcessing from './src/main/payment/OrderProcessing';
 import LoginGoogle from './src/test/LoginGoogle';
 import LoginFacebook from './src/test/LoginFacebook';
 
@@ -35,29 +38,12 @@ const App = () => {
 
   const [isShowSplash, setIsShowSplash] = useState(true);
 
-  // useEffect(() => {
-  //   const timeout = setTimeout(() => {
-  //     setIsShowSplash(false);
-  //   }, 3500);
-
-  //   return () => clearTimeout(timeout);
-  // }, []);
-
   return (
-    <>
-      {/* <StatusBar barStyle="dark-content" />
-      {isShowSplash ? (
-        <Welcome />
-      ) : ( */}
-      <AppContextProvider>
-        <NavigationContainer>
-          <AppNavigator />
-        </NavigationContainer>
-      </AppContextProvider>
-      {/* <LoginGoogle /> */}
-      {/* <LoginFacebook /> */}
-      {/* )} */}
-    </>
+    <AppContextProvider>
+      <NavigationContainer>
+        <AppNavigator />
+      </NavigationContainer>
+    </AppContextProvider>
   );
 };
 

@@ -4212,7 +4212,7 @@ internal-slot@^1.0.7:
     hasown "^2.0.0"
     side-channel "^1.0.4"
 
-invariant@^2.2.4:
+invariant@^2.2.4, invariant@2.2.4:
   version "2.2.4"
   resolved "https://registry.npmjs.org/invariant/-/invariant-2.2.4.tgz"
   integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
@@ -6552,6 +6552,14 @@ react-native-swiper@^1.6.0:
   integrity sha512-OnkTTZi+9uZUgy0uz1I9oYDhCU3z36lZn+LFsk9FXPRelxb/KeABzvPs3r3SrHWy1aA67KGtSFj0xNK2QD0NJQ==
   dependencies:
     prop-types "^15.5.10"
+
+  react-native-webview@^13.12.3:
+  version "13.12.3"
+  resolved "https://registry.npmjs.org/react-native-webview/-/react-native-webview-13.12.3.tgz"
+  integrity sha512-Y1I5YyDYyE7NC96RHLhd2nxh7ymLYOYLTefgx5ixxw2OToQK0ow3OJ+o77QcI1Tuevj5PCxwqC/14ceS/7yPJQ==
+  dependencies:
+    escape-string-regexp "^4.0.0"
+    invariant "2.2.4"
 
 react-native@*, "react-native@^0.0.0-0 || >=0.65 <1.0", react-native@^0.70.0, "react-native@>= 0.64.3", react-native@>=0.40.0, react-native@>=0.63.3:
   version "0.70.0"

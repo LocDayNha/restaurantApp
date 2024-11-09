@@ -2,15 +2,15 @@ import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Platform, ToastAndroid } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AxiosInstance from '../util/AxiosInstance';
-import {AppContext} from '../util/AppContext'
+import { AppContext } from '../util/AppContext'
 
 const DetailsScreen = (props) => {
-  const {navigation, route} = props
-  const {params} = route
+  const { navigation, route } = props
+  const { params } = route
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   //get info user
-  const {infoUser} = useContext(AppContext)
+  const { infoUser } = useContext(AppContext)
 
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -19,23 +19,23 @@ const DetailsScreen = (props) => {
   };
 
   const formatDate = (date) => {
-    return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
   };
 
   //oder table
   const OrderTable = async () => {
-    const data = await AxiosInstance().post("/booking/add", 
+    const data = await AxiosInstance().post("/booking/add",
       {
         user_id: infoUser._id,
-        table_id: params.table._id ,
-        day: date
+        table_id: params.table._id,
+        dayBooking: formatDate(date)
       }
     );
-    if (data.status == true) {
-      ToastAndroid.show("Đặt bàn thành công", ToastAndroid.SHORT);
-      navigation.goBack()
+    if (data.status == 400) {
+      ToastAndroid.show("Đặt bàn thất bại", ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show("Đặt bàn that bai", ToastAndroid.SHORT);
+      ToastAndroid.show("Đặt bàn thành công", ToastAndroid.SHORT);
+      navigation.goBack();
     }
   };
   return (
@@ -48,8 +48,8 @@ const DetailsScreen = (props) => {
           <Text style={styles.value}>Phoenix Restaurant</Text>
         </View>
 
-        <TouchableOpacity 
-          style={[styles.infoRow, styles.withBorder]} 
+        <TouchableOpacity
+          style={[styles.infoRow, styles.withBorder]}
           onPress={() => setShowDatePicker(true)}
         >
           <Text style={styles.label}>Ngày</Text>
@@ -82,7 +82,7 @@ const DetailsScreen = (props) => {
 
       </View>
 
-      <TouchableOpacity onPress={() => {OrderTable()}} style={styles.confirmButton}>
+      <TouchableOpacity onPress={() => { OrderTable() }} style={styles.confirmButton}>
         <Text style={styles.confirmText}>Xác nhận đặt bàn</Text>
       </TouchableOpacity>
     </View>
