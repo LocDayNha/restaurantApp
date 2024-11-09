@@ -37,13 +37,11 @@ const App = () => {
   const [isShowSplash, setIsShowSplash] = useState(true);
 
   return (
-    <>
-      <AppContextProvider>
-        <NavigationContainer>
-          <AppNavigator />
-        </NavigationContainer>
-      </AppContextProvider>
-    </>
+    <AppContextProvider>
+      <NavigationContainer>
+        <AppNavigator />
+      </NavigationContainer>
+    </AppContextProvider>
   );
 };
 

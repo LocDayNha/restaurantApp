@@ -3,20 +3,29 @@ import { React, useContext, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { AppContext } from '../../util/AppContext';
 
+
 const CheckTypePayment = (props) => {
+  const data = [
+    {
+      "_id" : "1",
+      "price": 1000000,
+      "quantity":5
+    }
+  ]
 
   const navigation = useNavigation();
   // const { idUser, infoUser } = useContext(AppContext);
-  const [totalPrice, setTotalPrice] = useState(100000);
-  const [data, setdata] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(1000000);
+  const [idItemOrder, setIdItemOrder] = useState('671c4e027c1a9afd4dd89d31');
+
 
   const payCod = () => {
 
   }
 
   const payVN = async () => {
-    console.log(totalPrice);
     navigation.navigate('VnPayWebView', {
+      idItemOrder: idItemOrder,
       totalAmount: totalPrice,
     });
   }
@@ -33,20 +42,9 @@ const CheckTypePayment = (props) => {
     <View style={styles.container}>
       <View style={styles.container1}>
         <View style={styles.container2}>
-          <TouchableOpacity style={styles.viewItem}>
-            <Text style={[styles.textPayment, { fontSize: 24 }]}>Thanh toán tiền mặt</Text>
-          </TouchableOpacity>
           <TouchableOpacity onPress={() => payVN()} style={[styles.viewItem, { flexDirection: 'row' }]}>
             <Image style={styles.imagePayment} source={require('../../image/VNPay.jpg')}></Image>
             <Text style={styles.textPayment}>Thanh toán VN Pay</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.viewItem, { flexDirection: 'row' }]}>
-            <Image style={styles.imagePayment} source={require('../../image/ZaloPay.png')}></Image>
-            <Text style={styles.textPayment}>Thanh toán Zalo Pay</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.viewItem, { flexDirection: 'row' }]}>
-            <Image style={styles.imagePayment} source={require('../../image/MoMo.png')}></Image>
-            <Text style={styles.textPayment}>Thanh toán MoMo</Text>
           </TouchableOpacity>
         </View>
       </View>

@@ -1,94 +1,67 @@
 import { View, Text, SafeAreaView } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { WebView } from 'react-native-webview';
-import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import OrderProcessing from '../payment/OrderProcessing';
 import AxiosIntance from '../../util/AxiosInstance';
-import OrderProcessingStatusEnum from '../../util/OrderProcessingStatusEnum';
-
+import { useNavigation } from '@react-navigation/native';
 
 export default function VnPayWebView(props) {
   const [paymentUrl, setPaymentUrl] = useState('');
-  const { totalAmount } = props.route.params;
-  const [orderProcessingStatus, setOrderProcessingStatus] = useState(
-    OrderProcessingStatusEnum.PROCESSING
-  );
-  const navigation = useNavigation();
+  const { idItemOrder, totalAmount } = props.route.params;
+
   const INJECTED_JAVASCRIPT = `(function() {
     let selector = document.querySelector("pre");
-    let url = selector.innerHTML;
-    selector.remove();
-    window.ReactNativeWebView.postMessage(url);
+    if (selector) {
+      let url = selector.innerHTML;
+      selector.remove();
+      window.ReactNativeWebView.postMessage(url);
+    }
   })();`;
 
-  const [isOrderProcessingLoading, setIsOrderProcessingLoading] = useState(true);
 
   useEffect(() => {
+    console.log('useEffect is called');
     const getVnPayPaymentUrl = async () => {
       try {
-        const result = await AxiosIntance().get(
-          `payment/vnpay/create_payment_url?amount=${totalAmount}`
-        );
-        setPaymentUrl(result.url);
-        setIsOrderProcessingLoading(false);
+        console.log('Calling API to get payment URL');
+        const result = await AxiosIntance().get("/payment/vnpay/create_payment_url?amount=" + totalAmount + "&idItemOrder=" + idItemOrder);
+        console.log('API response:', result);
+
+        if (result && result.url) {
+          setPaymentUrl(result.url);
+          console.log('Payment URL:', result.url);
+        } else {
+          console.log('No URL returned from API');
+        }
       } catch (error) {
-        setOrderProcessingStatus(OrderProcessingStatusEnum.FAILED);
-        setTimeout(() => {
-          navigation.navigate('CheckTypePayment');
-        }, 3000);
+        console.log('Error fetching payment URL:', error);
       }
     };
     getVnPayPaymentUrl();
-    return () => { };
   }, []);
 
-  const handleSubmitOrder = async () => {
-    try {
-      setOrderProcessingStatus(OrderProcessingStatusEnum.SUCCESSED);
-    } catch (error) {
-      setOrderProcessingStatus(OrderProcessingStatusEnum.FAILED);
-    } finally {
-      setTimeout(() => {
-        navigation.navigate('CheckTypePayment');
-      }, 3000);
-    }
-  };
-
   return (
-    <SafeAreaView style={{ flex: 1, paddingVertical: 24 }}>
-      {paymentUrl && isOrderProcessingLoading == false && (
-        <View style={{ flex: isOrderProcessingLoading ? 0 : 1 }}>
-          <WebView
-            source={{ uri: paymentUrl }}
-            injectedJavaScript={INJECTED_JAVASCRIPT}
-            onLoadStart={(event) => {
-              if (event.nativeEvent.url.includes('payment/vnpay/result')) {
-                setIsOrderProcessingLoading(true);
-              }
-            }}
-            onMessage={(event) => {
-              let responseUrl = event.nativeEvent.url;
-              if (responseUrl.includes('payment/vnpay/result')) {
-                let responseData = JSON.parse(event.nativeEvent.data);
-                if (responseData.responseCode !== '00') {
-                  setOrderProcessingStatus(OrderProcessingStatusEnum.FAILED);
-                  setTimeout(() => {
-                    setPaymentUrl('');
-                    navigation.navigate('CheckTypePayment');
-                  }, 3000);
-                  return;
-                }
-                setOrderProcessingStatus(OrderProcessingStatusEnum.PROCESSING);
-                handleSubmitOrder(responseData);
-              }
-            }}
-          />
-        </View>
-      )}
-
-      {isOrderProcessingLoading && <OrderProcessing status={orderProcessingStatus} />}
-    </SafeAreaView>
+    <WebView
+      source={{ uri: paymentUrl }}
+      injectedJavaScript={INJECTED_JAVASCRIPT}
+      onLoadStart={(event) => {
+        console.log('WebView started loading:', event.nativeEvent.url);
+        if (event.nativeEvent.url.includes('/payment/vnpay/result')) {
+          console.log('Navigation to result URL detected')
+        }
+      }}
+      onMessage={(event) => {
+        console.log('Message received from WebView:', event.nativeEvent.data);
+        let responseUrl = event.nativeEvent.url;
+        if (responseUrl.includes('/payment/vnpay/result')) {
+          let responseData = JSON.parse(event.nativeEvent.data);
+          if (responseData.responseCode !== '00') {
+            console.log('Transaction failed with responseCode:', responseData.responseCode);
+          } else {
+            console.log('Transaction successful');
+            navigation.navigate('CheckTypePayment');
+          }
+        }
+      }}
+    />
   );
 }

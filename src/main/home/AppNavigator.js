@@ -195,7 +195,6 @@ const Appnavigator = () => {
       <Stack.Screen name="OrderDetail" component={OrderDetail} /> */}
       <Stack.Screen name="CheckTypePayment" component={CheckTypePayment} />
       <Stack.Screen name="VnPayWebView" component={VnPayWebView} />
-      <Stack.Screen name="OrderProcessing" component={OrderProcessing} />
     </Stack.Navigator>
   );
 };
