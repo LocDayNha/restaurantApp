@@ -10,6 +10,7 @@ import {
   Dimensions,
 } from 'react-native';
 import AxiosInstance from '../../util/AxiosInstance';
+import { RefreshControl } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
@@ -30,6 +31,7 @@ const initialFoodItems = [
 const FoodOrderScreen = (props) => {
   const { navigation } = props;
   const [foodItems, setFoodItems] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   const getOrder = async () => {
     try {
@@ -44,6 +46,12 @@ const FoodOrderScreen = (props) => {
       console.log('Get Order Dishes Error:', error);
     }
   };
+
+  const RefreshData = async () => {
+    setRefreshing(true);
+    await getOrder();
+    setRefreshing(false);
+  }
 
   const clickDetail = (itemid) => {
     navigation.navigate("OrderDetail", { id: itemid });
@@ -98,6 +106,12 @@ const FoodOrderScreen = (props) => {
         keyExtractor={item => item._id}
         renderItem={renderItem}
         contentContainerStyle={styles.listContent}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={RefreshData}
+          />
+        }
       />
     </View>
   );

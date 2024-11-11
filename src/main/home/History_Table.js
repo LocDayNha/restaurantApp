@@ -15,10 +15,18 @@ import Item_Booking_Screen from '../../item/Item_Booking_Screen';
 import Item_History_Table from '../../item/Item_History_Table'
 import AxiosInstance from '../../util/AxiosInstance';
 import { AppContext } from '../../util/AppContext';
+import { RefreshControl } from 'react-native'
 
 const History_Table = (props) => {
   const { navigation } = props
   const { infoUser } = useContext(AppContext)
+  const [refreshing, setRefreshing] = useState(false);
+
+  const RefreshData = async () => {
+    setRefreshing(true);
+    await getData();
+    setRefreshing(false);
+  }
 
   // Lấy API danh sách lịch sử đặt bàn
   const [dataTable, setDataTable] = useState([]);
@@ -53,7 +61,7 @@ const History_Table = (props) => {
             />
           </TouchableOpacity>
         </View>
-        
+
       </ImageBackground>
 
       <View style={styles.content}>
@@ -63,6 +71,12 @@ const History_Table = (props) => {
           />}
           keyExtractor={item => item._id}
           showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={RefreshData}
+            />
+          }
         />
       </View>
     </View>

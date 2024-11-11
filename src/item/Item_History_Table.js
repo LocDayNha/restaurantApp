@@ -3,7 +3,7 @@ import React from 'react'
 
 const Item_History_Table = ({ data }) => {
   return (
-    <TouchableOpacity style={styles.card}>
+    <View style={styles.card}>
       <View style={styles.row}>
         {/* Bạn có thể thêm các thông tin khác ở đây */}
       </View>
@@ -27,7 +27,7 @@ const Item_History_Table = ({ data }) => {
           </View>
         </View>
       </View>
-    </TouchableOpacity>
+    </View>
   )
 }
 const styles = StyleSheet.create({
