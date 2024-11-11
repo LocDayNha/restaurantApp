@@ -128,7 +128,7 @@ const Login2 = () => {
         const profile = await Profile.getCurrentProfile();
         if (profile) {
 
-          const logFB = await AxiosInstance().post("/user/loginFacebook", { email: profile.userID, name: profile.name });
+          const logFB = await AxiosInstance().post("/user/loginFacebook", { email: profile.userID, name: profile.name, image: profile.imageURL });
           if (logFB && logFB.status) {
             setInfoUser(logFB.userMail);
             setIdUser(logFB.userMail._id);
