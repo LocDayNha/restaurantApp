@@ -32,6 +32,9 @@ import CheckTypePayment from './src/main/payment/CheckTypePayment';
 import OrderProcessing from './src/main/payment/OrderProcessing';
 import LoginGoogle from './src/test/LoginGoogle';
 import LoginFacebook from './src/test/LoginFacebook';
+import BillScreen from './src/test/review/BillScreen';
+import RatingScreen from './src/test/review/RatingScreen';
+import ReviewScreen from './src/test/review/ReviewScreen';
 
 const App = () => {
   console.warn = () => { };
@@ -39,11 +42,14 @@ const App = () => {
   const [isShowSplash, setIsShowSplash] = useState(true);
 
   return (
-    <AppContextProvider>
-      <NavigationContainer>
-        <AppNavigator />
-      </NavigationContainer>
-    </AppContextProvider>
+    // <AppContextProvider>
+    //   <NavigationContainer>
+    //     <AppNavigator />
+    //   </NavigationContainer>
+    // </AppContextProvider>
+    // <BillScreen/>
+    <RatingScreen/>
+    // <ReviewScreen/>
   );
 };
 
