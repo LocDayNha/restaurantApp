@@ -19,23 +19,35 @@ const DetailsScreen = (props) => {
   };
 
   const formatDate = (date) => {
-    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
   };
 
   //oder table
   const OrderTable = async () => {
-    const data = await AxiosInstance().post("/booking/add",
-      {
-        user_id: infoUser._id,
-        table_id: params.table._id,
-        dayBooking: formatDate(date)
-      }
-    );
-    if (data.status == 400) {
-      ToastAndroid.show("Đặt bàn thất bại", ToastAndroid.SHORT);
+
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+    const todayFormatted = formatDate(currentDate);
+
+    if (formatDate(date) <= todayFormatted) {
+      ToastAndroid.show("Ngày không hợp lệ", ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show("Đặt bàn thành công", ToastAndroid.SHORT);
-      navigation.goBack();
+      const data = await AxiosInstance().post("/booking/add",
+        {
+          user_id: infoUser._id,
+          table_id: params.table._id,
+          dayBooking: formatDate(date)
+        }
+      );
+      if (data.status) {
+        ToastAndroid.show("Đặt bàn thành công", ToastAndroid.SHORT);
+        navigation.goBack();
+      } else {
+        ToastAndroid.show("Đặt bàn thất bại", ToastAndroid.SHORT);
+      }
     }
   };
   return (

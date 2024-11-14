@@ -20,7 +20,7 @@ const Item_List_Order = (props) => {
           list.push(value)
           try {
             await AsyncStorage.setItem('orther', JSON.stringify(list));
-            ToastAndroid.show("Món ăn đã duoc them", ToastAndroid.SHORT);
+            ToastAndroid.show("Món ăn đã thêm", ToastAndroid.SHORT);
           } catch (error) {
             console.log(error)
           }

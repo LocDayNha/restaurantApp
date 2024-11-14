@@ -35,7 +35,7 @@ const FoodOrderScreen = (props) => {
 
   const getOrder = async () => {
     try {
-      const orderList = await AxiosInstance().get("/order/get");
+      const orderList = await AxiosInstance().get("/order/getToday");
       if (orderList) {
         console.log('Get Order List Thanh Cong');
         setFoodItems(orderList);
@@ -85,7 +85,7 @@ const FoodOrderScreen = (props) => {
           </View>
           <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', width: '100%', height: 50, marginTop: '2%' }}>
             <Text style={styles.totalPrice}>{item.totalMoney} vnđ</Text>
-            <TouchableOpacity onPress={() => clickDetail(item._id)} style={[styles.paymentStatusContainer, { backgroundColor: paymentStatusStyle.backgroundColor },]}>
+            <TouchableOpacity onPress={() => clickDetail(item._id)} style={[styles.paymentStatusContainer, { backgroundColor: paymentStatusStyle.backgroundColor }]} disabled={item.isPayment}>
               {
                 item.paymentStatus ?
                   <Text style={[styles.paymentStatus, {}]}>Thanh Toán</Text> :

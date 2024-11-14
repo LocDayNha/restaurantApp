@@ -1,4 +1,4 @@
-import { View, Text, FlatList, StyleSheet, Pressable, TextInput } from 'react-native'
+import { View, Text, FlatList, StyleSheet, Pressable, TextInput, ToastAndroid } from 'react-native'
 import { React, useState, useEffect } from 'react'
 import Item_List_History from '../../item/Item_List_History';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -66,12 +66,16 @@ const History = (props) => {
   const [monAn, setMonAn] = useState('');
   const orderDishes = async () => {
     try {
-      const dataFood = await AxiosInstance().post("/order/addNew", { tableNumber: soBan, nameUser: nguoiDung, dishes: data });
-      if (dataFood) {
-        console.log('Order Thanh Cong');
-        deleteAllItem();
+      if (!soBan || !nguoiDung || data.length === 0) {
+        ToastAndroid.show("Thiếu thông tin", ToastAndroid.SHORT);
       } else {
-        console.log('Order That Bai');
+        const dataFood = await AxiosInstance().post("/order/addNew", { tableNumber: soBan, nameUser: nguoiDung, dishes: data });
+        if (dataFood) {
+          console.log('Order Thanh Cong');
+          deleteAllItem();
+        } else {
+          console.log('Order That Bai');
+        }
       }
     } catch (error) {
       console.log('Order Dishes Error:', error);
