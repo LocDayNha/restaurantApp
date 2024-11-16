@@ -41,7 +41,7 @@ const reviews = [
   {
     id: '5',
     name: 'Điêu Thuyền',
-    rating: 2,
+    rating: 5,
     time: '2 mins ago',
     review: 'Nhà hàng đặt bàn hơi lâu',
     avatar: 'https://randomuser.me/api/portraits/women/3.jpg',
@@ -55,21 +55,117 @@ const reviews = [
     review: 'Nhà hàng đặt bàn hơi lâu',
     avatar: 'https://randomuser.me/api/portraits/women/3.jpg',
     media: require('../../image/goiga.png'),
+  },{
+    id: '7',
+    name: 'Điêu Thuyền',
+    rating: 1,
+    time: '2 mins ago',
+    review: 'Nhà hàng đặt bàn hơi lâu',
+    avatar: 'https://randomuser.me/api/portraits/women/3.jpg',
+    media: require('../../image/goiga.png'),
+  },{
+    id: '8',
+    name: 'Điêu Thuyền',
+    rating: 1,
+    time: '2 mins ago',
+    review: 'Nhà hàng đặt bàn hơi lâu',
+    avatar: 'https://randomuser.me/api/portraits/women/3.jpg',
+    media: require('../../image/goiga.png'),
+  },{
+    id: '9',
+    name: 'Điêu Thuyền',
+    rating: 1,
+    time: '2 mins ago',
+    review: 'Nhà hàng đặt bàn hơi lâu',
+    avatar: 'https://randomuser.me/api/portraits/women/3.jpg',
+    media: require('../../image/goiga.png'),
+  },{
+    id: '10',
+    name: 'Điêu Thuyền',
+    rating: 1,
+    time: '2 mins ago',
+    review: 'Nhà hàng đặt bàn hơi lâu',
+    avatar: 'https://randomuser.me/api/portraits/women/3.jpg',
+    media: require('../../image/goiga.png'),
+  },{
+    id: '11',
+    name: 'Điêu Thuyền',
+    rating: 1,
+    time: '2 mins ago',
+    review: 'Nhà hàng đặt bàn hơi lâu',
+    avatar: 'https://randomuser.me/api/portraits/women/3.jpg',
+    media: require('../../image/goiga.png'),
+  },{
+    id: '12',
+    name: 'Điêu Thuyền',
+    rating: 1,
+    time: '2 mins ago',
+    review: 'Nhà hàng đặt bàn hơi lâu',
+    avatar: 'https://randomuser.me/api/portraits/women/3.jpg',
+    media: require('../../image/goiga.png'),
+  },{
+    id: '13',
+    name: 'Điêu Thuyền',
+    rating: 1,
+    time: '2 mins ago',
+    review: 'Nhà hàng đặt bàn hơi lâu',
+    avatar: 'https://randomuser.me/api/portraits/women/3.jpg',
+    media: require('../../image/goiga.png'),
+  },{
+    id: '14',
+    name: 'Điêu Thuyền',
+    rating: 1,
+    time: '2 mins ago',
+    review: 'Nhà hàng đặt bàn hơi lâu',
+    avatar: 'https://randomuser.me/api/portraits/women/3.jpg',
+    media: require('../../image/goiga.png'),
+  },{
+    id: '15',
+    name: 'Điêu Thuyền',
+    rating: 1,
+    time: '2 mins ago',
+    review: 'Nhà hàng đặt bàn hơi lâu',
+    avatar: 'https://randomuser.me/api/portraits/women/3.jpg',
+    media: require('../../image/goiga.png'),
+  },{
+    id: '16',
+    name: 'Điêu Thuyền',
+    rating: 1,
+    time: '2 mins ago',
+    review: 'Nhà hàng đặt bàn hơi lâu',
+    avatar: 'https://randomuser.me/api/portraits/women/3.jpg',
+    media: require('../../image/goiga.png'),
+  },{
+    id: '17',
+    name: 'Điêu Thuyền',
+    rating: 3,
+    time: '2 mins ago',
+    review: 'Nhà hàng đặt bàn hơi lâu',
+    avatar: 'https://randomuser.me/api/portraits/women/3.jpg',
+    media: require('../../image/goiga.png'),
+  },{
+    id: '18',
+    name: 'Điêu Thuyền',
+    rating: 1,
+    time: '2 mins ago',
+    review: 'Nhà hàng đặt bàn hơi lâu',
+    avatar: 'https://randomuser.me/api/portraits/women/3.jpg',
+    media: require('../../image/goiga.png'),
   },
 ];
 
-// Function to generate stars based on rating
+// Chức năng tạo sao dựa trên xếp hạng
 const getStars = (rating) => {
   return '★'.repeat(rating) + '☆'.repeat(5 - rating);
 };
 
-// Function to calculate average rating
+// Hàm tính điểm đánh giá trung bình
 const calculateAverageRating = (reviews) => {
   const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
   return totalRating / reviews.length;
 };
 
-// Function to count the number of reviews for each star rating (1-5)
+// Hàm đếm số lượng đánh giá cho mỗi xếp hạng sao (1-5)
 const getStarCount = (reviews, starRating) => {
   return reviews.filter((review) => review.rating === starRating).length;
 };
@@ -83,7 +179,6 @@ const ReviewScreen = () => {
       <View style={styles.reviewContent}>
         <Text style={styles.name}>{item.name}</Text>
         <Text style={styles.stars}>{getStars(item.rating)}</Text>
-        <Text style={styles.time}>{item.time}</Text>
         <Text style={styles.reviewText}>{item.review}</Text>
 
         {/* Display media (image or video) if available */}

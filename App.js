@@ -48,8 +48,8 @@ const App = () => {
     //   </NavigationContainer>
     // </AppContextProvider>
     // <BillScreen/>
-    <RatingScreen/>
-    // <ReviewScreen/>
+    // <RatingScreen/>
+    <ReviewScreen/>
   );
 };
 

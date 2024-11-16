@@ -22,15 +22,26 @@ const RatingScreen = () => {
   };
 
   const handleSubmitRating = () => {
-    if (rating === 0 || !comment || !media) {
-      Alert.alert("Thông báo", "Vui lòng chọn mức đánh giá, viết chú thích và chọn hình ảnh hoặc video trước khi gửi.");
+    if (rating === 0 && !comment && !media) {
+      Alert.alert("Thông báo", "Vui lòng chọn mức đánh giá ,nhập chú thích và chọn hình ảnh trước khi gửi trước khi gửi.");
+    } else if (rating === 0 && !comment) {
+      Alert.alert("Thông báo", "Vui lòng chọn mức đánh giá và nhập chú thích trước khi gửi.");
+    } else if (rating === 0) {
+      Alert.alert("Thông báo", "Vui lòng chọn mức đánh giá trước khi gửi.");
+    } else if (!comment && !media) {
+      Alert.alert("Thông báo", "Vui lòng viết chú thích và chọn hình ảnh trước khi gửi.");
+    } else if (!comment) {
+      Alert.alert("Thông báo", "Vui lòng viết chú thích trước khi gửi.");
+    } else if (!media) {
+      Alert.alert("Thông báo", "Vui lòng chọn hình ảnh hoặc video trước khi gửi.");
     } else {
-      Alert.alert("Cảm ơn bạn đã đóng góp ý kiến !");
+      Alert.alert("Cảm ơn bạn đã đóng góp ý kiến!");
       setComment('');
       setMedia(null);
       setRating(0);
     }
   };
+  
 
   const getRatingDescription = () => {
     switch (rating) {
@@ -53,23 +64,17 @@ const RatingScreen = () => {
     if (Platform.OS === 'android') {
       try {
         const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.CAMERA,
-          {
-            title: "Camera Permission",
-            message: "App cần quyền truy cập vào camera để chụp ảnh hoặc quay video.",
-            buttonNeutral: "Hỏi lại sau",
-            buttonNegative: "Hủy",
-            buttonPositive: "Đồng ý",
-          }
+          PermissionsAndroid.PERMISSIONS.CAMERA
         );
         return granted === PermissionsAndroid.RESULTS.GRANTED;
       } catch (err) {
-        console.warn(err);
+        console.warn("Lỗi khi yêu cầu quyền camera:", err);
         return false;
       }
     }
     return true; 
   };
+  
 
   const chooseImage = async () => {
     const cameraPermission = await requestCameraPermission();
@@ -97,11 +102,12 @@ const RatingScreen = () => {
 
   const handleMediaResponse = (response) => {
     if (response.didCancel) {
-      console.log('User cancelled media picker');
+      console.log('Người dùng đã hủy.');
     } else if (response.error) {
-      console.log('MediaPicker Error: ', response.error);
+      console.log('Lỗi: ', response.error);
     } else {
       setMedia(response.assets[0]);
+      console.log('Đã chọn phương tiện:', selectedMedia);
     }
   };
 
@@ -126,7 +132,7 @@ const RatingScreen = () => {
           {media.type.startsWith('image/') ? (
             <Image source={{ uri: media.uri }} style={styles.mediaImage} />
           ) : (
-            <Text style={styles.mediaText}>Video đã chọn: {media.uri}</Text>
+            <Text style={styles.mediaText}>Video đã chọn:{media.uri}</Text>
           )}
         </View>
       )}
