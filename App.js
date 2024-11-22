@@ -32,6 +32,7 @@ import CheckTypePayment from './src/main/payment/CheckTypePayment';
 import OrderProcessing from './src/main/payment/OrderProcessing';
 import LoginGoogle from './src/test/LoginGoogle';
 import LoginFacebook from './src/test/LoginFacebook';
+import UploadImage from './src/test/UploadImage';
 
 const App = () => {
   console.warn = () => { };
@@ -39,11 +40,14 @@ const App = () => {
   const [isShowSplash, setIsShowSplash] = useState(true);
 
   return (
-    <AppContextProvider>
-      <NavigationContainer>
-        <AppNavigator />
-      </NavigationContainer>
-    </AppContextProvider>
+    // <AppContextProvider>
+    //   <NavigationContainer>
+    //     <AppNavigator />
+    //   </NavigationContainer>
+    // </AppContextProvider>
+    <SafeAreaView>
+      <UploadImage />
+    </SafeAreaView>
   );
 };
 
