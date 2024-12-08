@@ -10,6 +10,7 @@ import {
   Dimensions,
 } from 'react-native';
 import AxiosInstance from '../../util/AxiosInstance';
+import { RefreshControl } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
@@ -30,10 +31,11 @@ const initialFoodItems = [
 const FoodOrderScreen = (props) => {
   const { navigation } = props;
   const [foodItems, setFoodItems] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   const getOrder = async () => {
     try {
-      const orderList = await AxiosInstance().get("/order/get");
+      const orderList = await AxiosInstance().get("/order/getToday");
       if (orderList) {
         console.log('Get Order List Thanh Cong');
         setFoodItems(orderList);
@@ -44,6 +46,12 @@ const FoodOrderScreen = (props) => {
       console.log('Get Order Dishes Error:', error);
     }
   };
+
+  const RefreshData = async () => {
+    setRefreshing(true);
+    await getOrder();
+    setRefreshing(false);
+  }
 
   const clickDetail = (itemid) => {
     navigation.navigate("OrderDetail", { id: itemid });
@@ -77,7 +85,7 @@ const FoodOrderScreen = (props) => {
           </View>
           <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', width: '100%', height: 50, marginTop: '2%' }}>
             <Text style={styles.totalPrice}>{item.totalMoney} vnđ</Text>
-            <TouchableOpacity onPress={() => clickDetail(item._id)} style={[styles.paymentStatusContainer, { backgroundColor: paymentStatusStyle.backgroundColor },]}>
+            <TouchableOpacity onPress={() => clickDetail(item._id)} style={[styles.paymentStatusContainer, { backgroundColor: paymentStatusStyle.backgroundColor }]} disabled={item.isPayment}>
               {
                 item.paymentStatus ?
                   <Text style={[styles.paymentStatus, {}]}>Thanh Toán</Text> :
@@ -98,6 +106,12 @@ const FoodOrderScreen = (props) => {
         keyExtractor={item => item._id}
         renderItem={renderItem}
         contentContainerStyle={styles.listContent}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={RefreshData}
+          />
+        }
       />
     </View>
   );

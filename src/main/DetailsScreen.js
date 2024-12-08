@@ -2,15 +2,15 @@ import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Platform, ToastAndroid } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AxiosInstance from '../util/AxiosInstance';
-import {AppContext} from '../util/AppContext'
+import { AppContext } from '../util/AppContext'
 
 const DetailsScreen = (props) => {
-  const {navigation, route} = props
-  const {params} = route
+  const { navigation, route } = props
+  const { params } = route
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   //get info user
-  const {infoUser} = useContext(AppContext)
+  const { infoUser } = useContext(AppContext)
 
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -19,28 +19,40 @@ const DetailsScreen = (props) => {
   };
 
   const formatDate = (date) => {
-    return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
   };
 
   //oder table
   const OrderTable = async () => {
-    const data = await AxiosInstance().post("/booking/add", 
-      {
-        user_id: infoUser._id,
-        table_id: params.table._id ,
-        day: date
-      }
-    );
-    if (data.status == true) {
-      ToastAndroid.show("Đặt bàn thành công", ToastAndroid.SHORT);
-      navigation.goBack()
+
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+    const todayFormatted = formatDate(currentDate);
+
+    if (formatDate(date) <= todayFormatted) {
+      ToastAndroid.show("Ngày không hợp lệ", ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show("Đặt bàn that bai", ToastAndroid.SHORT);
+      const data = await AxiosInstance().post("/booking/add",
+        {
+          user_id: infoUser._id,
+          table_id: params.table._id,
+          dayBooking: formatDate(date)
+        }
+      );
+      if (data.status) {
+        ToastAndroid.show("Đặt bàn thành công", ToastAndroid.SHORT);
+        navigation.goBack();
+      } else {
+        ToastAndroid.show("Đặt bàn thất bại", ToastAndroid.SHORT);
+      }
     }
   };
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Confirm reservation?</Text>
+      <Text style={styles.title}>Xác nhận đặt bàn?</Text>
 
       <View style={styles.infoContainer}>
         <View style={[styles.infoRow, styles.withBorder]}>
@@ -48,11 +60,11 @@ const DetailsScreen = (props) => {
           <Text style={styles.value}>Phoenix Restaurant</Text>
         </View>
 
-        <TouchableOpacity 
-          style={[styles.infoRow, styles.withBorder]} 
+        <TouchableOpacity
+          style={[styles.infoRow, styles.withBorder]}
           onPress={() => setShowDatePicker(true)}
         >
-          <Text style={styles.label}>Date</Text>
+          <Text style={styles.label}>Ngày</Text>
           <Text style={styles.value}>{formatDate(date)}</Text>
         </TouchableOpacity>
 
@@ -66,24 +78,24 @@ const DetailsScreen = (props) => {
         )}
 
         <View style={[styles.infoRow, styles.withBorder]}>
-          <Text style={styles.label}>Time</Text>
+          <Text style={styles.label}>Thời gian</Text>
           <Text style={styles.value}>{params.table.timeline_id.name}</Text>
         </View>
 
         <View style={[styles.infoRow, styles.withBorder]}>
-          <Text style={styles.label}>No of seats</Text>
+          <Text style={styles.label}>Số ghế ngồi</Text>
           <Text style={styles.value}>{params.table.userNumber}</Text>
         </View>
 
         <View style={styles.infoRow}>
-          <Text style={styles.label}>Table no</Text>
+          <Text style={styles.label}>Bàn số</Text>
           <Text style={styles.value}>{params.table.number}</Text>
         </View>
 
       </View>
 
-      <TouchableOpacity onPress={() => {OrderTable()}} style={styles.confirmButton}>
-        <Text style={styles.confirmText}>CONFIRM RESERVATION</Text>
+      <TouchableOpacity onPress={() => { OrderTable() }} style={styles.confirmButton}>
+        <Text style={styles.confirmText}>Xác nhận đặt bàn</Text>
       </TouchableOpacity>
     </View>
   );

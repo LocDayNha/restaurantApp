@@ -2,6 +2,9 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
 import React, { useState, useContext, useEffect } from 'react'
 import { AppContext } from '../../util/AppContext';
 import AxiosInstance from '../../util/AxiosInstance';
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import { Settings, LoginManager, Profile, LoginButton, } from 'react-native-fbsdk-next';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Setting = (props) => {
   const { navigation } = props;
@@ -21,18 +24,49 @@ const Setting = (props) => {
       setShowEmail(email)
   }, [infoUser])
 
+  const { setIsLogin, setInfoUser, setIdUser } = useContext(AppContext);
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem('token');
+
+      try {
+        await GoogleSignin.revokeAccess();
+        await GoogleSignin.signOut();
+      } catch (error) {
+        console.log('Google logout error:', error);
+      }
+
+      try {
+        LoginManager.logOut();
+      } catch (error) {
+        console.log('Facebook logout error:', error);
+      }
+
+      // setIsLogin(false);
+      // setInfoUser(null);
+      // setIdUser(null);
+
+      navigateToLogin();
+    } catch (error) {
+      ToastAndroid.show('Có lỗi xảy ra, vui lòng thử lại', ToastAndroid.SHORT);
+    }
+  };
+
+  const navigateToLogin = () => {
+    navigation.navigate("Login2");
+  };
 
   return (
     <View style={{ margin: '5%' }}>
 
       <View style={[styles.view2, { marginBottom: '5%' }]}>
-        <TouchableOpacity style={[styles.view3, { alignItems: 'center', width: 110, height: 110 }]}>
+        <View style={[styles.view3, { alignItems: 'center', width: 110, height: 110 }]}>
           {
             imgAvatar ?
               <Image style={styles.imageAvatar} source={{ uri: imgAvatar }} ></Image> :
               <Image style={styles.imageAvatar} source={require('../../image/user.png')} ></Image>
           }
-        </TouchableOpacity>
+        </View>
       </View>
 
       <View style={[styles.view2, { marginBottom: '5%' }]}>
@@ -43,49 +77,49 @@ const Setting = (props) => {
       <View style={[styles.view2, { borderBottomWidth: 1, borderColor: '#DDDDDD', marginBottom: '5%' }]}></View>
 
       <TouchableOpacity onPress={toProfile} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '33%' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '77%' }}>
           <Image style={styles.icon} source={require('../../icon/setting/user.png')}></Image>
-          <Text style={styles.text}>Edit Profile</Text>
+          <Text style={styles.text}>Chỉnh sửa thông tin cá nhân</Text>
         </View>
         <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate('History_Table')} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '26%' }}>
-          <Image style={styles.icon} source={require('../../icon/setting/armchair.png')}></Image>
-          <Text style={styles.text}>Dat ban</Text>
-        </View>
-        <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '28.5%' }}>
+          <Image style={styles.icon} source={require('../../icon/setting/armchair.png')}></Image>
+          <Text style={styles.text}>Đặt bàn</Text>
+        </View>
+        <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '37%' }}>
           <Image style={styles.icon} source={require('../../icon/setting/wallet.png')}></Image>
-          <Text style={styles.text}>Payment</Text>
+          <Text style={styles.text}>Thanh toán</Text>
         </View>
         <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
       </TouchableOpacity>
 
       <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '31%' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '34%' }}>
           <Image style={[styles.icon, { width: 20, height: 20 }]} source={require('../../icon/setting/language.png')}></Image>
-          <Text style={styles.text}>Language</Text>
+          <Text style={styles.text}>Ngôn ngữ</Text>
         </View>
         <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
       </TouchableOpacity>
 
       <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '33%' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '47%' }}>
           <Image style={styles.icon} source={require('../../icon/setting/eye.png')}></Image>
-          <Text style={styles.text}>Dark Mode</Text>
+          <Text style={styles.text}>Chế độ tối màu</Text>
         </View>
         <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
       </TouchableOpacity>
 
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '25%' }}>
+      <TouchableOpacity onPress={handleLogout} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '34.5%' }}>
           <Image style={styles.icon} source={require('../../icon/setting/out.png')}></Image>
-          <Text style={[styles.text, { color: 'red' }]}>Logout</Text>
+          <Text style={[styles.text, { color: 'red' }]}>Đăng xuất</Text>
         </View>
         <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
       </TouchableOpacity>
@@ -109,7 +143,7 @@ const styles = StyleSheet.create({
   imageAvatar: {
     width: 110,
     height: 110,
-    borderRadius:50
+    borderRadius: 50
   },
   iconEdit: {
     width: 25,

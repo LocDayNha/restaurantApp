@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -15,26 +15,34 @@ import Item_Booking_Screen from '../../item/Item_Booking_Screen';
 import Item_History_Table from '../../item/Item_History_Table'
 import AxiosInstance from '../../util/AxiosInstance';
 import { AppContext } from '../../util/AppContext';
+import { RefreshControl } from 'react-native'
 
 const History_Table = (props) => {
-  const {navigation} = props
-  const {infoUser} = useContext(AppContext)
-  
+  const { navigation } = props
+  const { infoUser } = useContext(AppContext)
+  const [refreshing, setRefreshing] = useState(false);
+
+  const RefreshData = async () => {
+    setRefreshing(true);
+    await getData();
+    setRefreshing(false);
+  }
+
   // Lấy API danh sách lịch sử đặt bàn
   const [dataTable, setDataTable] = useState([]);
   useEffect(() => {
     const getData = async () => {
       const data = await AxiosInstance().get("/booking/getByUser/" + infoUser._id);
-      if (!data || data.lenght === 0) {
+      if (data) {
+        setDataTable(data.listBooking);
+      } else {
         ToastAndroid.show("Lấy dữ liệu thấy bại", ToastAndroid.SHORT);
-        console.log("Lay du lieu that bai")
-      } else { 
-        setDataTable(data);  
+        console.log("Lay du lieu that bai");
       }
     };
     getData();
 
-  return () => {}
+    return () => { }
   }, [])
 
   return (
@@ -53,12 +61,7 @@ const History_Table = (props) => {
             />
           </TouchableOpacity>
         </View>
-        <View style={styles.iconContainerRight}>
-          <Image
-            source={require('../../icon/notification_icon.png')}
-            style={styles.icon}
-          />
-        </View>
+
       </ImageBackground>
 
       <View style={styles.content}>
@@ -68,6 +71,12 @@ const History_Table = (props) => {
           />}
           keyExtractor={item => item._id}
           showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={RefreshData}
+            />
+          }
         />
       </View>
     </View>

@@ -9,6 +9,7 @@ import {
   Dimensions,
 } from 'react-native';
 import AxiosInstance from '../../util/AxiosInstance';
+import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
@@ -18,21 +19,31 @@ const CheckoutScreen = (props) => {
 
   const [foodItems, setFoodItems] = useState({});
   const [list, setList] = useState([]);
+  const [totalPrice, setTotalPrice] = useState('');
+  const [idItemOrder, setIdItemOrder] = useState('');
+  const navigation = useNavigation();
 
   const getDataOrder = async () => {
     try {
       const orderList = await AxiosInstance().get("/order/getById/" + params.id);
       if (orderList) {
-        console.log('Get Order List By Id Thanh Cong');
         setFoodItems(orderList.list);
         setList(orderList.list.dishes);
-        console.log(orderList);
+        setTotalPrice(orderList.list.totalMoney);
+        setIdItemOrder(orderList.list._id);
       } else {
         console.log('Get Order List By Id That Bai');
       }
     } catch (error) {
       console.log('Get Order List By Id Error:', error);
     }
+  }
+
+  const payVN = async () => {
+    navigation.navigate('VnPayWebView', {
+      idItemOrder: idItemOrder,
+      totalAmount: totalPrice,
+    });
   }
 
   useEffect(() => {
@@ -65,7 +76,7 @@ const CheckoutScreen = (props) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Checkout</Text>
+      <Text style={styles.header}>Tiếp tục thanh toán</Text>
 
 
 
@@ -102,8 +113,8 @@ const CheckoutScreen = (props) => {
       </View>
 
       {/* Continue to Payment Button */}
-      <TouchableOpacity style={styles.paymentButton}>
-        <Text style={styles.paymentButtonText}>Continue to Payment</Text>
+      <TouchableOpacity style={styles.paymentButton} onPress={payVN}>
+        <Text style={styles.paymentButtonText}>Tiếp tục thanh toán</Text>
       </TouchableOpacity>
     </View>
   );
@@ -158,7 +169,7 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   quantityContainer: {
-    marginLeft:'85%'
+    marginLeft: '85%'
   },
   quantityText: {
     fontSize: 20,

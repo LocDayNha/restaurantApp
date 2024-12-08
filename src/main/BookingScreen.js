@@ -46,8 +46,7 @@ const BookingScreen = (props) => {
     const getData = async () => {
       const data = await AxiosInstance().post("/table/getByNumber", 
         {
-          number: params.sendNumber,
-          isOrder: false
+          number: params.sendNumber
         }
       );
       if (!data || data.lenght === 0) {
@@ -78,12 +77,7 @@ const BookingScreen = (props) => {
             />
           </TouchableOpacity>
         </View>
-        <View style={styles.iconContainerRight}>
-          <Image
-            source={require('../icon/notification_icon.png')}
-            style={styles.icon}
-          />
-        </View>
+        
       </ImageBackground>
 
       <View style={styles.content}>
@@ -96,11 +90,7 @@ const BookingScreen = (props) => {
           keyExtractor={item => item._id}
           showsVerticalScrollIndicator={false}
         />
-        <View style={styles.addButtonContainer}>
-          <TouchableOpacity onPress={() => {console.log(dataTable)}} style={styles.addButton}>
-            <Text style={styles.addButtonText}>+</Text>
-          </TouchableOpacity>
-        </View>
+       
       </View>
     </View>
   );
@@ -198,11 +188,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   label: {
-    color: '#AAAAAA',
+    color: 'black',
     fontSize: 16,
   },
   value: {
-    color: '#FFFFFF',
+    color: 'black',
     fontSize: 16,
   },
   row: {

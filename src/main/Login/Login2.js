@@ -9,11 +9,15 @@ import {
   ToastAndroid,
   ActivityIndicator, // Import ActivityIndicator
 } from 'react-native';
-import React, {useState, useContext} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import React, { useState, useContext, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {AppContext} from '../../util/AppContext';
+import { AppContext } from '../../util/AppContext';
 import AxiosInstance from '../../util/AxiosInstance';
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import { Settings, LoginManager, Profile, LoginButton, } from 'react-native-fbsdk-next';
+
+Settings.setAppID('2033816147055110');
 
 const Login2 = () => {
   const [email, setEmail] = useState('');
@@ -24,13 +28,13 @@ const Login2 = () => {
   const [loading, setLoading] = useState(false); // Add loading state
 
   const navigation = useNavigation();
-  const {setIsLogin, setInfoUser, setIdUser} = useContext(AppContext);
+  const { setIsLogin, setInfoUser, setIdUser } = useContext(AppContext);
 
   const validationForm = () => {
     let valid = true;
 
     if (!email) {
-      setEmailError('Vui lòng nhập email');
+      setEmailError('Vui lòng nhập email'); y
       valid = false;
     } else {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -59,7 +63,7 @@ const Login2 = () => {
 
     setLoading(true); // Set loading to true
 
-    let data = {email, password};
+    let data = { email, password };
     console.log(data);
 
     try {
@@ -67,7 +71,7 @@ const Login2 = () => {
       console.log(response);
 
       if (response && response.status) {
-        const {token, user} = response.returnData.data;
+        const { token, user } = response.returnData.data;
         await AsyncStorage.setItem('token', token);
         setIsLogin(true);
         setInfoUser(user);
@@ -87,18 +91,77 @@ const Login2 = () => {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      const user = userInfo.data.user;
+      const logGG = await AxiosInstance().post("/user/loginGoogle", { email: user.email, name: user.name, image: user.photo });
+      if (logGG && logGG.status) {
+        setInfoUser(logGG.userMail);
+        setIdUser(logGG.userMail._id);
+        navigateToMain();
+      } else {
+        console.log('Đăng nhập GG thất bại');
+      }
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        alert('User cancelled the login flow!');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        alert('Signin in progress');
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        alert('Google play services not available or outdated!');
+      } else {
+        console.log(error);
+      }
+    }
+  };
+
+  const handleFacebookLogin = async () => {
+    try {
+      const result = await LoginManager.logInWithPermissions([
+        'public_profile',
+      ]);
+      if (result.isCancelled) {
+        console.log('Login cancelled');
+      } else {
+        const profile = await Profile.getCurrentProfile();
+        if (profile) {
+
+          const logFB = await AxiosInstance().post("/user/loginFacebook", { email: profile.userID, name: profile.name, image: profile.imageURL });
+          if (logFB && logFB.status) {
+            setInfoUser(logFB.userMail);
+            setIdUser(logFB.userMail._id);
+            navigateToMain();
+          } else {
+            console.log('Đăng nhập FB thất bại');
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const navigateToMain = () => {
     navigation.navigate('Main');
   };
 
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        '338426560887-0obe6e1n0mvkjkrr6qjn36djt60ihfp3.apps.googleusercontent.com',
+    });
+  }, []);
+
   return (
-    <View style={{marginBottom: '5%', marginTop: '5%'}}>
+    <View style={{ marginBottom: '5%', marginTop: '5%' }}>
       <View style={styles.view2}>
         <Image style={styles.image} source={require('../../image/a.png')} />
         <Text style={styles.text}>Đăng nhập vào tài khoản</Text>
       </View>
 
-      <View style={[styles.view2, {marginTop: '5%'}]}>
+      <View style={[styles.view2, { marginTop: '5%' }]}>
         <View style={styles.inputContainer}>
           <TextInput
             placeholder="Email"
@@ -153,35 +216,35 @@ const Login2 = () => {
       </View>
 
       <TouchableOpacity
-        style={[styles.view2, {marginTop: '5%'}]}
+        style={[styles.view2, { marginTop: '5%' }]}
         onPress={() => navigation.navigate('VerifyEmail')}>
-        <Text style={[styles.textLogin, {color: '#000'}]}>Quên mật khẩu?</Text>
+        <Text style={[styles.textLogin, { color: '#000' }]}>Quên mật khẩu?</Text>
       </TouchableOpacity>
 
-      <View style={[styles.view2, {marginTop: '5%'}]}>
+      <View style={[styles.view2, { marginTop: '5%' }]}>
         <Pressable style={styles.btnLogin} onPress={onLogin}>
           {loading ? ( // Show ActivityIndicator when loading
             <ActivityIndicator size="small" color="#FFF" />
           ) : (
-            <Text style={[styles.textLogin, {marginTop: 10, color: '#FFF'}]}>
+            <Text style={[styles.textLogin, { marginTop: 10, color: '#FFF' }]}>
               Đăng nhập
             </Text>
           )}
         </Pressable>
       </View>
 
-      <View style={[styles.view2, {marginTop: '7%'}]}>
+      <View style={[styles.view2, { marginTop: '7%' }]}>
         <Text style={styles.textor}>hoặc tiếp tục với</Text>
       </View>
 
-      <View style={[styles.view3, {marginTop: '5%'}]}>
-        <TouchableOpacity style={styles.touc}>
+      <View style={[styles.view3, { marginTop: '5%' }]}>
+        <TouchableOpacity style={styles.touc} onPress={handleFacebookLogin}>
           <Image
             style={styles.imageTouc}
             source={require('../../image/facebook.png')}
           />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.touc}>
+        <TouchableOpacity style={styles.touc} onPress={handleGoogleLogin}>
           <Image
             style={styles.imageTouc}
             source={require('../../image/google.png')}
@@ -195,8 +258,8 @@ const Login2 = () => {
         </TouchableOpacity>
       </View>
 
-      <View style={[styles.view3, {marginTop: '5%'}]}>
-        <Text style={{fontSize: 15}}>Chưa có tài khoản?</Text>
+      <View style={[styles.view3, { marginTop: '5%' }]}>
+        <Text style={{ fontSize: 15 }}>Chưa có tài khoản?</Text>
         <TouchableOpacity onPress={() => navigation.navigate('Register')}>
           <Text style={styles.textSignup}>Đăng ký</Text>
         </TouchableOpacity>
