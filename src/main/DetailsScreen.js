@@ -1,16 +1,23 @@
-import React, { useContext, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Platform, ToastAndroid } from 'react-native';
+import React, {useContext, useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+  ToastAndroid,
+} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AxiosInstance from '../util/AxiosInstance';
-import { AppContext } from '../util/AppContext'
+import {AppContext} from '../util/AppContext';
 
-const DetailsScreen = (props) => {
-  const { navigation, route } = props
-  const { params } = route
+const DetailsScreen = props => {
+  const {navigation, route} = props;
+  const {params} = route;
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   //get info user
-  const { infoUser } = useContext(AppContext)
+  const {infoUser} = useContext(AppContext);
 
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -18,7 +25,7 @@ const DetailsScreen = (props) => {
     setDate(currentDate);
   };
 
-  const formatDate = (date) => {
+  const formatDate = date => {
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
@@ -27,26 +34,23 @@ const DetailsScreen = (props) => {
 
   //oder table
   const OrderTable = async () => {
-
     const currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
     const todayFormatted = formatDate(currentDate);
 
     if (formatDate(date) <= todayFormatted) {
-      ToastAndroid.show("Ngày không hợp lệ", ToastAndroid.SHORT);
+      ToastAndroid.show('Ngày không hợp lệ', ToastAndroid.SHORT);
     } else {
-      const data = await AxiosInstance().post("/booking/add",
-        {
-          user_id: infoUser._id,
-          table_id: params.table._id,
-          dayBooking: formatDate(date)
-        }
-      );
+      const data = await AxiosInstance().post('/booking/add', {
+        user_id: infoUser._id,
+        table_id: params.table._id,
+        dayBooking: formatDate(date),
+      });
       if (data.status) {
-        ToastAndroid.show("Đặt bàn thành công", ToastAndroid.SHORT);
+        ToastAndroid.show('Đặt bàn thành công', ToastAndroid.SHORT);
         navigation.goBack();
       } else {
-        ToastAndroid.show("Đặt bàn thất bại", ToastAndroid.SHORT);
+        ToastAndroid.show('Đặt bàn thất bại', ToastAndroid.SHORT);
       }
     }
   };
@@ -62,8 +66,7 @@ const DetailsScreen = (props) => {
 
         <TouchableOpacity
           style={[styles.infoRow, styles.withBorder]}
-          onPress={() => setShowDatePicker(true)}
-        >
+          onPress={() => setShowDatePicker(true)}>
           <Text style={styles.label}>Ngày</Text>
           <Text style={styles.value}>{formatDate(date)}</Text>
         </TouchableOpacity>
@@ -91,10 +94,13 @@ const DetailsScreen = (props) => {
           <Text style={styles.label}>Bàn số</Text>
           <Text style={styles.value}>{params.table.number}</Text>
         </View>
-
       </View>
 
-      <TouchableOpacity onPress={() => { OrderTable() }} style={styles.confirmButton}>
+      <TouchableOpacity
+        onPress={() => {
+          OrderTable();
+        }}
+        style={styles.confirmButton}>
         <Text style={styles.confirmText}>Xác nhận đặt bàn</Text>
       </TouchableOpacity>
     </View>

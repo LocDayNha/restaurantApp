@@ -1,7 +1,7 @@
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
-import React from 'react'
+import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
+import React from 'react';
 
-const Item_History_Table = ({ data }) => {
+const Item_History_Table = ({data}) => {
   return (
     <View style={styles.card}>
       <View style={styles.row}>
@@ -28,8 +28,8 @@ const Item_History_Table = ({ data }) => {
         </View>
       </View>
     </View>
-  )
-}
+  );
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -124,12 +124,12 @@ const styles = StyleSheet.create({
   label: {
     color: 'black',
     fontSize: 16,
-    fontWeight:'bold'
+    fontWeight: 'bold',
   },
   value: {
     color: 'black',
     fontSize: 16,
-    fontWeight:'bold'
+    fontWeight: 'bold',
   },
   row: {
     flexDirection: 'row',
@@ -158,4 +158,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Item_History_Table
+export default Item_History_Table;

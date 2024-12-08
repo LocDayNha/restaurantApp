@@ -7,7 +7,7 @@ import {
   ImageBackground,
   Image,
   FlatList,
-  ToastAndroid
+  ToastAndroid,
 } from 'react-native';
 
 import backgroundImage from '../image/bg_booking.png';
@@ -16,50 +16,48 @@ import AxiosInstance from '../util/AxiosInstance';
 
 const Table = [
   {
-    "id" : "111",
-    "number": 1,
-    "userNumber": 4
+    id: '111',
+    number: 1,
+    userNumber: 4,
   },
   {
-    "id" : "222",
-    "number": 2,
-    "userNumber": 4
+    id: '222',
+    number: 2,
+    userNumber: 4,
   },
   {
-    "id" : "333",
-    "number": 3,
-    "userNumber": 4
+    id: '333',
+    number: 3,
+    userNumber: 4,
   },
-]
+];
 
-const BookingScreen = (props) => {
-  const {navigation, route} = props
-  const {params} = route
+const BookingScreen = props => {
+  const {navigation, route} = props;
+  const {params} = route;
 
-  const movetoDetail= (item) => {
-    navigation.navigate('DetailsScreen', {table: item})
-  }
-  
+  const movetoDetail = item => {
+    navigation.navigate('DetailsScreen', {table: item});
+  };
+
   // Lấy API danh sách bàn
   const [dataTable, setDataTable] = useState([]);
   useEffect(() => {
     const getData = async () => {
-      const data = await AxiosInstance().post("/table/getByNumber", 
-        {
-          number: params.sendNumber
-        }
-      );
+      const data = await AxiosInstance().post('/table/getByNumber', {
+        number: params.sendNumber,
+      });
       if (!data || data.lenght === 0) {
-        ToastAndroid.show("Lấy dữ liệu thấy bại", ToastAndroid.SHORT);
-        console.log("Lay du lieu that bai")
-      } else { 
-        setDataTable(data);  
+        ToastAndroid.show('Lấy dữ liệu thấy bại', ToastAndroid.SHORT);
+        console.log('Lay du lieu that bai');
+      } else {
+        setDataTable(data);
       }
     };
     getData();
 
-  return () => {}
-  }, [])
+    return () => {};
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -77,20 +75,22 @@ const BookingScreen = (props) => {
             />
           </TouchableOpacity>
         </View>
-        
       </ImageBackground>
 
       <View style={styles.content}>
         <FlatList
           data={dataTable}
-          renderItem={({ item }) => <Item_Booking_Screen 
-          data={item}
-          onPress={()=>{movetoDetail(item)}} 
-          />}
+          renderItem={({item}) => (
+            <Item_Booking_Screen
+              data={item}
+              onPress={() => {
+                movetoDetail(item);
+              }}
+            />
+          )}
           keyExtractor={item => item._id}
           showsVerticalScrollIndicator={false}
         />
-       
       </View>
     </View>
   );

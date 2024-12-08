@@ -1,9 +1,18 @@
-import { View, Text, StyleSheet, Image, TextInput, FlatList, TouchableOpacity, ToastAndroid } from 'react-native';
-import React, { useMemo, useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TextInput,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import Item_List_Category from '../../item/Item_List_Category';
 import Item_List_Order from '../../item/Item_List_Order';
 import Slideshow from 'react-native-image-slider-show';
-import AxiosInstance from '../../util/AxiosInstance'
+import AxiosInstance from '../../util/AxiosInstance';
 
 const Banner = [
   {
@@ -17,73 +26,121 @@ const Banner = [
   },
 ];
 
-const HomeMenu = (props) => {
-  const { navigation } = props;
+const HomeMenu = props => {
+  const {navigation} = props;
 
   const toProfile = () => {
-    navigation.navigate("Profile")
-  }
+    navigation.navigate('Profile');
+  };
   const toHistory = () => {
-    navigation.navigate("History")
-  }
+    navigation.navigate('History');
+  };
 
-  const [position, setPosition] = useState(0); // slide ảnh quảng cáo
+  const [position, setPosition] = useState(0);
   const [idCategory, setidCategory] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  // get all menu
   const [dataMenu, setdataMenu] = useState([]);
   const getData = async () => {
-    const dataFood = await AxiosInstance().get("/menu/get");
-    if (!dataFood || dataFood.lenght === 0) {
-      console.log('Lấy dữ liệu thấy bại của /menu/get');
-    } else {
-      setdataMenu(dataFood);
+    setIsLoading(true);
+    try {
+      const dataFood = await AxiosInstance().get('/menu/get');
+      if (!dataFood || dataFood.length === 0) {
+        console.log('Lấy dữ liệu thất bại của /menu/get');
+      } else {
+        setdataMenu(dataFood);
+      }
+    } catch (error) {
+      console.error('Error fetching menu data:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  // get menu by category
+  const searchMenu = async query => {
+    setIsLoading(true);
+    try {
+      const searchResult = await AxiosInstance().get(
+        `/menu/search?name=${query}`,
+      );
+      if (!searchResult || searchResult.length === 0) {
+        console.log('Không tìm thấy kết quả cho tìm kiếm');
+      } else {
+        setdataMenu(searchResult);
+      }
+    } catch (error) {
+      console.error(
+        'Error searching menu:',
+        error.response ? error.response.data : error.message,
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const getMenuByCategory = async () => {
-    const dataByCategory = await AxiosInstance().get("/menu/getByCategory/" + idCategory);
-    if (!dataByCategory || dataByCategory.lenght === 0) {
-      console.log('Lấy dữ liệu thấy bại của /menu/getByCategory/');
-    } else {
-      setdataMenu(dataByCategory);
+    setIsLoading(true);
+    try {
+      const dataByCategory = await AxiosInstance().get(
+        '/menu/getByCategory/' + idCategory,
+      );
+      if (!dataByCategory || dataByCategory.length === 0) {
+        console.log('Lấy dữ liệu thất bại của /menu/getByCategory/');
+      } else {
+        setdataMenu(dataByCategory);
+      }
+    } catch (error) {
+      console.error('Error fetching menu by category:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  // get category
   const [dataCategory, setdataCategory] = useState([]);
   const getCategory = async () => {
-    const dataCate = await AxiosInstance().get("/category/get");
-    if (!dataCate || dataCate.lenght === 0) {
-      console.log('Lấy dữ liệu thấy bại của /category/get');
-    } else {
-      setdataCategory(dataCate);
+    try {
+      const dataCate = await AxiosInstance().get('/category/get');
+      if (!dataCate || dataCate.length === 0) {
+        console.log('Lấy dữ liệu thất bại của /category/get');
+      } else {
+        setdataCategory(dataCate);
+      }
+    } catch (error) {
+      console.error('Error fetching category data:', error);
     }
   };
 
   useEffect(() => {
-    getData(),
-      getCategory();
-    return () => {
-    }
-  }, [])
+    getData();
+    getCategory();
+  }, []);
 
   useEffect(() => {
     if (idCategory && idCategory !== null) {
       getMenuByCategory();
     }
-  }, [idCategory])
+  }, [idCategory]);
+
+  const handleSearch = text => {
+    setSearchQuery(text);
+    if (text.length > 0) {
+      searchMenu(text);
+    } else {
+      getData();
+    }
+  };
 
   const renderHeader = () => (
     <View>
-      {/* Header */}
       <View style={styles.header_container}>
         <Text style={styles.header}>Phoenix Restaurant</Text>
-          <Image style={styles.avata} source={require('../../image/logo_phoenixRestaurant.png')} />
+        <Image
+          style={styles.avatar}
+          source={require('../../image/logo_phoenixRestaurant.png')}
+        />
       </View>
 
-      {/* Tìm kiếm */}
       <View elevation={5} style={styles.searchContainer}>
         <View style={styles.search}>
           <Image
@@ -94,15 +151,12 @@ const HomeMenu = (props) => {
             placeholder="Tìm kiếm"
             placeholderTextColor={'#888'}
             style={styles.content_search}
+            onChangeText={handleSearch}
           />
-          <Image
-            style={styles.ic_search}
-            
-          />
+          <Image style={styles.ic_search} />
         </View>
       </View>
 
-      {/* Hình gì đây chưa xác định ?? */}
       <Slideshow
         containerStyle={styles.banner}
         height={180}
@@ -111,17 +165,16 @@ const HomeMenu = (props) => {
         scrollEnabled={true}
       />
 
-      {/* Danh sách loại món ăn */}
       <View style={styles.list_category}>
         <FlatList
           data={dataCategory}
-          renderItem={({ item }) => (
+          renderItem={({item}) => (
             <Item_List_Category
               data={item}
               onchangeIdCategory={setidCategory}
               onPress={getMenuByCategory}
-              bgcl={item._id === dataCategory._id ? '#95AE45' : '#ffffff'}
-              textColor={item._id === dataCategory._id ? 'white' : 'black'}
+              bgcl={item._id === idCategory ? '#95AE45' : '#ffffff'}
+              textColor={item._id === idCategory ? 'white' : 'black'}
             />
           )}
           keyExtractor={item => item._id}
@@ -134,33 +187,37 @@ const HomeMenu = (props) => {
   );
 
   return (
-    <FlatList
-      ListHeaderComponent={renderHeader}
-      data={dataMenu}
-      renderItem={({ item }) => <Item_List_Order data={item}/>}
-      keyExtractor={item => item._id}
-      numColumns={2}
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={styles.foodListContainer}
-    />
+    <View style={styles.container}>
+      {isLoading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <FlatList
+          ListHeaderComponent={renderHeader}
+          data={dataMenu}
+          renderItem={({item}) => <Item_List_Order data={item} />}
+          keyExtractor={item => item._id}
+          numColumns={2}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.foodListContainer}
+        />
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#ffffff',
+    backgroundColor: '#f8f8f8',
   },
   header: {
-    fontSize: 25,
+    fontSize: 28,
     fontWeight: 'bold',
-    color: 'black',
+    color: '#333',
     textAlign: 'center',
-    marginVertical: 10,
-    marginLeft: 10
+    marginVertical: 15,
   },
-  avata: {
+  avatar: {
     width: 60,
     height: 60,
     borderRadius: 30,
@@ -182,16 +239,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#ffffff',
+    backgroundColor: '#fff',
     width: '90%',
     height: 45,
-    borderRadius: 20,
-    shadowColor: 'black',
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 1,
+    borderRadius: 22.5,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 3},
+    shadowRadius: 3,
     shadowOpacity: 0.1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    elevation: 5,
   },
   ic_search: {
     width: 20,

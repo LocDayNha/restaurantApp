@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -10,9 +10,9 @@ import {
   Dimensions,
 } from 'react-native';
 import AxiosInstance from '../../util/AxiosInstance';
-import { RefreshControl } from 'react-native';
+import {RefreshControl} from 'react-native';
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 const initialFoodItems = [
   {
@@ -28,14 +28,14 @@ const initialFoodItems = [
   },
 ];
 
-const FoodOrderScreen = (props) => {
-  const { navigation } = props;
+const FoodOrderScreen = props => {
+  const {navigation} = props;
   const [foodItems, setFoodItems] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
 
   const getOrder = async () => {
     try {
-      const orderList = await AxiosInstance().get("/order/getToday");
+      const orderList = await AxiosInstance().get('/order/getToday');
       if (orderList) {
         console.log('Get Order List Thanh Cong');
         setFoodItems(orderList);
@@ -51,46 +51,64 @@ const FoodOrderScreen = (props) => {
     setRefreshing(true);
     await getOrder();
     setRefreshing(false);
-  }
+  };
 
-  const clickDetail = (itemid) => {
-    navigation.navigate("OrderDetail", { id: itemid });
-  }
+  const clickDetail = itemid => {
+    navigation.navigate('OrderDetail', {id: itemid});
+  };
 
   useEffect(() => {
     getOrder();
-  }, [])
-
+  }, []);
 
   const getPaymentStatusStyle = status => {
     return status
-      ? { color: '#008001', backgroundColor: '#00CC33', borderColor: '#C3E6CB' } // Green
-      : { color: '#FF0000', backgroundColor: '#FF3333', borderColor: '#F5C6CB' }; // Red
+      ? {color: '#008001', backgroundColor: '#00CC33', borderColor: '#C3E6CB'} // Green
+      : {color: '#FF0000', backgroundColor: '#FF3333', borderColor: '#F5C6CB'}; // Red
   };
 
-  const renderItem = ({ item }) => {
+  const renderItem = ({item}) => {
     const paymentStatusStyle = getPaymentStatusStyle(item.isPayment);
+
+    //định dạng giá tiền
+    const totalPrice = item.totalMoney
+      .toString()
+      .replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
     return (
       <View style={styles.foodCard}>
         <View style={styles.infoContainer}>
-          <Text style={[styles.tableInfo, { fontWeight: 'bold', fontSize: 25 }]}>
+          <Text style={[styles.tableInfo, {fontWeight: 'bold', fontSize: 25}]}>
             Ban {item.tableNumber}
           </Text>
-          <Text style={styles.tableInfo}>
-            {item.nameUser}
-          </Text>
-          <View style={{ flexDirection: 'row' }}>
-            <Text style={styles.userInfo}>{item.timeOrder} | {item.dayOrder}</Text>
+          <Text style={styles.tableInfo}>{item.nameUser}</Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={styles.userInfo}>
+              {item.timeOrder} | {item.dayOrder}
+            </Text>
           </View>
-          <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', width: '100%', height: 50, marginTop: '2%' }}>
-            <Text style={styles.totalPrice}>{item.totalMoney} vnđ</Text>
-            <TouchableOpacity onPress={() => clickDetail(item._id)} style={[styles.paymentStatusContainer, { backgroundColor: paymentStatusStyle.backgroundColor }]} disabled={item.isPayment}>
-              {
-                item.paymentStatus ?
-                  <Text style={[styles.paymentStatus, {}]}>Thanh Toán</Text> :
-                  <Text style={[styles.paymentStatus, {}]}>Thanh Toán</Text>
-              }
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'row',
+              width: '100%',
+              height: 50,
+              marginTop: '2%',
+            }}>
+            <Text style={styles.totalPrice}>{totalPrice} VNĐ</Text>
+            <TouchableOpacity
+              onPress={() => clickDetail(item._id)}
+              style={[
+                styles.paymentStatusContainer,
+                {backgroundColor: paymentStatusStyle.backgroundColor},
+              ]}
+              disabled={item.isPayment}>
+              {item.paymentStatus ? (
+                <Text style={[styles.paymentStatus, {}]}>Thanh Toán</Text>
+              ) : (
+                <Text style={[styles.paymentStatus, {}]}>Thanh Toán</Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>
@@ -107,10 +125,7 @@ const FoodOrderScreen = (props) => {
         renderItem={renderItem}
         contentContainerStyle={styles.listContent}
         refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={RefreshData}
-          />
+          <RefreshControl refreshing={refreshing} onRefresh={RefreshData} />
         }
       />
     </View>
@@ -142,12 +157,12 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginBottom: 15,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 3,
     height: 180,
-    width: '100%'
+    width: '100%',
   },
   foodImage: {
     width: 80,
@@ -157,7 +172,7 @@ const styles = StyleSheet.create({
     // top: -20,
   },
   infoContainer: {
-    margin: '5%'
+    margin: '5%',
   },
   userInfo: {
     color: '#000',
@@ -166,14 +181,14 @@ const styles = StyleSheet.create({
   tableInfo: {
     fontSize: 19,
     color: '#000',
-    marginBottom: '1%'
+    marginBottom: '1%',
   },
   totalPrice: {
     fontSize: 24,
     color: '#000',
     width: '60%',
     height: '100%',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   paymentStatusContainer: {
     borderRadius: 20,
@@ -185,10 +200,9 @@ const styles = StyleSheet.create({
   paymentStatus: {
     fontSize: 17,
     color: '#fff',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
-  deleteButton: {
-  },
+  deleteButton: {},
   icon: {
     width: 24,
     height: 24,

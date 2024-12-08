@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -9,13 +9,13 @@ import {
   Dimensions,
 } from 'react-native';
 import AxiosInstance from '../../util/AxiosInstance';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
-const CheckoutScreen = (props) => {
-  const { route } = props;
-  const { params } = route;
+const CheckoutScreen = props => {
+  const {route} = props;
+  const {params} = route;
 
   const [foodItems, setFoodItems] = useState({});
   const [list, setList] = useState([]);
@@ -25,7 +25,9 @@ const CheckoutScreen = (props) => {
 
   const getDataOrder = async () => {
     try {
-      const orderList = await AxiosInstance().get("/order/getById/" + params.id);
+      const orderList = await AxiosInstance().get(
+        '/order/getById/' + params.id,
+      );
       if (orderList) {
         setFoodItems(orderList.list);
         setList(orderList.list.dishes);
@@ -37,26 +39,30 @@ const CheckoutScreen = (props) => {
     } catch (error) {
       console.log('Get Order List By Id Error:', error);
     }
-  }
+  };
 
   const payVN = async () => {
     navigation.navigate('VnPayWebView', {
       idItemOrder: idItemOrder,
       totalAmount: totalPrice,
     });
-  }
+  };
 
   useEffect(() => {
     getDataOrder();
-  }, [])
+  }, []);
 
+  //đinh dạng giá tiền
+  const formatPrice = price => {
+    return price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+  };
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({item}) => (
     <View style={styles.orderCard}>
-      <Image source={{ uri: item.image }} style={styles.orderImage} />
-      <View style={{ width: '75%', marginLeft: '5%' }}>
+      <Image source={{uri: item.image}} style={styles.orderImage} />
+      <View style={{width: '75%', marginLeft: '5%'}}>
         <Text style={styles.title}>{item.name}</Text>
-        <Text style={[styles.price, { marginTop: '10%' }]}>{item.price} vnđ</Text>
+        <Text style={[styles.price, {marginTop: '10%'}]}>{item.price} vnđ</Text>
         <View style={styles.quantityContainer}>
           {/* <TouchableOpacity
     style={styles.quantityButton}
@@ -78,12 +84,10 @@ const CheckoutScreen = (props) => {
     <View style={styles.container}>
       <Text style={styles.header}>Tiếp tục thanh toán</Text>
 
-
-
       {/* Food List */}
       <FlatList
         data={list}
-        keyExtractor={(item) => item._id}
+        keyExtractor={item => item._id}
         renderItem={renderItem}
         contentContainerStyle={styles.listContent}
       />
@@ -108,7 +112,9 @@ const CheckoutScreen = (props) => {
         </View>
         <View style={styles.priceRowTotal}>
           <Text style={styles.priceLabelTotal}>Tổng</Text>
-          <Text style={styles.priceValueTotal}>{foodItems?.totalMoney}</Text>
+          <Text style={styles.priceValueTotal}>
+            {formatPrice(totalPrice)} vnđ
+          </Text>
         </View>
       </View>
 
@@ -136,7 +142,7 @@ const styles = StyleSheet.create({
 
   listContent: {
     marginLeft: '3%',
-    marginRight: '3%'
+    marginRight: '3%',
   },
   orderCard: {
     width: '100%',
@@ -146,7 +152,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginBottom: 10,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 3,
@@ -169,7 +175,7 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   quantityContainer: {
-    marginLeft: '85%'
+    marginLeft: '85%',
   },
   quantityText: {
     fontSize: 20,

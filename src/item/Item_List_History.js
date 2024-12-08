@@ -1,22 +1,27 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
 
-const Item_List_History = ({ data, onIncrease, onDecrease, onDelete }) => {
+//định dạng giá tiền
+const formatPrice = price => {
+  return price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+};
+
+const Item_List_History = ({data, onIncrease, onDecrease, onDelete}) => {
   return (
     <View elevation={3} style={styles.item} key={data._id}>
-      <Image style={styles.avatar} source={{ uri: data.image }} />
+      <Image style={styles.avatar} source={{uri: data.image}} />
       <View style={styles.textContainer}>
         <View style={styles.detailsContainer}>
           <Text style={styles.title} numberOfLines={2}>
             {data.name}
           </Text>
-          <Text style={styles.price} numberOfLines={1}>
-            {data.price} vnd
-          </Text>
+          <Text style={styles.price}>{formatPrice(data.price)} vnđ</Text>
         </View>
         <View style={styles.quantityContainer}>
           {/* Decrease Button */}
-          <TouchableOpacity onPress={() => onDecrease(data._id)} style={styles.button}>
+          <TouchableOpacity
+            onPress={() => onDecrease(data._id)}
+            style={styles.button}>
             <Text style={styles.buttonTextde}>-</Text>
           </TouchableOpacity>
 
@@ -24,15 +29,22 @@ const Item_List_History = ({ data, onIncrease, onDecrease, onDelete }) => {
           <Text style={styles.quantityText}>{data.quantity}</Text>
 
           {/* Increase Button */}
-          <TouchableOpacity onPress={() => onIncrease(data._id)} style={styles.button}>
+          <TouchableOpacity
+            onPress={() => onIncrease(data._id)}
+            style={styles.button}>
             <Text style={styles.buttonTextin}>+</Text>
           </TouchableOpacity>
         </View>
       </View>
 
       {/* Delete Button */}
-      <TouchableOpacity onPress={() => onDelete(data._id)} style={styles.deleteButton}>
-        <Image style={styles.imageDelete} source={require('../icon/deleteCart.png')} />
+      <TouchableOpacity
+        onPress={() => onDelete(data._id)}
+        style={styles.deleteButton}>
+        <Image
+          style={styles.imageDelete}
+          source={require('../icon/deleteCart.png')}
+        />
       </TouchableOpacity>
     </View>
   );
@@ -47,7 +59,7 @@ const styles = StyleSheet.create({
   item: {
     width: '84%',
     shadowColor: 'black',
-    shadowOffset: { width: 5, height: 3 },
+    shadowOffset: {width: 5, height: 3},
     shadowRadius: 2,
     shadowOpacity: 0.8,
     marginVertical: 5,
@@ -58,7 +70,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: '3%',
     paddingVertical: 10,
     alignItems: 'center',
-    justifyContent: 'space-between', 
+    justifyContent: 'space-between',
   },
   textContainer: {
     flexDirection: 'column',

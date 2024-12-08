@@ -31,10 +31,15 @@ const TableSelectionScreen = () => {
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.header}>
         <View style={styles.iconContainer}>
-          <Image source={require('../icon/location_icon.png')} style={styles.icon} />
-          <Image source={require('../icon/notification_icon.png')} style={styles.icon} />
+          <Image
+            source={require('../icon/location_icon.png')}
+            style={styles.icon}
+          />
+          <Image
+            source={require('../icon/notification_icon.png')}
+            style={styles.icon}
+          />
         </View>
-
       </View>
       <View style={styles.tableContainer}>
         <View style={styles.row}>

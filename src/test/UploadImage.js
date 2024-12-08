@@ -1,6 +1,15 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button, Image, Alert, PermissionsAndroid, Platform } from 'react-native';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import React, {useState} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  Image,
+  Alert,
+  PermissionsAndroid,
+  Platform,
+} from 'react-native';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 const UploadImage = () => {
   const [imageUri, setImageUri] = useState(null);
@@ -16,7 +25,7 @@ const UploadImage = () => {
             buttonNeutral: 'Ask Me Later',
             buttonNegative: 'Cancel',
             buttonPositive: 'OK',
-          }
+          },
         );
         return granted === PermissionsAndroid.RESULTS.GRANTED;
       } catch (err) {
@@ -30,7 +39,10 @@ const UploadImage = () => {
   const handleCameraLaunch = async () => {
     const hasPermission = await requestCameraPermission();
     if (!hasPermission) {
-      Alert.alert('Permission Denied', 'Camera permission is required to take photos.');
+      Alert.alert(
+        'Permission Denied',
+        'Camera permission is required to take photos.',
+      );
       return;
     }
 
@@ -39,7 +51,7 @@ const UploadImage = () => {
         mediaType: 'photo',
         saveToPhotos: true,
       },
-      (response) => {
+      response => {
         if (response.didCancel) {
           console.log('User cancelled image picker');
         } else if (response.errorMessage) {
@@ -47,7 +59,7 @@ const UploadImage = () => {
         } else {
           setImageUri(response.assets[0].uri);
         }
-      }
+      },
     );
   };
 
@@ -56,7 +68,7 @@ const UploadImage = () => {
       {
         mediaType: 'photo',
       },
-      (response) => {
+      response => {
         if (response.didCancel) {
           console.log('User cancelled image picker');
         } else if (response.errorMessage) {
@@ -64,7 +76,7 @@ const UploadImage = () => {
         } else {
           setImageUri(response.assets[0].uri);
         }
-      }
+      },
     );
   };
 
@@ -73,7 +85,7 @@ const UploadImage = () => {
       <Text style={styles.title}>Upload Image</Text>
       <Button title="Take Photo" onPress={handleCameraLaunch} />
       <Button title="Choose from Gallery" onPress={handleLibraryLaunch} />
-      {imageUri && <Image source={{ uri: imageUri }} style={styles.image} />}
+      {imageUri && <Image source={{uri: imageUri}} style={styles.image} />}
     </View>
   );
 };

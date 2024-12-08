@@ -9,20 +9,17 @@ import {
   ImageBackground,
 } from 'react-native';
 
-
-const SuccessScreen  = ({ visible, onClose }) => {
+const SuccessScreen = ({visible, onClose}) => {
   return (
     <Modal
       animationType="fade"
       transparent={true}
       visible={visible}
-      onRequestClose={onClose}
-    >
+      onRequestClose={onClose}>
       <View style={styles.container}>
         <ImageBackground
           source={require('../image/bg_success.png')}
-          style={styles.background}
-        >
+          style={styles.background}>
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
             <Image
               source={require('../icon/close_icon.png')}
@@ -31,8 +28,8 @@ const SuccessScreen  = ({ visible, onClose }) => {
             />
           </TouchableOpacity>
           <View style={styles.content}>
-          <Text style={styles.title}>Thành công</Text>
-          <Text style={styles.message}>Bàn của bạn đã được đặt trước</Text>
+            <Text style={styles.title}>Thành công</Text>
+            <Text style={styles.message}>Bàn của bạn đã được đặt trước</Text>
             <View style={styles.iconContainer}>
               <Image
                 source={require('../image/success_icon.png')}
@@ -41,7 +38,9 @@ const SuccessScreen  = ({ visible, onClose }) => {
               />
             </View>
           </View>
-          <Text style={styles.note}>Lưu ý: Bàn của bạn sau khi đặt chỉ có hiệu lực trong 1h</Text>
+          <Text style={styles.note}>
+            Lưu ý: Bàn của bạn sau khi đặt chỉ có hiệu lực trong 1h
+          </Text>
         </ImageBackground>
       </View>
     </Modal>
@@ -87,7 +86,7 @@ const styles = StyleSheet.create({
   },
   successImage: {
     width: 250,
-    height:250,
+    height: 250,
   },
   title: {
     fontSize: 24,

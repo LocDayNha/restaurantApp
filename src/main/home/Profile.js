@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   View,
   Text,
@@ -9,18 +9,18 @@ import {
   Alert,
   TextInput,
   ScrollView,
-  ToastAndroid
+  ToastAndroid,
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import DatePicker from 'react-native-date-picker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import AxiosInstance from '../../util/AxiosInstance';
-import { AppContext } from '../../util/AppContext';
+import {AppContext} from '../../util/AppContext';
 
 const ProfileScreen = props => {
-  const { navigation } = props;
+  const {navigation} = props;
   React.useLayoutEffect(() => {
-    navigation.setOptions({ tabBarVisible: true });
+    navigation.setOptions({tabBarVisible: true});
   });
 
   const [fullName, setFullName] = useState('');
@@ -42,7 +42,7 @@ const ProfileScreen = props => {
       cropping: true,
     })
       .then(image => {
-        setChoseImageee({ uri: image.path });
+        setChoseImageee({uri: image.path});
         // uploadImageToServer(image);
       })
       .catch(error => {
@@ -51,8 +51,7 @@ const ProfileScreen = props => {
   };
 
   const [loading, setLoading] = useState(false);
-  const uploadImageToServer = async (image) => {
-
+  const uploadImageToServer = async image => {
     setLoading(true);
 
     const formData = new FormData();
@@ -62,15 +61,19 @@ const ProfileScreen = props => {
       name: 'profile_photo_' + Date.now() + '.' + image.path.split('.').pop(),
     });
 
-    console.log('formData:',formData);
-    console.log('formData:',formData._parts);
+    console.log('formData:', formData);
+    console.log('formData:', formData._parts);
 
     try {
-      const response = await AxiosInstance().post("/menu/upload-image-firebase", formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
+      const response = await AxiosInstance().post(
+        '/menu/upload-image-firebase',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
         },
-      });
+      );
 
       console.log('Response:', response);
 
@@ -92,14 +95,23 @@ const ProfileScreen = props => {
   const selectedImage = () => {
     if (!choseImageee) {
       if (profileImage) {
-        return <Image source={{ uri: profileImage }} style={styles.profileImage} />
+        return (
+          <Image source={{uri: profileImage}} style={styles.profileImage} />
+        );
       } else {
-        return <Image source={require('../../image/user.png')} style={styles.profileImage} />
+        return (
+          <Image
+            source={require('../../image/user.png')}
+            style={styles.profileImage}
+          />
+        );
       }
     } else {
-      return <Image source={{ uri: choseImageee.uri }} style={styles.profileImage} />
+      return (
+        <Image source={{uri: choseImageee.uri}} style={styles.profileImage} />
+      );
     }
-  }
+  };
 
   const getAge = date => {
     const today = new Date();
@@ -124,7 +136,7 @@ const ProfileScreen = props => {
   };
 
   const validateInputs = (field, value) => {
-    const newErrors = { ...errors };
+    const newErrors = {...errors};
 
     switch (field) {
       case 'fullName':
@@ -239,12 +251,12 @@ const ProfileScreen = props => {
   const [openn, setOpenn] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
-    { label: 'Nam', value: 'Nam' },
-    { label: 'Nữ', value: 'Nữ' },
+    {label: 'Nam', value: 'Nam'},
+    {label: 'Nữ', value: 'Nữ'},
   ]);
 
-  const { idUser, infoUser } = useContext(AppContext);
-  const { name, gender, phoneNumber, image, birth, address } = infoUser;
+  const {idUser, infoUser} = useContext(AppContext);
+  const {name, gender, phoneNumber, image, birth, address} = infoUser;
 
   useEffect(() => {
     setFullName(name),
@@ -252,28 +264,37 @@ const ProfileScreen = props => {
       setCity(address),
       // setDob(birth),
       setPhoneNumber(phoneNumber),
-      setProfileImage(image)
-  }, [infoUser])
+      setProfileImage(image);
+  }, [infoUser]);
 
   const updateInforUser = async () => {
-    let updateFields = { name: fullName, birth: dob ? formatDate(dob) : birth, phoneNumber: newphoneNumber, address: city, image: profileImage, gender: value };
+    let updateFields = {
+      name: fullName,
+      birth: dob ? formatDate(dob) : birth,
+      phoneNumber: newphoneNumber,
+      address: city,
+      image: profileImage,
+      gender: value,
+    };
     if (choseImageee) {
       const url = await uploadImageToServer();
-      updateFields = { ...updateFields, image: url }
+      updateFields = {...updateFields, image: url};
       // console.log('updateFields:',updateFields);
     }
     try {
-      const update = await AxiosInstance().post("/user/profileUpdate/" + idUser, updateFields);
+      const update = await AxiosInstance().post(
+        '/user/profileUpdate/' + idUser,
+        updateFields,
+      );
       if (update) {
         ToastAndroid.show('Cap Nhat thành công!', ToastAndroid.SHORT);
       } else {
-        ToastAndroid.show("Cap Nhat thất bại", ToastAndroid.SHORT);
+        ToastAndroid.show('Cap Nhat thất bại', ToastAndroid.SHORT);
       }
     } catch (error) {
-      console.log("Verify Code error:", error);
+      console.log('Verify Code error:', error);
     }
   };
-
 
   // ... existing code ...
 
@@ -322,17 +343,22 @@ const ProfileScreen = props => {
               <Text style={styles.errorText}>{errors.fullName}</Text>
             )}
 
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'  }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
               <View
                 style={[
                   styles.inputContainer,
-                  errors.dob && styles.inputContainerError, { width: '48%' }
-                  
+                  errors.dob && styles.inputContainerError,
+                  {width: '48%'},
                 ]}>
                 <TouchableOpacity
-                  style={[styles.inputContainer, { top: 5, left: -10 }]}
+                  style={[styles.inputContainer, {top: 5, left: -10}]}
                   onPress={() => setOpen(true)}>
-                  <Text style={{ padding: 9, color: dob ? '#000' : '#999' }}>
+                  <Text style={{padding: 9, color: dob ? '#000' : '#999'}}>
                     {dob ? formatDate(dob) : 'Chọn ngày sinh'}
                   </Text>
                 </TouchableOpacity>
@@ -341,26 +367,25 @@ const ProfileScreen = props => {
                 modal
                 open={open}
                 date={dob || new Date()}
-                mode="date" 
-                
+                mode="date"
                 onConfirm={date => {
                   setOpen(false);
                   setDob(date);
                   validateInputs('dob', date);
-                 
                 }}
                 onCancel={() => {
                   setOpen(false);
                 }}
               />
 
-              <View style={{ flex: 1, zIndex: 1000, marginTop: -29, marginLeft: 10 }}>
+              <View
+                style={{flex: 1, zIndex: 1000, marginTop: -29, marginLeft: 10}}>
                 <View
                   style={{
                     flex: 1,
                   }}>
                   <DropDownPicker
-                    style={{ backgroundColor: '#f2f2f2', borderWidth: 0 }}
+                    style={{backgroundColor: '#f2f2f2', borderWidth: 0}}
                     open={openn}
                     value={value}
                     items={items}
@@ -368,15 +393,20 @@ const ProfileScreen = props => {
                     setValue={setValue}
                     setItems={setItems}
                     placeholder={'Chọn giới tính'}
-                    placeholderStyle={{ color: '#999' }} // Dimmed placeholder color
-                    textStyle={{ color: value ? '#000' : '#999' }} // Text color based on selection
+                    placeholderStyle={{color: '#999'}} // Dimmed placeholder color
+                    textStyle={{color: value ? '#000' : '#999'}} // Text color based on selection
                   />
                 </View>
               </View>
             </View>
 
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              {errors.dob && <Text style={[styles.errorText, { width: '50%' }]}>{errors.dob}</Text>}
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              {errors.dob && (
+                <Text style={[styles.errorText, {width: '50%'}]}>
+                  {errors.dob}
+                </Text>
+              )}
             </View>
 
             <View
