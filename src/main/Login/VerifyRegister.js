@@ -1,5 +1,5 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useState, useEffect } from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   View,
@@ -8,14 +8,13 @@ import {
   TouchableOpacity,
   Image,
   StyleSheet,
-  ToastAndroid
+  ToastAndroid,
 } from 'react-native';
 import AxiosInstance from '../../util/AxiosInstance';
 
-const VerifyRegister = (props) => {
-
-  const { navigation, route } = props;
-  const { params } = route;
+const VerifyRegister = props => {
+  const {navigation, route} = props;
+  const {params} = route;
 
   const [codeInput, setcodeInput] = useState(['', '', '', '']);
   const handleCodeInput = (index, value) => {
@@ -26,34 +25,38 @@ const VerifyRegister = (props) => {
 
   useEffect(() => {
     send();
-  }, [])
+  }, []);
 
   const send = async () => {
     try {
-      const codeSend = await AxiosInstance().post("/user/send-mail", { email: params.guiEmail });
+      const codeSend = await AxiosInstance().post('/user/send-mail', {
+        email: params.guiEmail,
+      });
       if (codeSend) {
         console.log('Gửi Email thành công');
       } else {
         console.log('Gửi Email thất bại');
       }
     } catch (error) {
-      console.log("Send Code error:", error);
+      console.log('Send Code error:', error);
     }
-
   };
 
   const clickVerify = async () => {
     const numericCode = parseInt(codeInput.join(''));
     try {
-      const verify = await AxiosInstance().post("/user/verify", { code: numericCode, email: params.guiEmail });
+      const verify = await AxiosInstance().post('/user/verify', {
+        code: numericCode,
+        email: params.guiEmail,
+      });
       if (verify) {
         ToastAndroid.show('Đăng ký thành công!', ToastAndroid.SHORT);
-        navigation.navigate("Login2");
+        navigation.navigate('Login2');
       } else {
-        ToastAndroid.show("Xác minh thất bại", ToastAndroid.SHORT);
+        ToastAndroid.show('Xác minh thất bại', ToastAndroid.SHORT);
       }
     } catch (error) {
-      console.log("Verify Code error:", error);
+      console.log('Verify Code error:', error);
     }
   };
 
@@ -107,7 +110,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   topdes: {
-    color: "black",
+    color: 'black',
     fontSize: 21,
     top: 35,
     left: 50,
@@ -122,7 +125,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     marginBottom: 20,
-    color: "black",
+    color: 'black',
   },
   codeContainer: {
     flexDirection: 'row',
@@ -138,7 +141,7 @@ const styles = StyleSheet.create({
     height: 40,
     textAlign: 'center',
     fontSize: 18,
-    color: "black",
+    color: 'black',
   },
   timerText: {
     textAlign: 'center',

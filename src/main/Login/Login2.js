@@ -9,13 +9,21 @@ import {
   ToastAndroid,
   ActivityIndicator, // Import ActivityIndicator
 } from 'react-native';
-import React, { useState, useContext, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import React, {useState, useContext, useEffect} from 'react';
+import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AppContext } from '../../util/AppContext';
+import {AppContext} from '../../util/AppContext';
 import AxiosInstance from '../../util/AxiosInstance';
-import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
-import { Settings, LoginManager, Profile, LoginButton, } from 'react-native-fbsdk-next';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+import {
+  Settings,
+  LoginManager,
+  Profile,
+  LoginButton,
+} from 'react-native-fbsdk-next';
 
 Settings.setAppID('2033816147055110');
 
@@ -28,13 +36,14 @@ const Login2 = () => {
   const [loading, setLoading] = useState(false); // Add loading state
 
   const navigation = useNavigation();
-  const { setIsLogin, setInfoUser, setIdUser } = useContext(AppContext);
+  const {setIsLogin, setInfoUser, setIdUser} = useContext(AppContext);
 
   const validationForm = () => {
     let valid = true;
 
     if (!email) {
-      setEmailError('Vui lòng nhập email'); y
+      setEmailError('Vui lòng nhập email');
+      y;
       valid = false;
     } else {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -63,7 +72,7 @@ const Login2 = () => {
 
     setLoading(true); // Set loading to true
 
-    let data = { email, password };
+    let data = {email, password};
     console.log(data);
 
     try {
@@ -71,12 +80,12 @@ const Login2 = () => {
       console.log(response);
 
       if (response && response.status) {
-        const { token, user } = response.returnData.data;
+        const {token, user} = response.returnData.data;
         await AsyncStorage.setItem('token', token);
         setIsLogin(true);
         setInfoUser(user);
         setIdUser(user._id);
-        console.log('Đăng nhập thành công')
+        console.log('Đăng nhập thành công');
         navigateToMain();
       } else {
         ToastAndroid.show('Thông tin đăng nhập sai', ToastAndroid.SHORT);
@@ -96,7 +105,11 @@ const Login2 = () => {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       const user = userInfo.data.user;
-      const logGG = await AxiosInstance().post("/user/loginGoogle", { email: user.email, name: user.name, image: user.photo });
+      const logGG = await AxiosInstance().post('/user/loginGoogle', {
+        email: user.email,
+        name: user.name,
+        image: user.photo,
+      });
       if (logGG && logGG.status) {
         setInfoUser(logGG.userMail);
         setIdUser(logGG.userMail._id);
@@ -127,8 +140,11 @@ const Login2 = () => {
       } else {
         const profile = await Profile.getCurrentProfile();
         if (profile) {
-
-          const logFB = await AxiosInstance().post("/user/loginFacebook", { email: profile.userID, name: profile.name, image: profile.imageURL });
+          const logFB = await AxiosInstance().post('/user/loginFacebook', {
+            email: profile.userID,
+            name: profile.name,
+            image: profile.imageURL,
+          });
           if (logFB && logFB.status) {
             setInfoUser(logFB.userMail);
             setIdUser(logFB.userMail._id);
@@ -155,13 +171,13 @@ const Login2 = () => {
   }, []);
 
   return (
-    <View style={{ marginBottom: '5%', marginTop: '5%' }}>
+    <View style={{marginBottom: '5%', marginTop: '5%'}}>
       <View style={styles.view2}>
         <Image style={styles.image} source={require('../../image/a.png')} />
         <Text style={styles.text}>Đăng nhập vào tài khoản</Text>
       </View>
 
-      <View style={[styles.view2, { marginTop: '5%' }]}>
+      <View style={[styles.view2, {marginTop: '5%'}]}>
         <View style={styles.inputContainer}>
           <TextInput
             placeholder="Email"
@@ -216,28 +232,28 @@ const Login2 = () => {
       </View>
 
       <TouchableOpacity
-        style={[styles.view2, { marginTop: '5%' }]}
+        style={[styles.view2, {marginTop: '5%'}]}
         onPress={() => navigation.navigate('VerifyEmail')}>
-        <Text style={[styles.textLogin, { color: '#000' }]}>Quên mật khẩu?</Text>
+        <Text style={[styles.textLogin, {color: '#000'}]}>Quên mật khẩu?</Text>
       </TouchableOpacity>
 
-      <View style={[styles.view2, { marginTop: '5%' }]}>
+      <View style={[styles.view2, {marginTop: '5%'}]}>
         <Pressable style={styles.btnLogin} onPress={onLogin}>
           {loading ? ( // Show ActivityIndicator when loading
             <ActivityIndicator size="small" color="#FFF" />
           ) : (
-            <Text style={[styles.textLogin, { marginTop: 10, color: '#FFF' }]}>
+            <Text style={[styles.textLogin, {marginTop: 10, color: '#FFF'}]}>
               Đăng nhập
             </Text>
           )}
         </Pressable>
       </View>
 
-      <View style={[styles.view2, { marginTop: '7%' }]}>
+      <View style={[styles.view2, {marginTop: '7%'}]}>
         <Text style={styles.textor}>hoặc tiếp tục với</Text>
       </View>
 
-      <View style={[styles.view3, { marginTop: '5%' }]}>
+      <View style={[styles.view3, {marginTop: '5%'}]}>
         <TouchableOpacity style={styles.touc} onPress={handleFacebookLogin}>
           <Image
             style={styles.imageTouc}
@@ -258,8 +274,8 @@ const Login2 = () => {
         </TouchableOpacity>
       </View>
 
-      <View style={[styles.view3, { marginTop: '5%' }]}>
-        <Text style={{ fontSize: 15 }}>Chưa có tài khoản?</Text>
+      <View style={[styles.view3, {marginTop: '5%'}]}>
+        <Text style={{fontSize: 15}}>Chưa có tài khoản?</Text>
         <TouchableOpacity onPress={() => navigation.navigate('Register')}>
           <Text style={styles.textSignup}>Đăng ký</Text>
         </TouchableOpacity>

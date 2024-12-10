@@ -271,6 +271,7 @@ const Appnavigator = () => {
       ) : (
         <>
           <Stack.Screen name="Main" component={Main2} />
+          <Stack.Screen name="Order" component={Order} />
           <Stack.Screen name="OrderDetail" component={OrderDetail} />
           <Stack.Screen name="CheckTypePayment" component={CheckTypePayment} />
           <Stack.Screen name="VnPayWebView" component={VnPayWebView} />
