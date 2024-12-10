@@ -18,8 +18,8 @@ const Item_History_Table = ({ data }) => {
             <Text style={styles.value}>{data.table_id.timeline_id.name}</Text>
           </View>
           <View style={styles.row}>
-            <Text style={styles.label}>Chỗ ngồi</Text>
-            <Text style={styles.value}>{data.table_id.userNumber}</Text>
+            <Text style={styles.label}>Số người</Text>
+            <Text style={styles.value}>{data.seat}</Text>
           </View>
           <View style={styles.row}>
             <Text style={styles.label}>Bàn</Text>
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 10,
     padding: 20,
-    marginTop: 5,
+    marginTop: 10,
   },
   restaurantName: {
     color: '#fff',

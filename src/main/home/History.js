@@ -1,12 +1,14 @@
 import { View, Text, FlatList, StyleSheet, Pressable, TextInput, ToastAndroid } from 'react-native'
-import { React, useState, useEffect } from 'react'
+import { React, useState, useEffect, useContext } from 'react'
 import Item_List_History from '../../item/Item_List_History';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AxiosInstance from '../../util/AxiosInstance';
+import { AppContext } from '../../util/AppContext';
 
 const History = (props) => {
   const { navigation } = props;
   const [data, setData] = useState([]);
+  const { numberTable, setNumberTable, idOrder, setIdOrder } = useContext(AppContext)
 
   const calculateTotal = () => {
     const totalQuantity = data.reduce((sum, item) => sum + item.quantity, 0);
@@ -61,21 +63,34 @@ const History = (props) => {
     }
   };
 
-  const [soBan, setSoBan] = useState('');
-  const [nguoiDung, setNguoiDung] = useState('');
-  const [monAn, setMonAn] = useState('');
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
+      .format(value)
+      .replace('₫', 'vnd'); // Thay ký hiệu "₫" bằng "vnđ" nếu cần
+  };
+
   const orderDishes = async () => {
     try {
-      if (!soBan || !nguoiDung || data.length === 0) {
-        ToastAndroid.show("Thiếu thông tin", ToastAndroid.SHORT);
-      } else {
-        const dataFood = await AxiosInstance().post("/order/addNew", { tableNumber: soBan, nameUser: nguoiDung, dishes: data });
+      if (numberTable && data.length > 0) {
+        const dataFood = await AxiosInstance().post("/order/addNew", { numberTable: numberTable, dishes: data });
         if (dataFood) {
           console.log('Order Thanh Cong');
           deleteAllItem();
+          setNumberTable(null);
         } else {
           console.log('Order That Bai');
         }
+      } else if (idOrder && data.length > 0) {
+        const dataFood = await AxiosInstance().post("/order/edit", { id: idOrder, dishes: data });
+        if (dataFood) {
+          console.log('Cap nhat order Thanh Cong');
+          deleteAllItem();
+          setIdOrder(null);
+        } else {
+          console.log('Cap nhat order That Bai');
+        }
+      } else {
+        ToastAndroid.show('Thiếu dữ liệu!', ToastAndroid.SHORT);
       }
     } catch (error) {
       console.log('Order Dishes Error:', error);
@@ -92,8 +107,8 @@ const History = (props) => {
   const { totalQuantity, totalPrice } = calculateTotal();
 
   return (
-    <View style={{ height: '100%', width: '100%' }}>
-      <View style={{ width: '100%', height: '67%' }}>
+    <View style={{ height: '100%', width: '100%', marginTop:'2%' }}>
+      <View style={{ width: '100%', height: '83%' }}>
         <View style={{ alignItems: 'center' }}>
           <FlatList
             data={data}
@@ -109,23 +124,26 @@ const History = (props) => {
           />
         </View>
       </View>
-      <View style={{ height: '33%', paddingTop: 10, paddingHorizontal: 20, backgroundColor: 'rgba(221, 221, 221, 0.1)' }}>
+      <View style={{ height: '17%', paddingTop: 10, paddingHorizontal: 20 }}>
         <View style={{ marginBottom: 5 }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 0 }}>
-            <Text style={styles.textTotal}>Số Lượng:</Text>
-            <Text style={[styles.textTotal, { marginLeft: 10, fontSize: 20, fontWeight: 'bold' }]}>
-              {totalQuantity}
-            </Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 20 }}>
-              <Text style={styles.textTotal}>Tổng:</Text>
+          <View style={{ marginBottom: 10 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 0 }}>
+              <Text style={styles.textTotal}>Số Bàn:</Text>
               <Text style={[styles.textTotal, { marginLeft: 10, fontSize: 20, fontWeight: 'bold' }]}>
-                {totalPrice} vnđ
+                {numberTable}
+              </Text>
+
+              <Text style={[styles.textTotal, { marginLeft: 20 }]}>Số Lượng:</Text>
+              <Text style={[styles.textTotal, { marginLeft: 10, fontSize: 20, fontWeight: 'bold' }]}>
+                {totalQuantity}
               </Text>
             </View>
-          </View>
-          <View style={{ flexDirection: 'column', marginBottom: 15 }}>
-            <TextInput style={styles.textIn} placeholder="Số bàn:" onChangeText={setSoBan} />
-            <TextInput style={styles.textIn} placeholder="Tên Khách Hàng:" onChangeText={setNguoiDung} />
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={styles.textTotal}>Tổng:</Text>
+              <Text style={[styles.textTotal, { marginLeft: 10, fontSize: 20, fontWeight: 'bold' }]}>
+                {formatCurrency(totalPrice)}
+              </Text>
+            </View>
           </View>
           <View style={{ alignItems: 'center' }}>
             <Pressable style={styles.order} onPress={orderDishes}>

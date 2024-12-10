@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -13,56 +13,73 @@ import {
 import backgroundImage from '../image/bg_booking.png';
 import Item_Booking_Screen from '../item/Item_Booking_Screen';
 import AxiosInstance from '../util/AxiosInstance';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const Table = [
   {
-    "id" : "111",
+    "id": "111",
     "number": 1,
     "userNumber": 4
   },
   {
-    "id" : "222",
+    "id": "222",
     "number": 2,
     "userNumber": 4
   },
   {
-    "id" : "333",
+    "id": "333",
     "number": 3,
     "userNumber": 4
   },
 ]
 
 const BookingScreen = (props) => {
-  const {navigation, route} = props
-  const {params} = route
+  const { navigation, route } = props;
+  const { params } = route;
+  const [date, setDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
-  const movetoDetail= (item) => {
-    navigation.navigate('DetailsScreen', {table: item})
+  const movetoDetail = (item) => {
+    navigation.navigate('DetailsScreen', { table: item, dayBooking: formatDate(date) })
   }
-  
-  // Lấy API danh sách bàn
-  const [dataTable, setDataTable] = useState([]);
-  useEffect(() => {
-    const getData = async () => {
-      const data = await AxiosInstance().post("/table/getByNumber", 
-        {
-          number: params.sendNumber
-        }
-      );
-      if (!data || data.lenght === 0) {
-        ToastAndroid.show("Lấy dữ liệu thấy bại", ToastAndroid.SHORT);
-        console.log("Lay du lieu that bai")
-      } else { 
-        setDataTable(data);  
-      }
-    };
-    getData();
 
-  return () => {}
-  }, [])
+  const onChangeDate = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShowDatePicker(Platform.OS === 'ios');
+    setDate(currentDate);
+    // console.log(formatDate(currentDate))
+    getData(currentDate);
+  };
+
+  const formatDate = (date) => {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  const [dataTable, setDataTable] = useState([]);
+  const getData = async (currentDate) => {
+    const data = await AxiosInstance().post("/table/getByNumber",
+      {
+        number: params.sendNumber,
+        dayBooking: formatDate(currentDate)
+      }
+    );
+
+    // console.log(data.listFinal);
+
+    if (!data) {
+      ToastAndroid.show("Lấy dữ liệu thấy bại", ToastAndroid.SHORT);
+      console.log("Lay du lieu that bai")
+    } else {
+      setDataTable(data.listFinal);
+    }
+  };
 
   return (
     <View style={styles.container}>
+
       <ImageBackground
         source={backgroundImage}
         style={styles.background}
@@ -77,21 +94,38 @@ const BookingScreen = (props) => {
             />
           </TouchableOpacity>
         </View>
-        
       </ImageBackground>
+
+      <View style={{ width: '50%', height: '8%', backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center', borderRadius: 20, marginTop: '3%' }}>
+        <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.clickDate}>
+          {date ?
+            <Text style={styles.textDate}>{formatDate(date)}</Text>
+            :
+            <Text style={styles.textDate}>Chọn ngày</Text>}
+        </TouchableOpacity>
+      </View>
+
+      {showDatePicker && (
+        <DateTimePicker
+          value={date}
+          mode="date"
+          display="default"
+          onChange={onChangeDate}
+        />
+      )}
 
       <View style={styles.content}>
         <FlatList
           data={dataTable}
-          renderItem={({ item }) => <Item_Booking_Screen 
-          data={item}
-          onPress={()=>{movetoDetail(item)}} 
+          renderItem={({ item }) => <Item_Booking_Screen
+            data={item}
+            onPress={() => { movetoDetail(item) }}
           />}
           keyExtractor={item => item._id}
           showsVerticalScrollIndicator={false}
         />
-       
       </View>
+
     </View>
   );
 };
@@ -99,14 +133,19 @@ const BookingScreen = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: '100%',
+    height: '100%',
+    alignItems: 'center'
   },
   background: {
     width: '100%',
-    height: 200,
+    height: '25%',
     justifyContent: 'center',
   },
   backgroundImage: {
     resizeMode: 'cover',
+    width: '100%',
+    height: '100%'
   },
   iconContainerLeft: {
     position: 'absolute',
@@ -135,8 +174,9 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    backgroundColor: '#1c1c1e',
     padding: 20,
+    height: '60%',
+    width: '100%',
   },
   headerText: {
     color: '#fff',
@@ -147,13 +187,6 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'bold',
     marginTop: 10,
-  },
-  card: {
-    height: 140,
-    backgroundColor: '#2c2c2e',
-    borderRadius: 10,
-    padding: 20,
-    marginTop: 5,
   },
   restaurantName: {
     color: '#fff',
@@ -220,6 +253,17 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 24,
   },
+  clickDate: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  textDate: {
+    fontSize: 20,
+    color: '#000',
+    fontFamily: 'position',
+
+  }
+
 });
 
 export default BookingScreen;

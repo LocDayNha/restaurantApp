@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 import AxiosInstance from '../../util/AxiosInstance';
 import { useNavigation } from '@react-navigation/native';
+import { useContext } from 'react';
+import { AppContext } from '../../util/AppContext';
 
 const { width } = Dimensions.get('window');
 
@@ -22,6 +24,7 @@ const CheckoutScreen = (props) => {
   const [totalPrice, setTotalPrice] = useState('');
   const [idItemOrder, setIdItemOrder] = useState('');
   const navigation = useNavigation();
+  const { setIdOrder } = useContext(AppContext)
 
   const getDataOrder = async () => {
     try {
@@ -46,6 +49,21 @@ const CheckoutScreen = (props) => {
     });
   }
 
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
+      .format(value)
+      .replace('₫', 'vnd'); // Thay ký hiệu "₫" bằng "vnđ" nếu cần
+  };
+
+  const clickUpdateDishes = () => {
+    setIdOrder(params.id);
+    console.log(params.id)
+    navigation.navigate('Main', {
+      screen: 'Tabbar',
+      params: { screen: 'HomeMenu' },
+    });
+  }
+
   useEffect(() => {
     getDataOrder();
   }, [])
@@ -56,7 +74,7 @@ const CheckoutScreen = (props) => {
       <Image source={{ uri: item.image }} style={styles.orderImage} />
       <View style={{ width: '75%', marginLeft: '5%' }}>
         <Text style={styles.title}>{item.name}</Text>
-        <Text style={[styles.price, { marginTop: '10%' }]}>{item.price} vnđ</Text>
+        <Text style={[styles.price, { marginTop: '10%' }]}>{formatCurrency(item.price)}</Text>
         <View style={styles.quantityContainer}>
           {/* <TouchableOpacity
     style={styles.quantityButton}
@@ -78,26 +96,31 @@ const CheckoutScreen = (props) => {
     <View style={styles.container}>
       <Text style={styles.header}>Tiếp tục thanh toán</Text>
 
-
-
       {/* Food List */}
       <FlatList
         data={list}
         keyExtractor={(item) => item._id}
         renderItem={renderItem}
         contentContainerStyle={styles.listContent}
+        ListFooterComponent={
+          <TouchableOpacity onPress={clickUpdateDishes} style={{ marginLeft: '90%', marginTop: '3%' }}>
+            <Image style={{ width: 30, height: 30 }} source={require('../../icon/add.png')}></Image>
+          </TouchableOpacity >
+        }
+        ListFooterComponentStyle={{ flex: 1, justifyContent: 'flex-end' }}
       />
 
       {/* Total Section */}
       {/* Customer and Table Information */}
+
+      {/* <TouchableOpacity onPress={() => { storeData(data) }} style={{ marginLeft: '90%' }}>
+        <Image style={{ width: 30, height: 30 }} source={require('../../icon/add.png')}></Image>
+      </TouchableOpacity > */}
+
       <View style={styles.totalContainer}>
         <View style={styles.infoRow}>
-          <Text style={styles.infoLabel}>Khách Hàng</Text>
-          <Text style={styles.infoValue}>{foodItems?.nameUser}</Text>
-        </View>
-        <View style={styles.infoRow}>
           <Text style={styles.infoLabel}>Số Bàn</Text>
-          <Text style={styles.infoValue}>{foodItems?.tableNumber}</Text>
+          <Text style={styles.infoValue}>{foodItems?.numberTable}</Text>
         </View>
       </View>
 
@@ -108,14 +131,16 @@ const CheckoutScreen = (props) => {
         </View>
         <View style={styles.priceRowTotal}>
           <Text style={styles.priceLabelTotal}>Tổng</Text>
-          <Text style={styles.priceValueTotal}>{foodItems?.totalMoney}</Text>
+          <Text style={styles.priceValueTotal}>{formatCurrency(foodItems?.totalMoney)}</Text>
         </View>
       </View>
 
       {/* Continue to Payment Button */}
-      <TouchableOpacity style={styles.paymentButton} onPress={payVN}>
-        <Text style={styles.paymentButtonText}>Tiếp tục thanh toán</Text>
-      </TouchableOpacity>
+      <View style={{ alignItems: 'center' }}>
+        <TouchableOpacity style={styles.paymentButton} onPress={payVN}>
+          <Text style={styles.paymentButtonText}>Tiếp tục thanh toán</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -202,7 +227,7 @@ const styles = StyleSheet.create({
   },
   infoLabel: {
     fontSize: 16,
-    color: '#8E8E93',
+    color: 'black',
     marginTop: 5,
   },
   infoValue: {
@@ -222,7 +247,7 @@ const styles = StyleSheet.create({
   },
   priceLabel: {
     fontSize: 16,
-    color: '#8E8E93',
+    color: 'black',
   },
   priceValue: {
     fontSize: 16,
@@ -252,6 +277,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 20,
     alignItems: 'center',
+    width: '66%'
   },
   paymentButtonText: {
     color: 'white',

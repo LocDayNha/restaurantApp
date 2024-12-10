@@ -57,6 +57,12 @@ const FoodOrderScreen = (props) => {
     navigation.navigate("OrderDetail", { id: itemid });
   }
 
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
+      .format(value)
+      .replace('₫', 'vnd'); // Thay ký hiệu "₫" bằng "vnđ" nếu cần
+  };
+
   useEffect(() => {
     getOrder();
   }, [])
@@ -75,21 +81,18 @@ const FoodOrderScreen = (props) => {
       <View style={styles.foodCard}>
         <View style={styles.infoContainer}>
           <Text style={[styles.tableInfo, { fontWeight: 'bold', fontSize: 25 }]}>
-            Ban {item.tableNumber}
-          </Text>
-          <Text style={styles.tableInfo}>
-            {item.nameUser}
+            Bàn {item.numberTable}
           </Text>
           <View style={{ flexDirection: 'row' }}>
             <Text style={styles.userInfo}>{item.timeOrder} | {item.dayOrder}</Text>
           </View>
-          <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', width: '100%', height: 50, marginTop: '2%' }}>
-            <Text style={styles.totalPrice}>{item.totalMoney} vnđ</Text>
+          <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', width: '100%', height: 50, marginTop: '5%' }}>
+            <Text style={styles.totalPrice}>{formatCurrency(item.totalMoney)}</Text>
             <TouchableOpacity onPress={() => clickDetail(item._id)} style={[styles.paymentStatusContainer, { backgroundColor: paymentStatusStyle.backgroundColor }]} disabled={item.isPayment}>
               {
-                item.paymentStatus ?
-                  <Text style={[styles.paymentStatus, {}]}>Thanh Toán</Text> :
-                  <Text style={[styles.paymentStatus, {}]}>Thanh Toán</Text>
+                item.isPayment ?
+                  <Text style={[styles.paymentStatus, {}]}>Đã thanh toán</Text> :
+                  <Text style={[styles.paymentStatus, {}]}>Chưa thanh toán</Text>
               }
             </TouchableOpacity>
           </View>
@@ -171,15 +174,14 @@ const styles = StyleSheet.create({
   totalPrice: {
     fontSize: 24,
     color: '#000',
-    width: '60%',
-    height: '100%',
-    fontWeight: 'bold'
+    width: '55%',
+    fontWeight: 'bold',
   },
   paymentStatusContainer: {
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    width: '40%',
+    width: '45%',
     height: '100%',
   },
   paymentStatus: {

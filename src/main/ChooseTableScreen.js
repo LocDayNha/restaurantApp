@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
 } from 'react-native';
+import { AppContext } from '../util/AppContext';
 
 // Import images
 const tableImages = {
@@ -32,10 +33,12 @@ const { width, height } = Dimensions.get('window');
 
 const ChooseTableScreen = (props) => {
 
-  const {navigation} = props
+  const { navigation } = props
 
   const [selectedTable, setSelectedTable] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
+  const { infoUser, setNumberTable } = useContext(AppContext);
+  const { role } = infoUser;
 
   //truyền number qua BookingScreen
   const [number, setNumber] = useState(null)
@@ -48,97 +51,148 @@ const ChooseTableScreen = (props) => {
     setSelectedTable(null); // Bỏ chọn khi bấm bên ngoài
   };
 
+  const clickContinute = async () => {
+    if (role === 1) {
+      navigation.navigate('BookingScreen', { sendNumber: number });
+    } else {
+      setNumberTable(number);
+      navigation.navigate('Main', {
+        screen: 'Tabbar',
+        params: { screen: 'HomeMenu' },
+      });
+    }
+  }
+
   return (
     <TouchableWithoutFeedback onPress={handleOutsidePress}>
       <View style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <View style={styles.tableContainer}>
-            {/* Hiển thị các bàn */}
-            <View style={styles.row}>
-              {[1, 2, 3].map((id) => (
-                <TouchableOpacity
-                  key={id}
-                  style={[
-                    styles.table,
-                    id === 1 && isHovered && styles.hoveredTable,
-                  ]}
-                  onPress={() => {handleTablePress(id), setNumber(id)}}
-                  onPressIn={() => id === 1 && setIsHovered(true)}
-                  onPressOut={() => id === 1 && setIsHovered(false)}
-                >
-                  {selectedTable === id && <View style={styles.selectedBackground} />}
-                  <Image source={tableImages[id]} style={styles.tableImage} />
-                </TouchableOpacity>
-              ))}
-            </View>
-            <View style={styles.row}>
-              {[4, 5, 6].map((id) => (
-                <TouchableOpacity
-                  key={id}
-                  style={styles.table}
-                  onPress={() => {handleTablePress(id), setNumber(id)}}
-                >
-                  {selectedTable === id && <View style={styles.selectedBackground} />}
-                  <Image source={tableImages[id]} style={styles.tableImage} />
-                </TouchableOpacity>
-              ))}
-            </View>
-            <View style={styles.row}>
-              {[7, 8, 9].map((id) => (
-                <TouchableOpacity
-                  key={id}
-                  style={styles.table}
-                  onPress={() => {handleTablePress(id), setNumber(id)}}
-                >
-                  {selectedTable === id && <View style={styles.selectedBackground} />}
-                  <Image source={tableImages[id]} style={styles.tableImage} />
-                </TouchableOpacity>
-              ))}
-            </View>
-            <View style={styles.row}>
-              {[10, 11, 12].map((id) => (
-                <TouchableOpacity
-                  key={id}
-                  style={[
-                    styles.table,
-                    (id === 11 || id === 12) && styles.tableRight,
-                  ]}
-                  onPress={() => {handleTablePress(id), setNumber(id)}}
-                >
-                  {selectedTable === id && (
-                    <View
-                      style={
-                        id === 12
-                          ? styles.selectedBackgroundLarge
-                          : styles.selectedBackground
-                      }
-                    />
-                  )}
-                  <Image
-                    source={tableImages[id]}
-                    style={id === 12 ? styles.tableImageLarge : styles.tableImage}
-                  />
-                </TouchableOpacity>
-              ))}
-            </View>
-            <View style={styles.row}>
-              {[13, 14].map((id) => (
-                <TouchableOpacity
-                  key={id}
-                  style={[styles.table, id === 14 && styles.tableRight]}
-                  onPress={() => {handleTablePress(id), setNumber(id)}}
-                >
-                  {selectedTable === id && <View style={styles.selectedBackgroundLarge} />}
-                  <Image source={tableImages[id]} style={styles.tableImageLarge} />
-                </TouchableOpacity>
-              ))}
-            </View>
+            {role === 1 ? (
+              <>
+                <View style={{justifyContent:'center', alignItems:'center', marginTop:'78%'}}>
+                  <View style={styles.row}>
+                    {[1, 2, 3].map((id) => (
+                      <TouchableOpacity
+                        key={id}
+                        style={[
+                          styles.table,
+                          id === 1 && isHovered && styles.hoveredTable,
+                        ]}
+                        onPress={() => { handleTablePress(id), setNumber(id) }}
+                        onPressIn={() => id === 1 && setIsHovered(true)}
+                        onPressOut={() => id === 1 && setIsHovered(false)}
+                      >
+                        {selectedTable === id && <View style={styles.selectedBackground} />}
+                        <Image source={tableImages[id]} style={styles.tableImage} />
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                  <View style={styles.row}>
+                    {[4, 5, 6].map((id) => (
+                      <TouchableOpacity
+                        key={id}
+                        style={styles.table}
+                        onPress={() => { handleTablePress(id), setNumber(id) }}
+                      >
+                        {selectedTable === id && <View style={styles.selectedBackground} />}
+                        <Image source={tableImages[id]} style={styles.tableImage} />
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </View>
+              </>
+            ) : (
+              <>
+                <View style={styles.row}>
+                  {[1, 2, 3].map((id) => (
+                    <TouchableOpacity
+                      key={id}
+                      style={[
+                        styles.table,
+                        id === 1 && isHovered && styles.hoveredTable,
+                      ]}
+                      onPress={() => { handleTablePress(id), setNumber(id) }}
+                      onPressIn={() => id === 1 && setIsHovered(true)}
+                      onPressOut={() => id === 1 && setIsHovered(false)}
+                    >
+                      {selectedTable === id && <View style={styles.selectedBackground} />}
+                      <Image source={tableImages[id]} style={styles.tableImage} />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+                <View style={styles.row}>
+                  {[4, 5, 6].map((id) => (
+                    <TouchableOpacity
+                      key={id}
+                      style={styles.table}
+                      onPress={() => { handleTablePress(id), setNumber(id) }}
+                    >
+                      {selectedTable === id && <View style={styles.selectedBackground} />}
+                      <Image source={tableImages[id]} style={styles.tableImage} />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+                <View style={styles.row}>
+                  {[7, 8, 9].map((id) => (
+                    <TouchableOpacity
+                      key={id}
+                      style={styles.table}
+                      onPress={() => { handleTablePress(id), setNumber(id) }}
+                    >
+                      {selectedTable === id && <View style={styles.selectedBackground} />}
+                      <Image source={tableImages[id]} style={styles.tableImage} />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+                <View style={styles.row}>
+                  {[10, 11, 12].map((id) => (
+                    <TouchableOpacity
+                      key={id}
+                      style={[
+                        styles.table,
+                        (id === 11 || id === 12) && styles.tableRight,
+                      ]}
+                      onPress={() => { handleTablePress(id), setNumber(id) }}
+                    >
+                      {selectedTable === id && (
+                        <View
+                          style={
+                            id === 12
+                              ? styles.selectedBackgroundLarge
+                              : styles.selectedBackground
+                          }
+                        />
+                      )}
+                      <Image
+                        source={tableImages[id]}
+                        style={id === 12 ? styles.tableImageLarge : styles.tableImage}
+                      />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+                <View style={styles.row}>
+                  {[13, 14].map((id) => (
+                    <TouchableOpacity
+                      key={id}
+                      style={[styles.table, id === 14 && styles.tableRight]}
+                      onPress={() => { handleTablePress(id), setNumber(id) }}
+                    >
+                      {selectedTable === id && <View style={styles.selectedBackgroundLarge} />}
+                      <Image source={tableImages[id]} style={styles.tableImageLarge} />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </>
+            )
+
+            }
           </View>
         </ScrollView>
 
         {/* Nút NEXT luôn hiển thị ở dưới cùng màn hình */}
         {selectedTable && (
-          <TouchableOpacity onPress={() => navigation.navigate('BookingScreen', {sendNumber: number})} style={styles.nextButton}>
+          <TouchableOpacity onPress={clickContinute} style={styles.nextButton}>
             <Text style={styles.nextButtonText}>Tiếp tục</Text>
           </TouchableOpacity>
         )}
@@ -214,9 +268,7 @@ const styles = StyleSheet.create({
   },
   nextButton: {
     position: 'absolute',
-    bottom: 20, 
-    left: 20, 
-    right: 20, 
+    bottom: 10,
     paddingVertical: 15,
     backgroundColor: '#2c2c2c',
     borderRadius: 25,
@@ -227,6 +279,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 5,
+    width: "45%",
   },
   nextButtonText: {
     color: 'white',

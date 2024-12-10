@@ -1,5 +1,5 @@
 import { View, Text, Image, StyleSheet } from 'react-native';
-import {React, useContext} from 'react';
+import { React, useContext } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -31,10 +31,11 @@ const Stack = createNativeStackNavigator();
 const Home = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Home" component={HomeMenu} />
+      <Stack.Screen name="HomeMenu" component={HomeMenu} />
     </Stack.Navigator>
   );
 };
+
 const SettingScreen = () => {
   return (
     <Stack.Navigator initialRouteName='Setting' screenOptions={{ headerShown: false }}>
@@ -58,8 +59,8 @@ const Tabbar1 = () => {
         },
       }}>
       <Tab.Screen
-        name="Món ăn"
-        component={Home}
+        name="HomeMenu"
+        component={HomeMenu}
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{ alignItems: 'center' }}>
@@ -148,8 +149,8 @@ const Tabbar2 = () => {
         },
       }}>
       <Tab.Screen
-        name="Món ăn"
-        component={Home}
+        name="HomeMenu"
+        component={HomeMenu}
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{ alignItems: 'center' }}>
@@ -186,6 +187,28 @@ const Tabbar2 = () => {
               <Text
                 style={{ color: focused ? '#95AE45' : 'black', fontSize: 13 }}>
                 Đặt món
+              </Text>
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Đặt bàn"
+        component={ChooseTableScreen}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: 'center' }}>
+              <Image
+                style={{
+                  width: 25,
+                  height: 25,
+                  tintColor: focused ? '#859c3e' : 'black',
+                }}
+                source={require('../../icon/order_table.png')}
+              />
+              <Text
+                style={{ color: focused ? '#859c3e' : 'black', fontSize: 13 }}>
+                Đặt bàn
               </Text>
             </View>
           ),
