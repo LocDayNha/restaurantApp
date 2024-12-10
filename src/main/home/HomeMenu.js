@@ -172,9 +172,9 @@ const HomeMenu = ({navigation}) => {
               thumbTintColor="#95AE45"
             />
             <View style={styles.sliderLabels}>
-              <Text style={styles.sliderLabelText}>10,000 VND</Text>
+              <Text style={styles.sliderLabelText}>10.000 vnđ</Text>
               <Text style={styles.sliderLabelText}>
-                {formatPrice(sliderValue)} VND
+                {formatPrice(sliderValue)} vnđ
               </Text>
             </View>
           </View>
