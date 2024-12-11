@@ -162,12 +162,28 @@ const HomeMenu = props => {
   const handlePriceFilter = range => {
     setSelectedPriceRange(range.label);
     setPriceModalVisible(false);
+
+    //tạo câu lệnh if kèm điều kiện để thông báo cho người dùng biết mức giá đã chọn
+    if (range.max <= 200000) {
+      ToastAndroid.show(
+        'Bạn đã chọn mức giá dưới 200.000đ.',
+        ToastAndroid.SHORT,
+      );
+    } else if (range.max <= 500000) {
+      ToastAndroid.show(
+        'Bạn đã chọn mức giá trên 200.000đ.',
+        ToastAndroid.SHORT,
+      );
+    }
+
     handleSearch();
   };
 
   const handlePriceFilterCancel = () => {
     setPriceModalVisible(false);
+    ToastAndroid.show('Đã hủy chọn mức giá.', ToastAndroid.SHORT);
     setSelectedPriceRange(''); // Đặt lại phạm vi giá đã chọn
+
     if (searchQuery) {
       handleSearch(); // Tìm kiếm chỉ theo tên
     } else {
