@@ -1,4 +1,4 @@
-import React, {useMemo, useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   ToastAndroid,
   Modal,
-  ScrollView,
 } from 'react-native';
 import Item_List_Category from '../../item/Item_List_Category';
 import Item_List_Order from '../../item/Item_List_Order';
@@ -31,53 +30,52 @@ const Banner = [
 const HomeMenu = props => {
   const {navigation} = props;
 
-  const toProfile = () => {
-    navigation.navigate('Profile');
-  };
-  const toHistory = () => {
-    navigation.navigate('History');
-  };
-
-  const [position, setPosition] = useState(0); // slide ảnh quảng cáo
+  const [position, setPosition] = useState(0);
   const [idCategory, setidCategory] = useState(null);
-
-  const [loading, setLoading] = useState(false); // Thêm trạng thái loading
-
-  // get all menu
+  const [loading, setLoading] = useState(false);
   const [dataMenu, setdataMenu] = useState([]);
+  const [dataCategory, setdataCategory] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedPriceRange, setSelectedPriceRange] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [priceModalVisible, setPriceModalVisible] = useState(false);
+  const [sortAscending, setSortAscending] = useState(true);
+
+  const priceRanges = [
+    {label: '10.000 - 200.000', min: 10000, max: 200000},
+    {label: '200.000 - 500.000', min: 200000, max: 500000},
+  ];
+
   const getData = async () => {
-    setLoading(true); // Start loading
+    setLoading(true);
     const dataFood = await AxiosInstance().get('/menu/get');
-    setLoading(false); // End loading
+    setLoading(false);
     if (!dataFood || dataFood.length === 0) {
-      console.log('Lấy dữ liệu thấy bại của /menu/get');
+      console.log('Lấy dữ liệu thất bại của /menu/get');
     } else {
       setdataMenu(dataFood);
     }
   };
 
-  // get menu by category
-  const getMenuByCategory = async () => {
-    setLoading(true); // Start loading
+  const getMenuByCategory = async categoryId => {
+    setLoading(true);
     const dataByCategory = await AxiosInstance().get(
-      '/menu/getByCategory/' + idCategory,
+      '/menu/getByCategory/' + categoryId,
     );
-    setLoading(false); // End loading
+    setLoading(false);
     if (!dataByCategory || dataByCategory.length === 0) {
-      console.log('Lấy dữ liệu thấy bại của /menu/getByCategory/');
+      console.log('Lấy dữ liệu thất bại của /menu/getByCategory/');
     } else {
       setdataMenu(dataByCategory);
     }
   };
 
-  // get category
-  const [dataCategory, setdataCategory] = useState([]);
   const getCategory = async () => {
-    setLoading(true); // Start loading
+    setLoading(true);
     const dataCate = await AxiosInstance().get('/category/get');
-    setLoading(false); // End loading
+    setLoading(false);
     if (!dataCate || dataCate.length === 0) {
-      console.log('Lấy dữ liệu thấy bại của /category/get');
+      console.log('Lấy dữ liệu thất bại của /category/get');
     } else {
       setdataCategory(dataCate);
     }
@@ -86,26 +84,13 @@ const HomeMenu = props => {
   useEffect(() => {
     getData();
     getCategory();
-    return () => {};
   }, []);
 
   useEffect(() => {
     if (idCategory && idCategory !== null) {
-      getMenuByCategory();
+      getMenuByCategory(idCategory);
     }
   }, [idCategory]);
-
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedPriceRange, setSelectedPriceRange] = useState('');
-  const [modalVisible, setModalVisible] = useState(false);
-  const [sortAscending, setSortAscending] = useState(true); // New state for sorting
-
-  const priceRanges = [
-    {label: '10.000 - 50.000', min: 10000, max: 50000},
-    {label: '50.000 - 100.000', min: 50000, max: 100000},
-    {label: '100.000 - 200.000', min: 100000, max: 200000},
-    {label: '200.000 - 500.000', min: 200000, max: 500000},
-  ];
 
   const handleSearch = async () => {
     const selectedRange = priceRanges.find(
@@ -113,61 +98,95 @@ const HomeMenu = props => {
     );
     const {min, max} = selectedRange || {};
 
-    // Đảm bảo min và max được định nghĩa trước khi thực hiện yêu cầu
+    const searchParams = {};
+
+    if (searchQuery) {
+      searchParams.name = searchQuery;
+    }
+
     if (min !== undefined && max !== undefined) {
-      const dataSearch = await AxiosInstance().post('/menu/search', {
-        name: searchQuery,
-        minPrice: min,
-        maxPrice: max,
-      });
+      searchParams.minPrice = min;
+      searchParams.maxPrice = max;
+    }
 
-      if (!dataSearch || dataSearch.length === 0) {
-        console.log('Không tìm thấy kết quả');
-        ToastAndroid.show('Không tìm thấy kết quả', ToastAndroid.SHORT);
-        setdataMenu([]); // Xóa dữ liệu menu
-      } else {
-        // Lọc dữ liệu trên client để đảm bảo chỉ hiển thị món trong khoảng giá
-        const filteredData = dataSearch.filter(
-          item => item.price >= min && item.price <= max,
-        );
-        setdataMenu(filteredData);
-      }
+    const dataSearch = await AxiosInstance().post('/menu/search', searchParams);
+
+    if (!dataSearch || dataSearch.length === 0) {
+      console.log('Không tìm thấy kết quả');
+      ToastAndroid.show('Không tìm thấy món ăn', ToastAndroid.SHORT);
+      setdataMenu([]);
     } else {
-      // Tìm kiếm chỉ theo tên nếu không có khoảng giá
-      const dataSearch = await AxiosInstance().post('/menu/search', {
-        name: searchQuery,
+      const filteredData = dataSearch.filter(item => {
+        const matchesName = searchQuery
+          ? item.name.toLowerCase().includes(searchQuery.toLowerCase())
+          : true;
+        const matchesPrice =
+          min !== undefined && max !== undefined
+            ? item.price >= min && item.price <= max
+            : true;
+        return matchesName && matchesPrice;
       });
 
-      if (!dataSearch || dataSearch.length === 0) {
-        console.log('Không tìm thấy kết quả');
-        setdataMenu([]); // Xóa dữ liệu menu
-      } else {
-        setdataMenu(dataSearch);
+      setdataMenu(filteredData);
+
+      if (filteredData.length > 0) {
+        const firstItemCategory = filteredData[0].categoryId;
+        setidCategory(firstItemCategory);
       }
     }
   };
 
   const handleSortToggle = () => {
-    setSortAscending(!sortAscending);
-    setdataMenu(prevData =>
-      [...prevData].sort((a, b) =>
-        sortAscending ? a.price - b.price : b.price - a.price,
-      ),
-    );
+    setModalVisible(true);
   };
 
-  const renderHeader = () => (
-    <View>
-      {/* Header */}
+  const applySort = (ascending, reset = false) => {
+    if (reset) {
+      getData(); // Re-fetch the data to reset the order
+    } else {
+      setSortAscending(ascending);
+      setdataMenu(prevData =>
+        [...prevData].sort((a, b) =>
+          ascending ? a.price - b.price : b.price - a.price,
+        ),
+      );
+    }
+    setModalVisible(false);
+  };
+
+  const handleCategorySelect = categoryId => {
+    setidCategory(categoryId);
+    getMenuByCategory(categoryId);
+  };
+
+  const handlePriceFilter = range => {
+    setSelectedPriceRange(range.label);
+    setPriceModalVisible(false);
+    handleSearch();
+  };
+
+  const handlePriceFilterCancel = () => {
+    setPriceModalVisible(false);
+    setSelectedPriceRange(''); // Đặt lại phạm vi giá đã chọn
+    if (searchQuery) {
+      handleSearch(); // Tìm kiếm chỉ theo tên
+    } else {
+      ToastAndroid.show(
+        'Bạn chỉ đang tìm kiếm theo tên món ăn.',
+        ToastAndroid.SHORT,
+      );
+    }
+  };
+
+  return (
+    <View style={{flex: 1}}>
       <View style={styles.header_container}>
-        <Text style={styles.header}>Phoenix Restaurant</Text>
+        <Text style={styles.header}>Nhà hàng Phoenix</Text>
         <Image
           style={styles.avata}
           source={require('../../image/logo_phoenixRestaurant.png')}
         />
       </View>
-
-      {/* Tìm kiếm */}
       <View elevation={5} style={styles.searchContainer}>
         <View style={styles.search}>
           <TouchableOpacity onPress={handleSearch}>
@@ -176,7 +195,6 @@ const HomeMenu = props => {
               source={require('../../icon/ic_search.png')}
             />
           </TouchableOpacity>
-
           <TextInput
             placeholder="Nhập món cần tìm..."
             placeholderTextColor={'#888'}
@@ -188,62 +206,20 @@ const HomeMenu = props => {
             value={searchQuery}
             onSubmitEditing={handleSearch}
           />
+          <TouchableOpacity onPress={handleSortToggle}>
+            <Image
+              style={styles.ic_sort}
+              source={require('../../icon/ic_filter.png')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setPriceModalVisible(true)}>
+            <Image
+              style={styles.ic_filter}
+              source={require('../../icon/ic_sort.png')}
+            />
+          </TouchableOpacity>
         </View>
-
-        {/* Price Range Button */}
-        <TouchableOpacity
-          style={styles.priceRangeButton}
-          onPress={() => setModalVisible(true)}>
-          <Text style={styles.priceRangeText}>
-            {selectedPriceRange || 'Chọn khoảng giá'}
-          </Text>
-        </TouchableOpacity>
-
-        {/* Sort Button */}
-        <TouchableOpacity style={styles.sortButton} onPress={handleSortToggle}>
-          <Text style={styles.sortButtonText}>
-            {sortAscending ? 'Giá tăng dần' : 'Giá giảm dần'}
-          </Text>
-        </TouchableOpacity>
       </View>
-
-      {/* Price Range Modal */}
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Chọn khoảng giá</Text>
-            <ScrollView>
-              {priceRanges.map((range, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={styles.modalButton}
-                  onPress={() => {
-                    setSelectedPriceRange(range.label);
-                    setModalVisible(false);
-                    handleSearch(); // Kích hoạt tìm kiếm ngay sau khi chọn khoảng giá
-                  }}>
-                  <Text style={styles.modalButtonText}>{range.label}</Text>
-                </TouchableOpacity>
-              ))}
-              <TouchableOpacity
-                style={styles.modalButton}
-                onPress={() => {
-                  setSelectedPriceRange('');
-                  setModalVisible(false);
-                  handleSearch(); // Tìm kiếm chỉ theo tên
-                }}>
-                <Text style={styles.modalButtonText}>Bỏ chọn</Text>
-              </TouchableOpacity>
-            </ScrollView>
-          </View>
-        </View>
-      </Modal>
-
-      {/* Hình gì đây chưa xác định ?? */}
       <Slideshow
         containerStyle={styles.banner}
         height={180}
@@ -251,8 +227,6 @@ const HomeMenu = props => {
         dataSource={Banner}
         scrollEnabled={true}
       />
-
-      {/* Danh sách loại món ăn */}
       <View style={styles.list_category}>
         <FlatList
           data={dataCategory}
@@ -260,9 +234,9 @@ const HomeMenu = props => {
             <Item_List_Category
               data={item}
               onchangeIdCategory={setidCategory}
-              onPress={getMenuByCategory}
-              bgcl={item._id === dataCategory._id ? '#95AE45' : '#ffffff'}
-              textColor={item._id === dataCategory._id ? 'white' : 'black'}
+              onPress={() => handleCategorySelect(item._id)}
+              bgcl={item._id === idCategory ? '#95AE45' : '#ffffff'}
+              textColor={item._id === idCategory ? 'white' : 'black'}
             />
           )}
           keyExtractor={item => item._id}
@@ -271,26 +245,72 @@ const HomeMenu = props => {
           contentContainerStyle={styles.categoryListContainer}
         />
       </View>
+      <FlatList
+        data={dataMenu}
+        renderItem={({item}) => <Item_List_Order data={item} />}
+        keyExtractor={item => item._id}
+        numColumns={2}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.foodListContainer}
+        ListEmptyComponent={
+          loading ? (
+            <Text style={styles.noResultsText}>Đang tải...</Text>
+          ) : (
+            <Text style={styles.noResultsText}>Không tìm thấy món ăn !!!</Text>
+          )
+        }
+      />
+      <Modal
+        transparent={true}
+        visible={modalVisible}
+        animationType="slide"
+        onRequestClose={() => setModalVisible(false)}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Sắp xếp theo giá</Text>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => applySort(true)}>
+              <Text style={styles.modalButtonText}>Từ thấp đến cao</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => applySort(false)}>
+              <Text style={styles.modalButtonText}>Từ cao đến thấp</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => applySort(null, true)}>
+              <Text style={styles.modalButtonText}>Hủy</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+      <Modal
+        transparent={true}
+        visible={priceModalVisible}
+        animationType="slide"
+        onRequestClose={() => setPriceModalVisible(false)}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Chọn mức giá</Text>
+            {priceRanges.map(range => (
+              <TouchableOpacity
+                key={range.label}
+                style={styles.modalButton}
+                onPress={() => handlePriceFilter(range)}>
+                <Text style={styles.modalButtonText}>{range.label}</Text>
+              </TouchableOpacity>
+            ))}
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={handlePriceFilterCancel}>
+              <Text style={styles.modalButtonText}>Hủy</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
-  );
-
-  return (
-    <FlatList
-      ListHeaderComponent={renderHeader}
-      data={dataMenu}
-      renderItem={({item}) => <Item_List_Order data={item} />}
-      keyExtractor={item => item._id}
-      numColumns={2}
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={styles.foodListContainer}
-      ListEmptyComponent={
-        loading ? (
-          <Text style={styles.noResultsText}>Đang tải...</Text>
-        ) : (
-          <Text style={styles.noResultsText}>Không tìm thấy sản phẩm nào !!!</Text>
-        )
-      } // Display loading message or no results message
-    />
   );
 };
 
@@ -343,6 +363,16 @@ const styles = StyleSheet.create({
     height: 20,
     marginHorizontal: 10,
   },
+  ic_sort: {
+    width: 20,
+    height: 20,
+    marginHorizontal: 10,
+  },
+  ic_filter: {
+    width: 20,
+    height: 20,
+    marginHorizontal: 10,
+  },
   content_search: {
     fontSize: 16,
     flex: 1,
@@ -350,7 +380,7 @@ const styles = StyleSheet.create({
   },
   banner: {
     marginLeft: '5%',
-    marginTop: 20,
+    marginTop: 10,
     borderRadius: 20,
     width: '90%',
     height: 180,
