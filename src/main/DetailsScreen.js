@@ -27,23 +27,27 @@ const DetailsScreen = (props) => {
     currentDate.setHours(0, 0, 0, 0);
     const todayFormatted = formatDate(currentDate);
 
-    if (params.dayBooking <= todayFormatted) {
-      ToastAndroid.show("Ngày không hợp lệ", ToastAndroid.SHORT);
-    } else {
-      const data = await AxiosInstance().post("/booking/add",
-        {
-          user_id: infoUser._id,
-          table_id: params.table._id,
-          dayBooking: params.dayBooking,
-          seat: seat
-        }
-      );
-      if (data.status) {
-        ToastAndroid.show("Đặt bàn thành công", ToastAndroid.SHORT);
-        navigation.goBack();
+    if (seat) {
+      if (params.dayBooking <= todayFormatted) {
+        ToastAndroid.show("Ngày không hợp lệ", ToastAndroid.SHORT);
       } else {
-        ToastAndroid.show("Đặt bàn thất bại", ToastAndroid.SHORT);
+        const data = await AxiosInstance().post("/booking/add",
+          {
+            user_id: infoUser._id,
+            table_id: params.table._id,
+            dayBooking: params.dayBooking,
+            seat: seat
+          }
+        );
+        if (data.status) {
+          ToastAndroid.show("Đặt bàn thành công", ToastAndroid.SHORT);
+          navigation.goBack();
+        } else {
+          ToastAndroid.show("Đặt bàn thất bại", ToastAndroid.SHORT);
+        }
       }
+    } else {
+      ToastAndroid.show("Nhập số lượng người", ToastAndroid.SHORT);
     }
   };
 
@@ -59,7 +63,7 @@ const DetailsScreen = (props) => {
           <Text style={styles.value}>Phoenix Restaurant</Text>
         </View>
 
-        <View style={[styles.infoRow]}>
+        <View style={[styles.infoRow, { marginTop: '8%' }]}>
           <Text style={styles.label}>Ngày:</Text>
           <Text style={styles.value}>{params.dayBooking}</Text>
         </View>
@@ -69,10 +73,10 @@ const DetailsScreen = (props) => {
           <Text style={styles.value}>{params.table.timeline_id.name}</Text>
         </View>
 
-        <View style={styles.infoRow}>
+        {/* <View style={styles.infoRow}>
           <Text style={styles.label}>Bàn số:</Text>
           <Text style={styles.value}>{params.table.number}</Text>
-        </View>
+        </View> */}
 
         <View style={{
           width: '100%', height: 60, borderRadius: 20, backgroundColor: '#DDDDDD', marginTop: '2%', justifyContent: 'center'
@@ -99,7 +103,7 @@ const styles = StyleSheet.create({
   container: {
     margin: '5%',
     width: '90%',
-    height: '100%'
+    height: '100%',
   },
   title: {
     color: '#000',

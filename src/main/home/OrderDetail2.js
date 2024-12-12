@@ -42,13 +42,6 @@ const CheckoutScreen = (props) => {
     }
   }
 
-  const payVN = async () => {
-    navigation.navigate('VnPayWebView', {
-      idItemOrder: idItemOrder,
-      totalAmount: totalPrice,
-    });
-  }
-
   const formatCurrency = (value) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
       .format(value)
@@ -94,7 +87,7 @@ const CheckoutScreen = (props) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Tiếp tục thanh toán</Text>
+      <Text style={styles.header}>Danh sách món ăn</Text>
 
       {/* Food List */}
       <FlatList
@@ -102,12 +95,12 @@ const CheckoutScreen = (props) => {
         keyExtractor={(item) => item._id}
         renderItem={renderItem}
         contentContainerStyle={styles.listContent}
-        // ListFooterComponent={
-        //   <TouchableOpacity onPress={clickUpdateDishes} style={{ marginLeft: '48%', marginTop: '3%', width:30, height:30 }}>
-        //     <Image style={{ width: 30, height: 30 }} source={require('../../icon/add.png')}></Image>
-        //   </TouchableOpacity >
-        // }
-        // ListFooterComponentStyle={{ flex: 1, justifyContent: 'flex-end' }}
+        ListFooterComponent={
+          <TouchableOpacity onPress={clickUpdateDishes} style={{ marginLeft: '48%', marginTop: '3%', width: 30, height: 30 }}>
+            <Image style={{ width: 30, height: 30 }} source={require('../../icon/add.png')}></Image>
+          </TouchableOpacity >
+        }
+        ListFooterComponentStyle={{ flex: 1, justifyContent: 'flex-end' }}
       />
 
       {/* Total Section */}
@@ -133,13 +126,6 @@ const CheckoutScreen = (props) => {
           <Text style={styles.priceLabelTotal}>Tổng</Text>
           <Text style={styles.priceValueTotal}>{formatCurrency(foodItems?.totalMoney)}</Text>
         </View>
-      </View>
-
-      {/* Continue to Payment Button */}
-      <View style={{ alignItems: 'center' }}>
-        <TouchableOpacity style={styles.paymentButton} onPress={payVN}>
-          <Text style={styles.paymentButtonText}>Tiếp tục thanh toán</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -258,6 +244,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 10,
+    marginBottom:'5%'
   },
   priceLabelTotal: {
     fontSize: 18,

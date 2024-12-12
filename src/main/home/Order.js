@@ -54,6 +54,10 @@ const FoodOrderScreen = (props) => {
   }
 
   const clickDetail = (itemid) => {
+    navigation.navigate("OrderDetail2", { id: itemid });
+  }
+
+  const clickPayment = (itemid) => {
     navigation.navigate("OrderDetail", { id: itemid });
   }
 
@@ -80,15 +84,17 @@ const FoodOrderScreen = (props) => {
     return (
       <View style={styles.foodCard}>
         <View style={styles.infoContainer}>
-          <Text style={[styles.tableInfo, { fontWeight: 'bold', fontSize: 25 }]}>
-            Bàn {item.numberTable}
-          </Text>
-          <View style={{ flexDirection: 'row' }}>
-            <Text style={styles.userInfo}>{item.timeOrder} | {item.dayOrder}</Text>
-          </View>
+          <TouchableOpacity  onPress={() => clickDetail(item._id)} >
+            <Text style={[styles.tableInfo, { fontWeight: 'bold', fontSize: 25 }]}>
+              Bàn {item.numberTable}
+            </Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.userInfo}>{item.timeOrder} | {item.dayOrder}</Text>
+            </View>
+          </TouchableOpacity>
           <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', width: '100%', height: 50, marginTop: '5%' }}>
             <Text style={styles.totalPrice}>{formatCurrency(item.totalMoney)}</Text>
-            <TouchableOpacity onPress={() => clickDetail(item._id)} style={[styles.paymentStatusContainer, { backgroundColor: paymentStatusStyle.backgroundColor }]} disabled={item.isPayment}>
+            <TouchableOpacity onPress={() => clickPayment(item._id)} style={[styles.paymentStatusContainer, { backgroundColor: paymentStatusStyle.backgroundColor }]} disabled={item.isPayment}>
               {
                 item.isPayment ?
                   <Text style={[styles.paymentStatus, {}]}>Đã thanh toán</Text> :
