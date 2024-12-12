@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   ToastAndroid,
   Modal,
+  Keyboard,
 } from 'react-native';
 import Item_List_Category from '../../item/Item_List_Category';
 import Item_List_Order from '../../item/Item_List_Order';
@@ -42,8 +43,11 @@ const HomeMenu = props => {
   const [sortAscending, setSortAscending] = useState(true);
 
   const priceRanges = [
-    {label: '10.000 - 200.000', min: 10000, max: 200000},
-    {label: '200.000 - 500.000', min: 200000, max: 500000},
+    {label: '10.000 - 100.000', min: 10000, max: 100000},
+    {label: '100.000 - 200.000', min: 100000, max: 200000},
+    {label: '200.000 - 300.000', min: 200000, max: 300000},
+    {label: '300.000 - 400.000', min: 300000, max: 400000},
+    {label: '400.000 - 500.000', min: 400000, max: 500000},
   ];
 
   const getData = async () => {
@@ -109,12 +113,22 @@ const HomeMenu = props => {
       searchParams.maxPrice = max;
     }
 
+    if (!searchQuery && (min === undefined || max === undefined)) {
+      ToastAndroid.show(
+        'Vui lòng nhập tên món ăn hoặc chọn mức giá',
+        ToastAndroid.SHORT,
+      );
+      Keyboard.dismiss();
+      return;
+    }
+
     const dataSearch = await AxiosInstance().post('/menu/search', searchParams);
 
     if (!dataSearch || dataSearch.length === 0) {
       console.log('Không tìm thấy kết quả');
       ToastAndroid.show('Không tìm thấy món ăn', ToastAndroid.SHORT);
       setdataMenu([]);
+      Keyboard.dismiss();
     } else {
       const filteredData = dataSearch.filter(item => {
         const matchesName = searchQuery
@@ -128,6 +142,7 @@ const HomeMenu = props => {
       });
 
       setdataMenu(filteredData);
+      Keyboard.dismiss();
 
       if (filteredData.length > 0) {
         const firstItemCategory = filteredData[0].categoryId;
@@ -162,26 +177,11 @@ const HomeMenu = props => {
   const handlePriceFilter = range => {
     setSelectedPriceRange(range.label);
     setPriceModalVisible(false);
-
-    //tạo câu lệnh if kèm điều kiện để thông báo cho người dùng biết mức giá đã chọn
-    if (range.max <= 200000) {
-      ToastAndroid.show(
-        'Bạn đã chọn mức giá dưới 200.000đ.',
-        ToastAndroid.SHORT,
-      );
-    } else if (range.max <= 500000) {
-      ToastAndroid.show(
-        'Bạn đã chọn mức giá trên 200.000đ.',
-        ToastAndroid.SHORT,
-      );
-    }
-
     handleSearch();
   };
 
   const handlePriceFilterCancel = () => {
     setPriceModalVisible(false);
-    ToastAndroid.show('Đã hủy chọn mức giá.', ToastAndroid.SHORT);
     setSelectedPriceRange(''); // Đặt lại phạm vi giá đã chọn
 
     if (searchQuery) {
@@ -236,32 +236,37 @@ const HomeMenu = props => {
           </TouchableOpacity>
         </View>
       </View>
-      <Slideshow
-        containerStyle={styles.banner}
-        height={180}
-        position={position}
-        dataSource={Banner}
-        scrollEnabled={true}
-      />
-      <View style={styles.list_category}>
-        <FlatList
-          data={dataCategory}
-          renderItem={({item}) => (
-            <Item_List_Category
-              data={item}
-              onchangeIdCategory={setidCategory}
-              onPress={() => handleCategorySelect(item._id)}
-              bgcl={item._id === idCategory ? '#95AE45' : '#ffffff'}
-              textColor={item._id === idCategory ? 'white' : 'black'}
-            />
-          )}
-          keyExtractor={item => item._id}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.categoryListContainer}
-        />
-      </View>
+
       <FlatList
+        ListHeaderComponent={
+          <>
+            <Slideshow
+              containerStyle={styles.banner}
+              height={180}
+              position={position}
+              dataSource={Banner}
+              scrollEnabled={true}
+            />
+            <View style={styles.list_category}>
+              <FlatList
+                data={dataCategory}
+                renderItem={({item}) => (
+                  <Item_List_Category
+                    data={item}
+                    onchangeIdCategory={setidCategory}
+                    onPress={() => handleCategorySelect(item._id)}
+                    bgcl={item._id === idCategory ? '#95AE45' : '#ffffff'}
+                    textColor={item._id === idCategory ? 'white' : 'black'}
+                  />
+                )}
+                keyExtractor={item => item._id}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.categoryListContainer}
+              />
+            </View>
+          </>
+        }
         data={dataMenu}
         renderItem={({item}) => <Item_List_Order data={item} />}
         keyExtractor={item => item._id}
@@ -276,6 +281,7 @@ const HomeMenu = props => {
           )
         }
       />
+
       <Modal
         transparent={true}
         visible={modalVisible}
@@ -395,10 +401,10 @@ const styles = StyleSheet.create({
     width: '85%',
   },
   banner: {
-    marginLeft: '5%',
+    marginLeft: '0%',
     marginTop: 10,
     borderRadius: 20,
-    width: '90%',
+    width: '100%',
     height: 180,
   },
   list_category: {
