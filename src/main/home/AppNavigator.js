@@ -1,12 +1,12 @@
-import { View, Text, Image, StyleSheet } from 'react-native';
-import { React, useContext } from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {View, Text, Image, StyleSheet} from 'react-native';
+import {React, useContext} from 'react';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import HomeMenu from './HomeMenu';
 import History from './History';
 import Login from '../Login/Login';
-import Profile from './Profile'
+import Profile from './Profile';
 import OnboardingScreen from '../Login/OnbroadingScreen';
 import Order from './Order';
 import OrderDetail from './OrderDetail';
@@ -22,16 +22,16 @@ import CheckTypePayment from '../payment/CheckTypePayment';
 import VnPayWebView from '../payment/VnPayWebView';
 import OrderProcessing from '../payment/OrderProcessing';
 
-import { ConfirmPassword, ForgotPassword, Login2, Register } from '../Login';
+import {ConfirmPassword, ForgotPassword, Login2, Register} from '../Login';
 import DetailsScreen from '../DetailsScreen';
-import { AppContext } from '../../util/AppContext';
+import {AppContext} from '../../util/AppContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const Home = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="HomeMenu" component={HomeMenu} />
     </Stack.Navigator>
   );
@@ -39,7 +39,9 @@ const Home = () => {
 
 const SettingScreen = () => {
   return (
-    <Stack.Navigator initialRouteName='Setting' screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      initialRouteName="Setting"
+      screenOptions={{headerShown: false}}>
       <Stack.Screen name="Setting" component={Setting} />
       <Stack.Screen name="History_Table" component={History_Table} />
     </Stack.Navigator>
@@ -56,15 +58,14 @@ const Tabbar1 = () => {
           height: 80,
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
-
         },
       }}>
       <Tab.Screen
         name="HomeMenu"
         component={HomeMenu}
         options={{
-          tabBarIcon: ({ focused }) => (
-            <View style={{ alignItems: 'center' }}>
+          tabBarIcon: ({focused}) => (
+            <View style={{alignItems: 'center'}}>
               <Image
                 style={{
                   width: 25,
@@ -74,7 +75,7 @@ const Tabbar1 = () => {
                 source={require('../../icon/menu.png')}
               />
               <Text
-                style={{ color: focused ? '#95AE45' : 'black', fontSize: 13 }}>
+                style={{color: focused ? '#95AE45' : 'black', fontSize: 13}}>
                 Món ăn
               </Text>
             </View>
@@ -85,8 +86,8 @@ const Tabbar1 = () => {
         name="Đặt bàn"
         component={BookingScreen}
         options={{
-          tabBarIcon: ({ focused }) => (
-            <View style={{ alignItems: 'center' }}>
+          tabBarIcon: ({focused}) => (
+            <View style={{alignItems: 'center'}}>
               <Image
                 style={{
                   width: 25,
@@ -96,7 +97,7 @@ const Tabbar1 = () => {
                 source={require('../../icon/order_table.png')}
               />
               <Text
-                style={{ color: focused ? '#859c3e' : 'black', fontSize: 13 }}>
+                style={{color: focused ? '#859c3e' : 'black', fontSize: 13}}>
                 Đặt bàn
               </Text>
             </View>
@@ -107,8 +108,8 @@ const Tabbar1 = () => {
         name="Trang cá nhân"
         component={SettingScreen}
         options={{
-          tabBarIcon: ({ focused }) => (
-            <View style={{ alignItems: 'center' }}>
+          tabBarIcon: ({focused}) => (
+            <View style={{alignItems: 'center'}}>
               <Image
                 style={{
                   width: 25,
@@ -118,7 +119,7 @@ const Tabbar1 = () => {
                 source={require('../../icon/user.png')}
               />
               <Text
-                style={{ color: focused ? '#859c3e' : 'black', fontSize: 13 }}>
+                style={{color: focused ? '#859c3e' : 'black', fontSize: 13}}>
                 Cá nhân
               </Text>
             </View>
@@ -130,7 +131,7 @@ const Tabbar1 = () => {
 };
 const Main1 = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="Tabbar" component={Tabbar1} />
     </Stack.Navigator>
   );
@@ -146,15 +147,14 @@ const Tabbar2 = () => {
           height: 80,
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
-
         },
       }}>
       <Tab.Screen
         name="HomeMenu"
         component={HomeMenu}
         options={{
-          tabBarIcon: ({ focused }) => (
-            <View style={{ alignItems: 'center' }}>
+          tabBarIcon: ({focused}) => (
+            <View style={{alignItems: 'center'}}>
               <Image
                 style={{
                   width: 25,
@@ -164,7 +164,7 @@ const Tabbar2 = () => {
                 source={require('../../icon/menu.png')}
               />
               <Text
-                style={{ color: focused ? '#95AE45' : 'black', fontSize: 13 }}>
+                style={{color: focused ? '#95AE45' : 'black', fontSize: 13}}>
                 Món ăn
               </Text>
             </View>
@@ -175,8 +175,8 @@ const Tabbar2 = () => {
         name="Đặt món"
         component={History}
         options={{
-          tabBarIcon: ({ focused }) => (
-            <View style={{ alignItems: 'center' }}>
+          tabBarIcon: ({focused}) => (
+            <View style={{alignItems: 'center'}}>
               <Image
                 style={{
                   width: 25,
@@ -186,7 +186,7 @@ const Tabbar2 = () => {
                 source={require('../../icon/food.png')}
               />
               <Text
-                style={{ color: focused ? '#95AE45' : 'black', fontSize: 13 }}>
+                style={{color: focused ? '#95AE45' : 'black', fontSize: 13}}>
                 Đặt món
               </Text>
             </View>
@@ -197,8 +197,8 @@ const Tabbar2 = () => {
         name="Đặt bàn"
         component={ChooseTableScreen}
         options={{
-          tabBarIcon: ({ focused }) => (
-            <View style={{ alignItems: 'center' }}>
+          tabBarIcon: ({focused}) => (
+            <View style={{alignItems: 'center'}}>
               <Image
                 style={{
                   width: 25,
@@ -208,7 +208,7 @@ const Tabbar2 = () => {
                 source={require('../../icon/order_table.png')}
               />
               <Text
-                style={{ color: focused ? '#859c3e' : 'black', fontSize: 13 }}>
+                style={{color: focused ? '#859c3e' : 'black', fontSize: 13}}>
                 Đặt bàn
               </Text>
             </View>
@@ -219,8 +219,8 @@ const Tabbar2 = () => {
         name="Đơn hàng"
         component={Order}
         options={{
-          tabBarIcon: ({ focused }) => (
-            <View style={{ alignItems: 'center' }}>
+          tabBarIcon: ({focused}) => (
+            <View style={{alignItems: 'center'}}>
               <Image
                 style={{
                   width: 25,
@@ -230,7 +230,7 @@ const Tabbar2 = () => {
                 source={require('../../icon/order_history.png')}
               />
               <Text
-                style={{ color: focused ? '#95AE45' : 'black', fontSize: 13 }}>
+                style={{color: focused ? '#95AE45' : 'black', fontSize: 13}}>
                 Đơn hàng
               </Text>
             </View>
@@ -242,18 +242,17 @@ const Tabbar2 = () => {
 };
 const Main2 = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="Tabbar" component={Tabbar2} />
     </Stack.Navigator>
   );
 };
 
 const Appnavigator = () => {
-
-  const { infoUser } = useContext(AppContext);
+  const {infoUser} = useContext(AppContext);
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="OnboardingScreen" component={OnboardingScreen} />
       <Stack.Screen name="Login2" component={Login2} />
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
@@ -265,7 +264,10 @@ const Appnavigator = () => {
         <>
           <Stack.Screen name="Main" component={Main1} />
           <Stack.Screen name="BookingScreen" component={BookingScreen} />
-          <Stack.Screen name="ReservationScreen" component={ReservationScreen} />
+          <Stack.Screen
+            name="ReservationScreen"
+            component={ReservationScreen}
+          />
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
         </>

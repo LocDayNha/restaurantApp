@@ -1,3 +1,4 @@
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -6,12 +7,10 @@ import {
   TextInput,
   FlatList,
   TouchableOpacity,
-  ActivityIndicator,
-  Alert,
+  ToastAndroid,
+  Modal,
   Keyboard,
 } from 'react-native';
-import React, {useState, useEffect, useCallback, useMemo} from 'react';
-import Slider from '@react-native-community/slider';
 import Item_List_Category from '../../item/Item_List_Category';
 import Item_List_Order from '../../item/Item_List_Order';
 import Slideshow from 'react-native-image-slider-show';
@@ -29,230 +28,333 @@ const Banner = [
   },
 ];
 
-const HomeMenu = ({navigation}) => {
+const HomeMenu = props => {
+  const {navigation} = props;
+
   const [position, setPosition] = useState(0);
   const [idCategory, setidCategory] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [sliderValue, setSliderValue] = useState(500000); // Giá trị tối đa cho thanh trượt
+  const [loading, setLoading] = useState(false);
   const [dataMenu, setdataMenu] = useState([]);
   const [dataCategory, setdataCategory] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedPriceRange, setSelectedPriceRange] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [priceModalVisible, setPriceModalVisible] = useState(false);
+  const [sortAscending, setSortAscending] = useState(true);
 
-  // Hàm dùng để lấy dữ liệu từ API
-  const fetchData = useCallback(async (url, setData, errorMessage) => {
-    try {
-      const response = await AxiosInstance().get(url);
-      setData(response || []); // Nếu không có dữ liệu, đặt mảng rỗng
-    } catch (error) {
-      console.error(`Error fetching data from ${url}:`, error);
-    }
-  }, []);
+  const priceRanges = [
+    {label: '10.000 - 100.000', min: 10000, max: 100000},
+    {label: '100.000 - 200.000', min: 100000, max: 200000},
+    {label: '200.000 - 300.000', min: 200000, max: 300000},
+    {label: '300.000 - 400.000', min: 300000, max: 400000},
+    {label: '400.000 - 500.000', min: 400000, max: 500000},
+  ];
 
-  // Lấy dữ liệu menu
-  const getData = useCallback(() => {
-    fetchData('/menu/get', setdataMenu, 'Failed to fetch data from /menu/get');
-  }, [fetchData]);
-
-  // Lấy dữ liệu danh mục
-  const getCategory = useCallback(() => {
-    fetchData(
-      '/category/get',
-      setdataCategory,
-      'Failed to fetch data from /category/get',
-    );
-  }, [fetchData]);
-
-  // Lấy menu theo danh mục
-  const getMenuByCategory = useCallback(() => {
-    if (idCategory) {
-      fetchData(
-        `/menu/getByCategory/${idCategory}`,
-        setdataMenu,
-        'Failed to fetch data from /menu/getByCategory/',
-      );
-    }
-  }, [fetchData, idCategory]);
-
-  // Tìm kiếm linh hoạt
-  const handleFlexibleSearch = useCallback(async () => {
-    if (!searchQuery.trim()) {
-      Alert.alert('Thông báo', 'Tên món ăn không được để trống.');
-      return;
-    }
-    setIsLoading(true);
-    setidCategory(null); // Đặt lại danh mục
-    Keyboard.dismiss(); // Ẩn bàn phím
-    try {
-      const response = await AxiosInstance().get(
-        `/menu/search?name=${searchQuery}&minPrice=10000&maxPrice=${sliderValue}`,
-      );
-      setdataMenu(response || []); // Đặt dữ liệu menu
-    } catch (error) {
-      console.error('Error fetching data from /menu/search:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [searchQuery, sliderValue]);
-
-  // Lấy dữ liệu khi component được mount
-  useEffect(() => {
-    getData();
-    getCategory();
-  }, [getData, getCategory]);
-
-  // Cập nhật menu khi danh mục thay đổi
-  useEffect(() => {
-    getMenuByCategory();
-  }, [getMenuByCategory]);
-
-  // Định dạng giá tiền
-  const formatPrice = price =>
-    price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-
-  // Thay đổi danh mục
-  const handleCategoryChange = useCallback(
-    categoryId => {
-      setidCategory(categoryId);
-      setSearchQuery(''); // Đặt lại ô tìm kiếm
-      getMenuByCategory();
-    },
-    [getMenuByCategory],
-  );
-
-  // Xử lý khi chọn món ăn
-  const handleItemSelect = item => {
-    const category = dataCategory.find(cat => cat._id === item.categoryId);
-    if (category) {
-      handleCategoryChange(category._id);
+  const getData = async () => {
+    setLoading(true);
+    const dataFood = await AxiosInstance().get('/menu/get');
+    setLoading(false);
+    if (!dataFood || dataFood.length === 0) {
+      console.log('Lấy dữ liệu thất bại của /menu/get');
+    } else {
+      setdataMenu(dataFood);
     }
   };
 
-  // Render phần đầu của danh sách
-  const renderHeader = useCallback(
-    () => (
-      <View>
-        <View style={styles.header_container}>
-          <Text style={styles.header}>Phoenix Restaurant</Text>
-          <Image
-            style={styles.avatar}
-            source={require('../../image/logo_phoenixRestaurant.png')}
-          />
-        </View>
-        <View elevation={5} style={styles.searchContainer}>
-          <View style={styles.search}>
-            <TouchableOpacity onPress={handleFlexibleSearch}>
-              <Image
-                style={styles.ic_search}
-                source={require('../../icon/ic_search.png')}
-              />
-            </TouchableOpacity>
-            <TextInput
-              placeholder="Tìm kiếm món ăn"
-              placeholderTextColor={'#888'}
-              style={styles.content_search}
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-              onSubmitEditing={handleFlexibleSearch}
-              returnKeyType="search"
-            />
-          </View>
-        </View>
-        <View style={styles.priceSearchContainer}>
-          <View style={styles.sliderContainer}>
-            <Slider
-              style={styles.slider}
-              minimumValue={10000}
-              maximumValue={500000}
-              step={1000}
-              value={sliderValue}
-              onValueChange={setSliderValue}
-              onSlidingComplete={setSliderValue}
-              minimumTrackTintColor="#95AE45"
-              maximumTrackTintColor="#d3d3d3"
-              thumbTintColor="#95AE45"
-            />
-            <View style={styles.sliderLabels}>
-              <Text style={styles.sliderLabelText}>10.000 vnđ</Text>
-              <Text style={styles.sliderLabelText}>
-                {formatPrice(sliderValue)} vnđ
-              </Text>
-            </View>
-          </View>
-        </View>
-        <Slideshow
-          containerStyle={styles.banner}
-          height={180}
-          position={position}
-          dataSource={Banner}
-          scrollEnabled={true}
-        />
-        <View style={styles.list_category}>
-          <FlatList
-            data={dataCategory}
-            renderItem={({item}) => (
-              <Item_List_Category
-                data={item}
-                onchangeIdCategory={handleCategoryChange}
-                onPress={() => handleCategoryChange(item._id)}
-                bgcl={item._id === idCategory ? '#95AE45' : '#ffffff'}
-                textColor={item._id === idCategory ? 'white' : 'black'}
-              />
-            )}
-            keyExtractor={item => item._id}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.categoryListContainer}
-          />
-        </View>
-      </View>
-    ),
-    [dataCategory, idCategory, handleCategoryChange, searchQuery, sliderValue],
-  );
+  const getMenuByCategory = async categoryId => {
+    setLoading(true);
+    const dataByCategory = await AxiosInstance().get(
+      '/menu/getByCategory/' + categoryId,
+    );
+    setLoading(false);
+    if (!dataByCategory || dataByCategory.length === 0) {
+      console.log('Lấy dữ liệu thất bại của /menu/getByCategory/');
+    } else {
+      setdataMenu(dataByCategory);
+    }
+  };
 
-  // Render phần cuối của danh sách
-  const renderFooter = useCallback(() => {
-    if (!isLoading) return null;
-    return <ActivityIndicator size="large" color="#95AE45" />;
-  }, [isLoading]);
+  const getCategory = async () => {
+    setLoading(true);
+    const dataCate = await AxiosInstance().get('/category/get');
+    setLoading(false);
+    if (!dataCate || dataCate.length === 0) {
+      console.log('Lấy dữ liệu thất bại của /category/get');
+    } else {
+      setdataCategory(dataCate);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+    getCategory();
+  }, []);
+
+  useEffect(() => {
+    if (idCategory && idCategory !== null) {
+      getMenuByCategory(idCategory);
+    }
+  }, [idCategory]);
+
+  const handleSearch = async () => {
+    const selectedRange = priceRanges.find(
+      range => range.label === selectedPriceRange,
+    );
+    const {min, max} = selectedRange || {};
+
+    const searchParams = {};
+
+    if (searchQuery) {
+      searchParams.name = searchQuery;
+    }
+
+    if (min !== undefined && max !== undefined) {
+      searchParams.minPrice = min;
+      searchParams.maxPrice = max;
+    }
+
+    if (!searchQuery && (min === undefined || max === undefined)) {
+      ToastAndroid.show(
+        'Vui lòng nhập tên món ăn hoặc chọn mức giá',
+        ToastAndroid.SHORT,
+      );
+      Keyboard.dismiss();
+      return;
+    }
+
+    const dataSearch = await AxiosInstance().post('/menu/search', searchParams);
+
+    if (!dataSearch || dataSearch.length === 0) {
+      console.log('Không tìm thấy kết quả');
+      ToastAndroid.show('Không tìm thấy món ăn', ToastAndroid.SHORT);
+      setdataMenu([]);
+      Keyboard.dismiss();
+    } else {
+      const filteredData = dataSearch.filter(item => {
+        const matchesName = searchQuery
+          ? item.name.toLowerCase().includes(searchQuery.toLowerCase())
+          : true;
+        const matchesPrice =
+          min !== undefined && max !== undefined
+            ? item.price >= min && item.price <= max
+            : true;
+        return matchesName && matchesPrice;
+      });
+
+      setdataMenu(filteredData);
+      Keyboard.dismiss();
+
+      if (filteredData.length > 0) {
+        const firstItemCategory = filteredData[0].categoryId;
+        setidCategory(firstItemCategory);
+      }
+    }
+  };
+
+  const handleSortToggle = () => {
+    setModalVisible(true);
+  };
+
+  const applySort = (ascending, reset = false) => {
+    if (reset) {
+      getData(); // Re-fetch the data to reset the order
+    } else {
+      setSortAscending(ascending);
+      setdataMenu(prevData =>
+        [...prevData].sort((a, b) =>
+          ascending ? a.price - b.price : b.price - a.price,
+        ),
+      );
+    }
+    setModalVisible(false);
+  };
+
+  const handleCategorySelect = categoryId => {
+    setidCategory(categoryId);
+    getMenuByCategory(categoryId);
+  };
+
+  const handlePriceFilter = range => {
+    setSelectedPriceRange(range.label);
+    setPriceModalVisible(false);
+    handleSearch();
+  };
+
+  const handlePriceFilterCancel = () => {
+    setPriceModalVisible(false);
+    setSelectedPriceRange(''); // Đặt lại phạm vi giá đã chọn
+
+    if (searchQuery) {
+      handleSearch(); // Tìm kiếm chỉ theo tên
+    } else {
+      ToastAndroid.show(
+        'Bạn chỉ đang tìm kiếm theo tên món ăn.',
+        ToastAndroid.SHORT,
+      );
+    }
+  };
 
   return (
-    <FlatList
-      ListHeaderComponent={renderHeader}
-      data={dataMenu}
-      renderItem={({item}) => (
-        <Item_List_Order data={item} onPress={() => handleItemSelect(item)} />
-      )}
-      keyExtractor={item => item._id}
-      numColumns={2}
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={styles.foodListContainer}
-      keyboardShouldPersistTaps="handled"
-      keyboardDismissMode="on-drag"
-      ListEmptyComponent={() => (
-        <Text style={styles.noResultsText}>Không tìm thấy kết quả</Text>
-      )}
-      ListFooterComponent={renderFooter}
-    />
+    <View style={{flex: 1}}>
+      <View style={styles.header_container}>
+        <Text style={styles.header}>Nhà hàng Phoenix</Text>
+        <Image
+          style={styles.avata}
+          source={require('../../image/logo_phoenixRestaurant.png')}
+        />
+      </View>
+      <View elevation={5} style={styles.searchContainer}>
+        <View style={styles.search}>
+          <TouchableOpacity onPress={handleSearch}>
+            <Image
+              style={styles.ic_search}
+              source={require('../../icon/ic_search.png')}
+            />
+          </TouchableOpacity>
+          <TextInput
+            placeholder="Nhập món cần tìm..."
+            placeholderTextColor={'#888'}
+            style={[
+              styles.content_search,
+              idCategory && {fontStyle: 'normal', color: '#555'},
+            ]}
+            onChangeText={text => setSearchQuery(text)}
+            value={searchQuery}
+            onSubmitEditing={handleSearch}
+          />
+          <TouchableOpacity onPress={handleSortToggle}>
+            <Image
+              style={styles.ic_sort}
+              source={require('../../icon/ic_filter.png')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setPriceModalVisible(true)}>
+            <Image
+              style={styles.ic_filter}
+              source={require('../../icon/ic_sort.png')}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <FlatList
+        ListHeaderComponent={
+          <>
+            <Slideshow
+              containerStyle={styles.banner}
+              height={180}
+              position={position}
+              dataSource={Banner}
+              scrollEnabled={true}
+            />
+            <View style={styles.list_category}>
+              <FlatList
+                data={dataCategory}
+                renderItem={({item}) => (
+                  <Item_List_Category
+                    data={item}
+                    onchangeIdCategory={setidCategory}
+                    onPress={() => handleCategorySelect(item._id)}
+                    bgcl={item._id === idCategory ? '#95AE45' : '#ffffff'}
+                    textColor={item._id === idCategory ? 'white' : 'black'}
+                  />
+                )}
+                keyExtractor={item => item._id}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.categoryListContainer}
+              />
+            </View>
+          </>
+        }
+        data={dataMenu}
+        renderItem={({item}) => <Item_List_Order data={item} />}
+        keyExtractor={item => item._id}
+        numColumns={2}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.foodListContainer}
+        ListEmptyComponent={
+          loading ? (
+            <Text style={styles.noResultsText}>Đang tải...</Text>
+          ) : (
+            <Text style={styles.noResultsText}>Không tìm thấy món ăn !!!</Text>
+          )
+        }
+      />
+
+      <Modal
+        transparent={true}
+        visible={modalVisible}
+        animationType="slide"
+        onRequestClose={() => setModalVisible(false)}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Sắp xếp theo giá</Text>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => applySort(true)}>
+              <Text style={styles.modalButtonText}>Từ thấp đến cao</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => applySort(false)}>
+              <Text style={styles.modalButtonText}>Từ cao đến thấp</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => applySort(null, true)}>
+              <Text style={styles.modalButtonText}>Hủy</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+      <Modal
+        transparent={true}
+        visible={priceModalVisible}
+        animationType="slide"
+        onRequestClose={() => setPriceModalVisible(false)}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Chọn mức giá</Text>
+            {priceRanges.map(range => (
+              <TouchableOpacity
+                key={range.label}
+                style={styles.modalButton}
+                onPress={() => handlePriceFilter(range)}>
+                <Text style={styles.modalButtonText}>{range.label}</Text>
+              </TouchableOpacity>
+            ))}
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={handlePriceFilterCancel}>
+              <Text style={styles.modalButtonText}>Hủy</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
     backgroundColor: '#f8f8f8',
   },
   header: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
     color: '#333',
     textAlign: 'center',
-    marginVertical: 20,
+    marginVertical: 15,
   },
-  avatar: {
-    width: 85,
-    height: 85,
-    borderRadius: 50,
-    marginRight: 10,
+  avata: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginBottom: 10,
+    marginLeft: '8%',
   },
   header_container: {
     width: '100%',
@@ -261,27 +363,34 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingRight: 30,
   },
   searchContainer: {
     alignItems: 'center',
     marginTop: 20,
   },
   search: {
-    paddingHorizontal: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#fff',
-    width: '90%',
-    height: 40,
-    borderRadius: 20,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 3},
-    shadowRadius: 3,
-    shadowOpacity: 0.1,
     flexDirection: 'row',
-    elevation: 5,
+    alignItems: 'center',
+    width: '90%',
+    borderRadius: 10,
+    backgroundColor: '#ffffff',
+    paddingHorizontal: 10,
+    marginBottom: 10,
+    elevation: 2,
+    alignSelf: 'center',
   },
   ic_search: {
+    width: 20,
+    height: 20,
+    marginHorizontal: 10,
+  },
+  ic_sort: {
+    width: 20,
+    height: 20,
+    marginHorizontal: 10,
+  },
+  ic_filter: {
     width: 20,
     height: 20,
     marginHorizontal: 10,
@@ -289,12 +398,13 @@ const styles = StyleSheet.create({
   content_search: {
     fontSize: 16,
     flex: 1,
+    width: '85%',
   },
   banner: {
-    marginLeft: '5%',
-    marginTop: 20,
+    marginLeft: '0%',
+    marginTop: 10,
     borderRadius: 20,
-    width: '90%',
+    width: '100%',
     height: 180,
   },
   list_category: {
@@ -305,58 +415,74 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     alignItems: 'center',
   },
-  priceSearchContainer: {
-    flexDirection: 'column',
-    justifyContent: 'center',
+  list_food: {
+    marginTop: 10,
     alignItems: 'center',
-    marginVertical: 10,
-  },
-  sliderContainer: {
-    width: '90%',
-    alignItems: 'center',
-    marginVertical: 5,
-  },
-  slider: {
-    width: '100%',
-    height: 40,
-    borderRadius: 10,
-    backgroundColor: '#e0e0e0',
-  },
-  sliderLabels: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '90%',
-    paddingHorizontal: 5,
-    marginTop: 5,
-  },
-  sliderLabelText: {
-    fontSize: 14,
-    color: '#444',
-    fontWeight: 'bold',
-  },
-  priceLabel: {
-    fontSize: 16,
-    color: '#444',
-    marginBottom: 5,
-  },
-  searchButton: {
-    backgroundColor: '#95AE45',
-    padding: 10,
-    borderRadius: 5,
-  },
-  searchButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
+    flex: 1,
   },
   foodListContainer: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     alignItems: 'center',
+  },
+  priceRangeButton: {
+    marginTop: 10,
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: '#e0e0e0',
+    width: '90%',
+    alignItems: 'center',
+  },
+  priceRangeText: {
+    color: '#333',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: '80%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 20,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: '#333',
+  },
+  modalButton: {
+    padding: 12,
+    marginVertical: 5,
+    width: '100%',
+    alignItems: 'center',
+    backgroundColor: '#f0f0f0',
+    borderRadius: 5,
+  },
+  modalButtonText: {
+    color: '#333',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  sortButton: {
+    marginTop: 10,
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: '#e0e0e0',
+    width: '90%',
+    alignItems: 'center',
+  },
+  sortButtonText: {
+    color: '#333',
+    fontWeight: 'bold',
   },
   noResultsText: {
     textAlign: 'center',
-    marginVertical: 20,
-    fontSize: 16,
-    color: '#95AE45',
+    marginTop: 20,
+    color: 'gray',
   },
 });
 
