@@ -62,7 +62,6 @@ const BookingScreen = (props) => {
   const getData = async (currentDate) => {
     const data = await AxiosInstance().post("/table/getByNumber",
       {
-        number: params.sendNumber,
         dayBooking: formatDate(currentDate)
       }
     );

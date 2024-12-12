@@ -10,6 +10,7 @@ import Profile from './Profile'
 import OnboardingScreen from '../Login/OnbroadingScreen';
 import Order from './Order';
 import OrderDetail from './OrderDetail';
+import OrderDetail2 from './OrderDetail2';
 import ChooseTableScreen from '../ChooseTableScreen';
 import Setting from './Setting';
 import VerifyEmail from './VerifyEmail';
@@ -82,7 +83,7 @@ const Tabbar1 = () => {
       />
       <Tab.Screen
         name="Đặt bàn"
-        component={ChooseTableScreen}
+        component={BookingScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{ alignItems: 'center' }}>
@@ -273,6 +274,7 @@ const Appnavigator = () => {
           <Stack.Screen name="Main" component={Main2} />
           <Stack.Screen name="Order" component={Order} />
           <Stack.Screen name="OrderDetail" component={OrderDetail} />
+          <Stack.Screen name="OrderDetail2" component={OrderDetail2} />
           <Stack.Screen name="CheckTypePayment" component={CheckTypePayment} />
           <Stack.Screen name="VnPayWebView" component={VnPayWebView} />
         </>

@@ -1,7 +1,7 @@
-import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import React from 'react';
 
-const Item_History_Table = ({data}) => {
+const Item_History_Table = ({ data }) => {
   return (
     <View style={styles.card}>
       <View style={styles.row}>
@@ -22,8 +22,14 @@ const Item_History_Table = ({data}) => {
             <Text style={styles.value}>{data.seat}</Text>
           </View>
           <View style={styles.row}>
-            <Text style={styles.label}>Bàn</Text>
-            <Text style={styles.value}>{data.table_id.number}</Text>
+            <Text style={styles.label}>Trạng thái</Text>
+            {data.confirm === 1
+              ? <Text style={[styles.value,{color:'#EEB422'}]}>Đang xác nhận</Text>
+              : data.confirm === 2
+                ? <Text style={[styles.value,{color:'#00CD00'}]}>Thành công</Text>
+                : data.confirm === 3
+                  ? <Text style={[styles.value,{color:'#CD2626'}]}>Đã hủy</Text>
+                  : <Text style={[styles.value,{color:''}]}>Không xác định</Text>}
           </View>
         </View>
       </View>

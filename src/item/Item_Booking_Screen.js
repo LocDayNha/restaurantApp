@@ -10,10 +10,10 @@ const Item_Booking_Screen = ({data, onPress}) => {
                 <Text style={styles.label}>Thời gian</Text>
                 <Text style={styles.value}>{data.timeline_id.name}</Text>
               </View>
-              <View style={styles.row}>
-                <Text style={styles.label}>Bàn</Text>
-                <Text style={styles.value}>{data.number}</Text>
-              </View>
+              {/* <View style={styles.row}>
+                <Text style={styles.label}>Trạng thái</Text>
+                <Text style={styles.value}>Còn Trống</Text>
+              </View> */}
             </View>
           </View>
         </TouchableOpacity>
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
       marginTop: 10,
     },
     card: {
-      height: 100,
+      height: 80,
       borderRadius: 10,
       padding: 20,
       marginTop: "3%",
