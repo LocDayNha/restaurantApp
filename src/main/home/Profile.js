@@ -8,7 +8,6 @@ import {
   SafeAreaView,
   Alert,
   TextInput,
-  ScrollView,
   ToastAndroid,
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -34,6 +33,37 @@ const ProfileScreen = props => {
   const [open, setOpen] = useState(false);
   const [selectedGender, setSelectedGender] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [openn, setOpenn] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+    {label: 'Nam', value: 'Nam'},
+    {label: 'Nữ', value: 'Nữ'},
+  ]);
+
+  const {idUser, infoUser, setInfoUser} = useContext(AppContext);
+  const {name, gender, phoneNumber, image, birth, address} = infoUser;
+
+  const parseDateFromString = dateString => {
+    const [day, month, year] = dateString.split('/').map(Number);
+    return new Date(year, month - 1, day);
+  };
+
+  useEffect(() => {
+    setFullName(name);
+    setValue(gender);
+    setCity(address);
+    setPhoneNumber(phoneNumber);
+    setProfileImage(image);
+    if (birth) {
+      const parsedDate = parseDateFromString(birth);
+      if (!isNaN(parsedDate)) {
+        setDob(parsedDate);
+      } else {
+        console.warn('Định dạng ngày không hợp lệ:', birth);
+      }
+    }
+  }, [infoUser]);
 
   const handleChoosePhoto = () => {
     ImagePicker.openPicker({
@@ -43,53 +73,11 @@ const ProfileScreen = props => {
     })
       .then(image => {
         setChoseImageee({uri: image.path});
-        // uploadImageToServer(image);
+        uploadImageToServer(image);
       })
       .catch(error => {
-        console.log('Error picking image:', error);
+        console.log('Lỗi khi chọn ảnh:', error);
       });
-  };
-
-  const [loading, setLoading] = useState(false);
-  const uploadImageToServer = async image => {
-    setLoading(true);
-
-    const formData = new FormData();
-    formData.append('image', {
-      uri: image.path,
-      type: image.mime,
-      name: 'profile_photo_' + Date.now() + '.' + image.path.split('.').pop(),
-    });
-
-    console.log('formData:', formData);
-    console.log('formData:', formData._parts);
-
-    try {
-      const response = await AxiosInstance().post(
-        '/menu/upload-image-firebase',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        },
-      );
-
-      console.log('Response:', response);
-
-      const dataUploadImage = response.data;
-
-      if (response.status === 200 && dataUploadImage.imageUrl) {
-        console.log('Image URL: ', dataUploadImage.imageUrl);
-        return dataUploadImage.imageUrl;
-      } else {
-        console.log('Error1 uploading image: ', dataUploadImage);
-      }
-    } catch (error) {
-      console.log('Error2 uploading image: ', error);
-    } finally {
-      setLoading(false);
-    }
   };
 
   const selectedImage = () => {
@@ -130,7 +118,7 @@ const ProfileScreen = props => {
   const formatDate = input => {
     if (!input) return '';
     const date = input instanceof Date ? input : new Date(input);
-    if (isNaN(date)) return ''; // Kiểm tra nếu input không phải là ngày hợp lệ
+    if (isNaN(date)) return '';
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
@@ -198,8 +186,8 @@ const ProfileScreen = props => {
     validateInputs('fullName', fullName);
     validateInputs('dob', dob);
     validateInputs('city', city);
-    validateInputs('phoneNumber', phoneNumber);
-    validateInputs('gender', gender);
+    validateInputs('phoneNumber', newphoneNumber);
+    validateInputs('gender', newgender);
 
     const newErrors = {};
     if (!fullName || fullName.split(' ').length < 2) {
@@ -213,12 +201,12 @@ const ProfileScreen = props => {
     if (!city) {
       newErrors.city = 'Vui lòng nhập thành phố';
     }
-    if (!phoneNumber) {
+    if (!newphoneNumber) {
       newErrors.phoneNumber = 'Vui lòng nhập số điện thoại';
-    } else if (!/^[0-9]{10}$/.test(phoneNumber)) {
+    } else if (!/^[0-9]{10}$/.test(newphoneNumber)) {
       newErrors.phoneNumber = 'Số điện thoại phải gồm 10 chữ số';
     }
-    if (!gender) {
+    if (!newgender) {
       newErrors.gender = 'Vui lòng chọn giới tính';
     }
 
@@ -229,11 +217,9 @@ const ProfileScreen = props => {
         fullName,
         dob: formatDate(dob),
         city,
-        phoneNumber,
-        gender,
+        phoneNumber: newphoneNumber,
+        gender: newgender,
       };
-
-      console.log('User information:', userInfo);
 
       Alert.alert(
         'Thông tin của bạn',
@@ -247,28 +233,39 @@ const ProfileScreen = props => {
   const handleGenderSelection = newgender => {
     setGender(newgender);
     setSelectedGender(newgender);
-    validateInputs('newgender', newgender);
+    validateInputs('gender', newgender);
   };
 
-  const [openn, setOpenn] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    {label: 'Nam', value: 'Nam'},
-    {label: 'Nữ', value: 'Nữ'},
-  ]);
+  const uploadImageToServer = async image => {
+    try {
+      const formData = new FormData();
+      formData.append('image', {
+        uri: image.path,
+        type: image.mime,
+        name: 'profile.jpg',
+      });
 
-  const {idUser, infoUser, setInfoUser} = useContext(AppContext);
-  const {name, gender, phoneNumber, image, birth, address} = infoUser;
+      const response = await AxiosInstance().post(
+        '/user/upload-image',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
 
-  useEffect(() => {
-    setFullName(name),
-      setValue(gender),
-      setCity(address),
-      // setDob(birth),
-      setPhoneNumber(phoneNumber),
-      setProfileImage(image);
-    // console.log(setDob);
-  }, [infoUser]);
+      if (response.data.status === 1) {
+        return response.data.url;
+      } else {
+        ToastAndroid.show('Upload thất bại', ToastAndroid.SHORT);
+        return null;
+      }
+    } catch (error) {
+      console.log('Lỗi khi upload ảnh:', error);
+      return null;
+    }
+  };
 
   const updateInforUser = async () => {
     let updateFields = {
@@ -280,9 +277,10 @@ const ProfileScreen = props => {
       gender: value,
     };
     if (choseImageee) {
-      const url = await uploadImageToServer();
-      updateFields = {...updateFields, image: url};
-      // console.log('updateFields:',updateFields);
+      const url = await uploadImageToServer(choseImageee);
+      if (url) {
+        updateFields = {...updateFields, image: url};
+      }
     }
     try {
       const update = await AxiosInstance().post(
@@ -291,16 +289,14 @@ const ProfileScreen = props => {
       );
       if (update) {
         setInfoUser(update.update);
-        ToastAndroid.show('Cap Nhat thành công!', ToastAndroid.SHORT);
+        ToastAndroid.show('Cập nhật thành công!', ToastAndroid.SHORT);
       } else {
-        ToastAndroid.show('Cap Nhat thất bại', ToastAndroid.SHORT);
+        ToastAndroid.show('Cập nhật thất bại', ToastAndroid.SHORT);
       }
     } catch (error) {
-      console.log('Verify Code error:', error);
+      console.log('Lỗi xác minh mã:', error);
     }
   };
-
-  // ... existing code ...
 
   return (
     <SafeAreaView style={styles.container}>
@@ -363,14 +359,14 @@ const ProfileScreen = props => {
                   style={[styles.inputContainer, {top: 5, left: -10}]}
                   onPress={() => setOpen(true)}>
                   <Text style={{padding: 9, color: dob ? '#000' : '#999'}}>
-                    {dob ? 'hahhsad' : 'Chọn ngày sinh'}
+                    {dob ? formatDate(dob) : 'Chọn ngày sinh'}
                   </Text>
                 </TouchableOpacity>
               </View>
               <DatePicker
                 modal
                 open={open}
-                date={dob || new Date()}
+                date={dob ? new Date(dob) : new Date()}
                 mode="date"
                 onConfirm={date => {
                   setOpen(false);
@@ -397,8 +393,8 @@ const ProfileScreen = props => {
                     setValue={setValue}
                     setItems={setItems}
                     placeholder={'Chọn giới tính'}
-                    placeholderStyle={{color: '#999'}} // Dimmed placeholder color
-                    textStyle={{color: value ? '#000' : '#999'}} // Text color based on selection
+                    placeholderStyle={{color: '#999'}}
+                    textStyle={{color: value ? '#000' : '#999'}}
                   />
                 </View>
               </View>
