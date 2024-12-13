@@ -35,12 +35,27 @@ const Setting = props => {
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem('token');
-      await GoogleSignin.revokeAccess();
-      await GoogleSignin.signOut();
-      LoginManager.logOut();
+
+      try {
+        await GoogleSignin.revokeAccess();
+        await GoogleSignin.signOut();
+      } catch (error) {
+        console.log('Google logout error:', error);
+      }
+
+      try {
+        LoginManager.logOut();
+      } catch (error) {
+        console.log('Facebook logout error:', error);
+      }
+
+      // setIsLogin(false);
+      // setInfoUser(null);
+      // setIdUser(null);
+
       navigateToLogin();
     } catch (error) {
-      console.log('Logout error:', error);
+      ToastAndroid.show('Có lỗi xảy ra, vui lòng thử lại', ToastAndroid.SHORT);
     }
   };
 
