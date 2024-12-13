@@ -1,38 +1,52 @@
-import { View, Text, FlatList, StyleSheet, Pressable, TextInput, ToastAndroid } from 'react-native'
-import { React, useState, useEffect, useContext } from 'react'
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  Pressable,
+  TextInput,
+  ToastAndroid,
+} from 'react-native';
+import {React, useState, useEffect, useContext} from 'react';
 import Item_List_History from '../../item/Item_List_History';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AxiosInstance from '../../util/AxiosInstance';
-import { AppContext } from '../../util/AppContext';
+import {AppContext} from '../../util/AppContext';
 
-const History = (props) => {
-  const { navigation } = props;
+const History = props => {
+  const {navigation} = props;
   const [data, setData] = useState([]);
-  const { numberTable, setNumberTable, idOrder, setIdOrder } = useContext(AppContext)
+  const {numberTable, setNumberTable, idOrder, setIdOrder} =
+    useContext(AppContext);
 
   const calculateTotal = () => {
     const totalQuantity = data.reduce((sum, item) => sum + item.quantity, 0);
-    const totalPrice = data.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    return { totalQuantity, totalPrice };
+    const totalPrice = data.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0,
+    );
+    return {totalQuantity, totalPrice};
   };
 
-  const increaseQuantity = (id) => {
+  const increaseQuantity = id => {
     const updatedData = data.map(item =>
-      item._id === id ? { ...item, quantity: item.quantity + 1 } : item
+      item._id === id ? {...item, quantity: item.quantity + 1} : item,
     );
     setData(updatedData);
     saveData(updatedData); // Lưu AsyncStorage
   };
 
-  const decreaseQuantity = (id) => {
+  const decreaseQuantity = id => {
     const updatedData = data.map(item =>
-      item._id === id && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
+      item._id === id && item.quantity > 1
+        ? {...item, quantity: item.quantity - 1}
+        : item,
     );
     setData(updatedData);
     saveData(updatedData); // Lưu AsyncStorage
   };
 
-  const deleteItem = (id) => {
+  const deleteItem = id => {
     const updatedData = data.filter(item => item._id !== id);
     setData(updatedData);
     saveData(updatedData); // Lưu AsyncStorage
@@ -44,7 +58,7 @@ const History = (props) => {
     saveData([]); // Lưu AsyncStorage
   };
 
-  const saveData = async (dataToSave) => {
+  const saveData = async dataToSave => {
     try {
       const jsonValue = JSON.stringify(dataToSave);
       await AsyncStorage.setItem('orther', jsonValue);
@@ -63,8 +77,8 @@ const History = (props) => {
     }
   };
 
-  const formatCurrency = (value) => {
-    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
+  const formatCurrency = value => {
+    return new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'})
       .format(value)
       .replace('₫', 'vnd'); // Thay ký hiệu "₫" bằng "vnđ" nếu cần
   };
@@ -72,7 +86,10 @@ const History = (props) => {
   const orderDishes = async () => {
     try {
       if (numberTable && data.length > 0) {
-        const dataFood = await AxiosInstance().post("/order/addNew", { numberTable: numberTable, dishes: data });
+        const dataFood = await AxiosInstance().post('/order/addNew', {
+          numberTable: numberTable,
+          dishes: data,
+        });
         if (dataFood) {
           console.log('Order Thanh Cong');
           deleteAllItem();
@@ -81,7 +98,10 @@ const History = (props) => {
           console.log('Order That Bai');
         }
       } else if (idOrder && data.length > 0) {
-        const dataFood = await AxiosInstance().post("/order/edit", { id: idOrder, dishes: data });
+        const dataFood = await AxiosInstance().post('/order/edit', {
+          id: idOrder,
+          dishes: data,
+        });
         if (dataFood) {
           console.log('Cap nhat order Thanh Cong');
           deleteAllItem();
@@ -95,7 +115,7 @@ const History = (props) => {
     } catch (error) {
       console.log('Order Dishes Error:', error);
     }
-  }
+  };
 
   useEffect(() => {
     const unSubscribe = navigation.addListener('focus', () => {
@@ -104,48 +124,69 @@ const History = (props) => {
     return unSubscribe;
   }, [navigation]);
 
-  const { totalQuantity, totalPrice } = calculateTotal();
+  const {totalQuantity, totalPrice} = calculateTotal();
 
   return (
-    <View style={{ height: '100%', width: '100%', marginTop:'2%' }}>
-      <View style={{ width: '100%', height: '83%' }}>
-        <View style={{ alignItems: 'center' }}>
+    <View style={{height: '100%', width: '100%', marginTop: '2%'}}>
+      <View style={{width: '100%', height: '83%'}}>
+        <View style={{alignItems: 'center'}}>
           <FlatList
             data={data}
-            renderItem={({ item }) => <Item_List_History
-              data={item}
-              onIncrease={increaseQuantity}
-              onDecrease={decreaseQuantity}
-              onDelete={deleteItem}
-            />}
+            renderItem={({item}) => (
+              <Item_List_History
+                data={item}
+                onIncrease={increaseQuantity}
+                onDecrease={decreaseQuantity}
+                onDelete={deleteItem}
+              />
+            )}
             keyExtractor={item => item._id}
             scrollEnabled={true}
             showsVerticalScrollIndicator={false}
           />
         </View>
       </View>
-      <View style={{ height: '17%', paddingTop: 10, paddingHorizontal: 20 }}>
-        <View style={{ marginBottom: 5 }}>
-          <View style={{ marginBottom: 10 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 0 }}>
+      <View style={{height: '17%', paddingTop: 10, paddingHorizontal: 20}}>
+        <View style={{marginBottom: 5}}>
+          <View style={{marginBottom: 10}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginBottom: 0,
+              }}>
               <Text style={styles.textTotal}>Số Bàn:</Text>
-              <Text style={[styles.textTotal, { marginLeft: 10, fontSize: 20, fontWeight: 'bold' }]}>
+              <Text
+                style={[
+                  styles.textTotal,
+                  {marginLeft: 10, fontSize: 20, fontWeight: 'bold'},
+                ]}>
                 {numberTable}
               </Text>
 
-              <Text style={[styles.textTotal, { marginLeft: 20 }]}>Số Lượng:</Text>
-              <Text style={[styles.textTotal, { marginLeft: 10, fontSize: 20, fontWeight: 'bold' }]}>
+              <Text style={[styles.textTotal, {marginLeft: 20}]}>
+                Số Lượng:
+              </Text>
+              <Text
+                style={[
+                  styles.textTotal,
+                  {marginLeft: 10, fontSize: 20, fontWeight: 'bold'},
+                ]}>
                 {totalQuantity}
               </Text>
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text style={styles.textTotal}>Tổng:</Text>
-              <Text style={[styles.textTotal, { marginLeft: 10, fontSize: 20, fontWeight: 'bold' }]}>
+              <Text
+                style={[
+                  styles.textTotal,
+                  {marginLeft: 10, fontSize: 20, fontWeight: 'bold'},
+                ]}>
                 {formatCurrency(totalPrice)}
               </Text>
             </View>
           </View>
-          <View style={{ alignItems: 'center' }}>
+          <View style={{alignItems: 'center'}}>
             <Pressable style={styles.order} onPress={orderDishes}>
               <Text style={styles.textOrder}>Gọi Món</Text>
             </Pressable>

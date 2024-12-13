@@ -24,7 +24,7 @@ const ProfileScreen = props => {
   });
 
   const [fullName, setFullName] = useState('');
-  const [dob, setDob] = useState(null);
+  const [dob, setDob] = useState('');
   const [city, setCity] = useState('');
   const [newphoneNumber, setPhoneNumber] = useState('');
   const [newgender, setGender] = useState('');
@@ -127,8 +127,10 @@ const ProfileScreen = props => {
     return age;
   };
 
-  const formatDate = date => {
-    if (!date) return '';
+  const formatDate = input => {
+    if (!input) return '';
+    const date = input instanceof Date ? input : new Date(input);
+    if (isNaN(date)) return ''; // Kiểm tra nếu input không phải là ngày hợp lệ
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
@@ -255,7 +257,7 @@ const ProfileScreen = props => {
     {label: 'Nữ', value: 'Nữ'},
   ]);
 
-  const {idUser, infoUser} = useContext(AppContext);
+  const {idUser, infoUser, setInfoUser} = useContext(AppContext);
   const {name, gender, phoneNumber, image, birth, address} = infoUser;
 
   useEffect(() => {
@@ -265,6 +267,7 @@ const ProfileScreen = props => {
       // setDob(birth),
       setPhoneNumber(phoneNumber),
       setProfileImage(image);
+    // console.log(setDob);
   }, [infoUser]);
 
   const updateInforUser = async () => {
@@ -287,6 +290,7 @@ const ProfileScreen = props => {
         updateFields,
       );
       if (update) {
+        setInfoUser(update.update);
         ToastAndroid.show('Cap Nhat thành công!', ToastAndroid.SHORT);
       } else {
         ToastAndroid.show('Cap Nhat thất bại', ToastAndroid.SHORT);
@@ -359,7 +363,7 @@ const ProfileScreen = props => {
                   style={[styles.inputContainer, {top: 5, left: -10}]}
                   onPress={() => setOpen(true)}>
                   <Text style={{padding: 9, color: dob ? '#000' : '#999'}}>
-                    {dob ? formatDate(dob) : 'Chọn ngày sinh'}
+                    {dob ? 'hahhsad' : 'Chọn ngày sinh'}
                   </Text>
                 </TouchableOpacity>
               </View>
