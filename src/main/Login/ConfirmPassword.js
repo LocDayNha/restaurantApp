@@ -1,14 +1,22 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
-import { SafeAreaView, View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ToastAndroid } from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import React, {useState} from 'react';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  ToastAndroid,
+} from 'react-native';
 import AxiosInstance from '../../util/AxiosInstance';
 
-const ConfirmPassword = (props) => {
+const ConfirmPassword = props => {
+  const {navigation, route} = props;
+  const {params} = route;
 
-  const { navigation, route } = props;
-  const { params } = route;
-
-  const [emailUser, setemailUser] = useState('')
+  const [emailUser, setemailUser] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -46,23 +54,26 @@ const ConfirmPassword = (props) => {
   };
 
   const clickForgotPass = async () => {
-
     if (!password || !confirmPassword || password !== confirmPassword) {
-      ToastAndroid.show("Vui lòng nhập đúng và đầy đủ", ToastAndroid.SHORT);
+      ToastAndroid.show('Vui lòng nhập đúng và đầy đủ', ToastAndroid.SHORT);
     } else {
       try {
-        const forgot = await AxiosInstance().post("/user/forgotpass", { email: params.guiEmail, password: password, password2: confirmPassword });
+        const forgot = await AxiosInstance().post('/user/forgotpass', {
+          email: params.guiEmail,
+          password: password,
+          password2: confirmPassword,
+        });
         if (forgot) {
-          ToastAndroid.show("Cập nhật thành công", ToastAndroid.SHORT);
-          navigation.navigate("Login2");
+          ToastAndroid.show('Cập nhật thành công', ToastAndroid.SHORT);
+          navigation.navigate('Login2');
         } else {
-          ToastAndroid.show("Cập nhật thất bại", ToastAndroid.SHORT);
+          ToastAndroid.show('Cập nhật thất bại', ToastAndroid.SHORT);
         }
       } catch (error) {
-        console.log("Forgot Password error:", error);
+        console.log('Forgot Password error:', error);
       }
     }
-  }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -79,14 +90,20 @@ const ConfirmPassword = (props) => {
         <TextInput
           style={styles.input}
           placeholder="Nhập mật khẩu mới"
-          placeholderTextColor='#999'
+          placeholderTextColor="#999"
           value={password}
           onChangeText={setPassword}
           secureTextEntry={!showPassword}
         />
-        <TouchableOpacity onPress={handlePasswordVisibility} style={styles.icon1}>
+        <TouchableOpacity
+          onPress={handlePasswordVisibility}
+          style={styles.icon1}>
           <Image
-            source={showPassword ? require('../../icon/view.png') : require('../../icon/hide.png')}
+            source={
+              showPassword
+                ? require('../../icon/view.png')
+                : require('../../icon/hide.png')
+            }
             style={styles.icon}
           />
         </TouchableOpacity>
@@ -96,14 +113,20 @@ const ConfirmPassword = (props) => {
         <TextInput
           style={styles.input}
           placeholder="Xác nhận lại mật khẩu"
-          placeholderTextColor='#999'
+          placeholderTextColor="#999"
           value={confirmPassword}
           onChangeText={setConfirmPassword}
           secureTextEntry={!showConfirmPassword}
         />
-        <TouchableOpacity onPress={handleConfirmPasswordVisibility} style={styles.icon1}>
+        <TouchableOpacity
+          onPress={handleConfirmPasswordVisibility}
+          style={styles.icon1}>
           <Image
-            source={showConfirmPassword ? require('../../icon/view.png') : require('../../icon/hide.png')}
+            source={
+              showConfirmPassword
+                ? require('../../icon/view.png')
+                : require('../../icon/hide.png')
+            }
             style={styles.icon}
           />
         </TouchableOpacity>
@@ -111,7 +134,8 @@ const ConfirmPassword = (props) => {
 
       {/* Hiển thị thông báo */}
       {message ? (
-        <Text style={[styles.message, isSuccess ? styles.success : styles.failure]}>
+        <Text
+          style={[styles.message, isSuccess ? styles.success : styles.failure]}>
           {message}
         </Text>
       ) : null}
@@ -140,7 +164,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   topdes: {
-    color: "black",
+    color: 'black',
     fontSize: 21,
     top: 35,
     left: 50,
@@ -163,7 +187,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   text: {
-    color: "black",
+    color: 'black',
     fontSize: 16,
     top: 90,
     left: -5,

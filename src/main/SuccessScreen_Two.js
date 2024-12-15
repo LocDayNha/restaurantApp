@@ -9,19 +9,17 @@ import {
   ImageBackground,
 } from 'react-native';
 
-const ReservationSuccessScreen = ({ visible, onClose }) => {
+const ReservationSuccessScreen = ({visible, onClose}) => {
   return (
     <Modal
       animationType="fade"
       transparent={true}
       visible={visible}
-      onRequestClose={onClose}
-    >
+      onRequestClose={onClose}>
       <View style={styles.container}>
         <ImageBackground
           source={require('../image/bg_success.png')}
-          style={styles.background}
-        >
+          style={styles.background}>
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
             <Image
               source={require('../icon/close_icon.png')}
@@ -33,7 +31,9 @@ const ReservationSuccessScreen = ({ visible, onClose }) => {
             <Text style={styles.title}>Thành công</Text>
             <Text style={styles.message}>Bàn của bạn đã được đặt trước</Text>
           </View>
-          <Text style={styles.note}>Lưu ý: Bàn của bạn sau khi đặt chỉ có hiệu lực trong 1h</Text>
+          <Text style={styles.note}>
+            Lưu ý: Bàn của bạn sau khi đặt chỉ có hiệu lực trong 1h
+          </Text>
           <View style={styles.iconContainer}>
             <Image
               source={require('../image/success_icon.png')}

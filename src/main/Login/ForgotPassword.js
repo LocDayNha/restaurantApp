@@ -1,5 +1,5 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useState, useEffect } from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   View,
@@ -8,15 +8,14 @@ import {
   TouchableOpacity,
   Image,
   StyleSheet,
-  ToastAndroid
+  ToastAndroid,
 } from 'react-native';
 
 import AxiosInstance from '../../util/AxiosInstance';
 
-const ForgotPasswordActivity = (props) => {
-
-  const { navigation, route } = props;
-  const { params } = route;
+const ForgotPasswordActivity = props => {
+  const {navigation, route} = props;
+  const {params} = route;
 
   const [codeInput, setcodeInput] = useState(['', '', '', '']);
 
@@ -29,15 +28,18 @@ const ForgotPasswordActivity = (props) => {
   const clickVerify = async () => {
     const numericCode = parseInt(codeInput.join(''));
     try {
-      const verify = await AxiosInstance().post("/user/verify", { code: numericCode, email: params.sentEmail });
+      const verify = await AxiosInstance().post('/user/verify', {
+        code: numericCode,
+        email: params.sentEmail,
+      });
       if (verify) {
-        ToastAndroid.show("Xác minh thành công", ToastAndroid.SHORT);
-        navigation.navigate("ConfirmPassword", {guiEmail: params.sentEmail});
+        ToastAndroid.show('Xác minh thành công', ToastAndroid.SHORT);
+        navigation.navigate('ConfirmPassword', {guiEmail: params.sentEmail});
       } else {
-        ToastAndroid.show("Xác minh thất bại", ToastAndroid.SHORT);
+        ToastAndroid.show('Xác minh thất bại', ToastAndroid.SHORT);
       }
     } catch (error) {
-      console.log("Verify Code error:", error);
+      console.log('Verify Code error:', error);
     }
   };
 
@@ -91,7 +93,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   topdes: {
-    color: "black",
+    color: 'black',
     fontSize: 21,
     top: 35,
     left: 50,
@@ -106,7 +108,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     marginBottom: 20,
-    color: "black",
+    color: 'black',
   },
   codeContainer: {
     flexDirection: 'row',
@@ -122,7 +124,7 @@ const styles = StyleSheet.create({
     height: 40,
     textAlign: 'center',
     fontSize: 18,
-    color: "black",
+    color: 'black',
   },
   timerText: {
     textAlign: 'center',

@@ -2,6 +2,13 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
 
 const Item_List_History = ({ data, onIncrease, onDecrease, onDelete }) => {
+
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
+      .format(value)
+      .replace('₫', 'vnd'); // Thay ký hiệu "₫" bằng "vnđ" nếu cần
+  };
+
   return (
     <View elevation={3} style={styles.item} key={data._id}>
       <Image style={styles.avatar} source={{ uri: data.image }} />
@@ -11,7 +18,7 @@ const Item_List_History = ({ data, onIncrease, onDecrease, onDelete }) => {
             {data.name}
           </Text>
           <Text style={styles.price} numberOfLines={1}>
-            {data.price} vnd
+            {formatCurrency(data.price)}
           </Text>
         </View>
         <View style={styles.quantityContainer}>
@@ -81,7 +88,7 @@ const styles = StyleSheet.create({
   },
   price: {
     fontSize: 15,
-    color: '#888',
+    color: '#000',
     marginTop: 3,
   },
   quantityContainer: {

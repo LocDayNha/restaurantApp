@@ -1,5 +1,5 @@
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
-import React from 'react'
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import React from 'react';
 
 const Item_History_Table = ({ data }) => {
   return (
@@ -18,18 +18,24 @@ const Item_History_Table = ({ data }) => {
             <Text style={styles.value}>{data.table_id.timeline_id.name}</Text>
           </View>
           <View style={styles.row}>
-            <Text style={styles.label}>Chỗ ngồi</Text>
-            <Text style={styles.value}>{data.table_id.userNumber}</Text>
+            <Text style={styles.label}>Số người</Text>
+            <Text style={styles.value}>{data.seat}</Text>
           </View>
           <View style={styles.row}>
-            <Text style={styles.label}>Bàn</Text>
-            <Text style={styles.value}>{data.table_id.number}</Text>
+            <Text style={styles.label}>Trạng thái</Text>
+            {data.confirm === 1
+              ? <Text style={[styles.value,{color:'#EEB422'}]}>Đang xác nhận</Text>
+              : data.confirm === 2
+                ? <Text style={[styles.value,{color:'#00CD00'}]}>Thành công</Text>
+                : data.confirm === 3
+                  ? <Text style={[styles.value,{color:'#CD2626'}]}>Đã hủy</Text>
+                  : <Text style={[styles.value,{color:''}]}>Không xác định</Text>}
           </View>
         </View>
       </View>
     </View>
-  )
-}
+  );
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -87,7 +93,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 10,
     padding: 20,
-    marginTop: 5,
+    marginTop: 10,
   },
   restaurantName: {
     color: '#fff',
@@ -124,12 +130,12 @@ const styles = StyleSheet.create({
   label: {
     color: 'black',
     fontSize: 16,
-    fontWeight:'bold'
+    fontWeight: 'bold',
   },
   value: {
     color: 'black',
     fontSize: 16,
-    fontWeight:'bold'
+    fontWeight: 'bold',
   },
   row: {
     flexDirection: 'row',
@@ -158,4 +164,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Item_History_Table
+export default Item_History_Table;

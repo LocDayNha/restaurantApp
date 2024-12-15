@@ -4,23 +4,16 @@ import React from 'react'
 const Item_Booking_Screen = ({data, onPress}) => {
   return (
     <TouchableOpacity onPress={onPress} style={styles.card}>
-          <View style={styles.row}>
-            {/* Bạn có thể thêm các thông tin khác ở đây */}
-          </View>
           <View style={styles.tableImageRow}>
             <View style={styles.detailsContainer}>
               <View style={styles.row}>
                 <Text style={styles.label}>Thời gian</Text>
                 <Text style={styles.value}>{data.timeline_id.name}</Text>
               </View>
-              <View style={styles.row}>
-                <Text style={styles.label}>Chỗ ngồi</Text>
-                <Text style={styles.value}>{data.userNumber}</Text>
-              </View>
-              <View style={styles.row}>
-                <Text style={styles.label}>Bàn</Text>
-                <Text style={styles.value}>{data.number}</Text>
-              </View>
+              {/* <View style={styles.row}>
+                <Text style={styles.label}>Trạng thái</Text>
+                <Text style={styles.value}>Còn Trống</Text>
+              </View> */}
             </View>
           </View>
         </TouchableOpacity>
@@ -80,10 +73,10 @@ const styles = StyleSheet.create({
       marginTop: 10,
     },
     card: {
-      height: 140,
+      height: 80,
       borderRadius: 10,
       padding: 20,
-      marginTop: 5,
+      marginTop: "3%",
       backgroundColor:'#fff'
     },
     restaurantName: {
@@ -106,8 +99,6 @@ const styles = StyleSheet.create({
     tableImageRow: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginVertical: 20,
-      top: -50,
     },
     tableImage: {
       width: 100,
@@ -117,6 +108,7 @@ const styles = StyleSheet.create({
     },
     detailsContainer: {
       flex: 1,
+      justifyContent:'center',
     },
     label: {
       color: 'black',

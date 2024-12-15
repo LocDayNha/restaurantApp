@@ -1,30 +1,37 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
-import React, { useState, useContext, useEffect } from 'react'
-import { AppContext } from '../../util/AppContext';
-import AxiosInstance from '../../util/AxiosInstance';
-import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
-import { Settings, LoginManager, Profile, LoginButton, } from 'react-native-fbsdk-next';
+import React, {useState, useContext, useEffect} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  Dimensions,
+} from 'react-native';
+import {AppContext} from '../../util/AppContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {LoginManager} from 'react-native-fbsdk-next';
 
-const Setting = (props) => {
-  const { navigation } = props;
+const {width, height} = Dimensions.get('window');
+
+const Setting = props => {
+  const {navigation} = props;
   const toProfile = () => {
-    navigation.navigate("Profile")
+    navigation.navigate('Profile');
   };
 
   const [fullName, setFullName] = useState('');
   const [imgAvatar, setImgAvatar] = useState('');
   const [showEmail, setShowEmail] = useState('');
-  const { idUser, infoUser } = useContext(AppContext);
-  const { image, name, email } = infoUser;
+  const {idUser, infoUser} = useContext(AppContext);
+  const {image, name, email} = infoUser;
 
   useEffect(() => {
-    setImgAvatar(image),
-      setFullName(name),
-      setShowEmail(email)
-  }, [infoUser])
+    setImgAvatar(image);
+    setFullName(name);
+    setShowEmail(email);
+  }, [infoUser]);
 
-  const { setIsLogin, setInfoUser, setIdUser } = useContext(AppContext);
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem('token');
@@ -53,114 +60,170 @@ const Setting = (props) => {
   };
 
   const navigateToLogin = () => {
-    navigation.navigate("Login2");
+    navigation.navigate('Login2');
   };
 
   return (
-    <View style={{ margin: '5%' }}>
-
-      <View style={[styles.view2, { marginBottom: '5%' }]}>
-        <View style={[styles.view3, { alignItems: 'center', width: 110, height: 110 }]}>
-          {
-            imgAvatar ?
-              <Image style={styles.imageAvatar} source={{ uri: imgAvatar }} ></Image> :
-              <Image style={styles.imageAvatar} source={require('../../image/user.png')} ></Image>
+    <View style={styles.container}>
+      <View style={styles.avatarContainer}>
+        <Image
+          style={styles.imageAvatar}
+          source={
+            imgAvatar ? {uri: imgAvatar} : require('../../image/user.png')
           }
-        </View>
+        />
       </View>
 
-      <View style={[styles.view2, { marginBottom: '5%' }]}>
-        <Text style={[styles.textName, { fontWeight: 'bold', color: 'black' }]}>{fullName}</Text>
-        <Text style={{ color: 'black' }}>{showEmail}</Text>
+      <View style={styles.infoContainer}>
+        <Text style={styles.textName}>{fullName}</Text>
+        <Text style={styles.textEmail}>{showEmail}</Text>
       </View>
 
-      <View style={[styles.view2, { borderBottomWidth: 1, borderColor: '#DDDDDD', marginBottom: '5%' }]}></View>
+      <View style={styles.divider} />
 
-      <TouchableOpacity onPress={toProfile} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '77%' }}>
-          <Image style={styles.icon} source={require('../../icon/setting/user.png')}></Image>
+      <TouchableOpacity onPress={toProfile} style={styles.button}>
+        <View style={styles.buttonContent}>
+          <Image
+            style={styles.icon}
+            source={require('../../icon/setting/user.png')}
+          />
           <Text style={styles.text}>Chỉnh sửa thông tin cá nhân</Text>
         </View>
-        <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
+        <Image
+          style={styles.arrowIcon}
+          source={require('../../icon/setting/rightarrow.png')}
+        />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate('History_Table')} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '28.5%' }}>
-          <Image style={styles.icon} source={require('../../icon/setting/armchair.png')}></Image>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('History_Table')}
+        style={styles.button}>
+        <View style={styles.buttonContent}>
+          <Image
+            style={styles.icon}
+            source={require('../../icon/setting/armchair.png')}
+          />
           <Text style={styles.text}>Đặt bàn</Text>
         </View>
-        <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
+        <Image
+          style={styles.arrowIcon}
+          source={require('../../icon/setting/rightarrow.png')}
+        />
       </TouchableOpacity>
 
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '37%' }}>
-          <Image style={styles.icon} source={require('../../icon/setting/wallet.png')}></Image>
+      <TouchableOpacity style={styles.button}>
+        <View style={styles.buttonContent}>
+          <Image
+            style={styles.icon}
+            source={require('../../icon/setting/wallet.png')}
+          />
           <Text style={styles.text}>Thanh toán</Text>
         </View>
-        <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
+        <Image
+          style={styles.arrowIcon}
+          source={require('../../icon/setting/rightarrow.png')}
+        />
       </TouchableOpacity>
 
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '34%' }}>
-          <Image style={[styles.icon, { width: 20, height: 20 }]} source={require('../../icon/setting/language.png')}></Image>
+      <TouchableOpacity style={styles.button}>
+        <View style={styles.buttonContent}>
+          <Image
+            style={styles.icon}
+            source={require('../../icon/setting/language.png')}
+          />
           <Text style={styles.text}>Ngôn ngữ</Text>
         </View>
-        <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
+        <Image
+          style={styles.arrowIcon}
+          source={require('../../icon/setting/rightarrow.png')}
+        />
       </TouchableOpacity>
 
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '47%' }}>
-          <Image style={styles.icon} source={require('../../icon/setting/eye.png')}></Image>
+      <TouchableOpacity style={styles.button}>
+        <View style={styles.buttonContent}>
+          <Image
+            style={styles.icon}
+            source={require('../../icon/setting/eye.png')}
+          />
           <Text style={styles.text}>Chế độ tối màu</Text>
         </View>
-        <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
+        <Image
+          style={styles.arrowIcon}
+          source={require('../../icon/setting/rightarrow.png')}
+        />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={handleLogout} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '5%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '34.5%' }}>
-          <Image style={styles.icon} source={require('../../icon/setting/out.png')}></Image>
-          <Text style={[styles.text, { color: 'red' }]}>Đăng xuất</Text>
+      <TouchableOpacity onPress={handleLogout} style={styles.button}>
+        <View style={styles.buttonContent}>
+          <Image
+            style={styles.icon}
+            source={require('../../icon/setting/out.png')}
+          />
+          <Text style={[styles.text, {color: 'red'}]}>Đăng xuất</Text>
         </View>
-        <Image style={[styles.icon, { width: 16, height: 17 }]} source={require('../../icon/setting/rightarrow.png')}></Image>
+        <Image
+          style={styles.arrowIcon}
+          source={require('../../icon/setting/rightarrow.png')}
+        />
       </TouchableOpacity>
-
     </View>
-  )
-}
+  );
+};
 
-export default Setting
+export default Setting;
 
 const styles = StyleSheet.create({
-  view2: {
-
-    alignItems: 'center'
+  container: {
+    flex: 1,
+    padding: '5%',
   },
-  view3: {
-    justifyContent: 'center',
+  avatarContainer: {
     alignItems: 'center',
-    flexDirection: 'row'
+    marginBottom: '5%',
   },
   imageAvatar: {
-    width: 110,
-    height: 110,
-    borderRadius: 50
+    width: width * 0.3,
+    height: width * 0.3,
+    borderRadius: (width * 0.3) / 2,
   },
-  iconEdit: {
-    width: 25,
-    height: 25,
-    marginTop: '70%',
-    marginLeft: "-25%"
+  infoContainer: {
+    alignItems: 'center',
+    marginBottom: '5%',
   },
   textName: {
-    fontFamily: 'Urbanist',
+    fontWeight: 'bold',
+    color: 'black',
     fontSize: 19,
   },
+  textEmail: {
+    color: 'black',
+  },
+  divider: {
+    borderBottomWidth: 1,
+    borderColor: '#DDDDDD',
+    marginBottom: '5%',
+  },
+  button: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginBottom: '5%',
+  },
+  buttonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   icon: {
-    height: 18,
-    width: 17
+    width: 20,
+    height: 20,
+    marginRight: 10,
+  },
+  arrowIcon: {
+    width: 16,
+    height: 17,
   },
   text: {
-    fontFamily: 'Urbanist',
     fontSize: 17.5,
-  }
-})
+  },
+});

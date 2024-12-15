@@ -1,23 +1,34 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, SafeAreaView, ToastAndroid } from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  SafeAreaView,
+  ToastAndroid,
+} from 'react-native';
 import AxiosInstance from '../../util/AxiosInstance';
 
-const VerifyEmail = (props) => {
-  const { navigation } = props;
+const VerifyEmail = props => {
+  const {navigation} = props;
 
   // check mail and send code to mail
-  const [emailUser, setemailUser] = useState("");
+  const [emailUser, setemailUser] = useState('');
   const clickSend = async () => {
     try {
-      const send = await AxiosInstance().post("/user/sent-code", { email: emailUser });
+      const send = await AxiosInstance().post('/user/sent-code', {
+        email: emailUser,
+      });
       if (send) {
         console.log('Đã gửi mã về Email');
-        navigation.navigate("ForgotPassword", { sentEmail: emailUser });
+        navigation.navigate('ForgotPassword', {sentEmail: emailUser});
       } else {
-        ToastAndroid.show("Kiểm tra lại Email", ToastAndroid.SHORT);
+        ToastAndroid.show('Kiểm tra lại Email', ToastAndroid.SHORT);
       }
     } catch (error) {
-      console.log("Send Code to Mail error:", error);
+      console.log('Send Code to Mail error:', error);
     }
   };
 
@@ -31,16 +42,15 @@ const VerifyEmail = (props) => {
           />
         </View>
         <View style={styles.form}>
-          <Text style={styles.text} >Nhập Email của bạn</Text>
+          <Text style={styles.text}>Nhập Email của bạn</Text>
           <View style={styles.inputContainer}>
             <TextInput
               style={[styles.input]}
               placeholder="Email"
-              placeholderTextColor='#999'
+              placeholderTextColor="#999"
               onChangeText={setemailUser}
             />
           </View>
-
         </View>
         <TouchableOpacity onPress={clickSend} style={styles.button}>
           <Text style={styles.buttonText}>Tiếp tục</Text>
@@ -96,13 +106,13 @@ const styles = StyleSheet.create({
     marginTop: '5%',
   },
   topdes: {
-    color: "black",
+    color: 'black',
     fontSize: 21,
     top: 35,
     left: 50,
   },
   text: {
-    color: "black",
+    color: 'black',
     fontSize: 20,
     left: 15,
     // zIndex: 0

@@ -43,15 +43,26 @@ const Item_List_Order = (props) => {
     }
   };
 
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
+      .format(value)
+      .replace('₫', 'vnd'); // Thay ký hiệu "₫" bằng "vnđ" nếu cần
+  };
+
   return (
     <View elevation={5} style={styles.item} key={data._id}>
-      <TouchableOpacity onPress={() => { storeData(data) }} style={{ marginLeft: '70%', marginTop: '5%' }} disabled={infoUser.role === 1}>
-        <Image style={{ width: 24, height: 24 }} source={require('../icon/add.png')}></Image>
-      </TouchableOpacity >
+      {
+        infoUser.role === 1 ?
+          <View style={{ marginLeft: '70%', marginTop: '5%', width: 24, height: 24 }}></View>
+          :
+          <TouchableOpacity onPress={() => { storeData(data) }} style={{ marginLeft: '70%', marginTop: '5%' }}>
+            <Image style={{ width: 24, height: 24 }} source={require('../icon/add.png')}></Image>
+          </TouchableOpacity >
+      }
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         <Image style={styles.avata} source={{ uri: data.image }} />
         <Text style={styles.title}>{data.name}</Text>
-        <Text style={styles.price}>{data.price} vnđ</Text>
+        <Text style={styles.price}>{formatCurrency(data.price)}</Text>
       </View>
     </View>
 

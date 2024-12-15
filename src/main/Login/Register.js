@@ -13,9 +13,8 @@ import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import AxiosInstance from '../../util/AxiosInstance';
 
-const Register = (props) => {
-
-const {navigation}= props;
+const Register = props => {
+  const {navigation} = props;
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -80,7 +79,7 @@ const {navigation}= props;
     try {
       const response = await AxiosInstance().post('/user/register', data);
       if (response && response.status) {
-        navigation.navigate("VerifyRegister", {guiEmail: email});
+        navigation.navigate('VerifyRegister', {guiEmail: email});
       } else {
         ToastAndroid.show('Đăng ký thất bại!', ToastAndroid.SHORT);
       }
